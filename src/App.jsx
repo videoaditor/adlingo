@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Zap, Heart, Trophy, BookOpen, CheckCircle, XCircle, 
-  Flame, Loader, AlertCircle, User, Play, Copy, RotateCcw, Lock
+  Flame, Loader, AlertCircle, User, Play, Copy, RotateCcw, Lock, GraduationCap, Dumbbell
 } from 'lucide-react';
 
 // Assets
 import robotStatic from './assets/adlingo robot static.png';
 import robotThinking from './assets/adlingo robot thinking.png';
 import robotDisappointed from './assets/adlingo robot dissapointed.png';
+
+// --- MODE DETECTION ---
+const getMode = () => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('mode') === 'test' ? 'test' : 'train';
+};
 
 // --- 🛠️ COURSE DATA WITH LEVELS 🛠️ ---
 const COURSE_DATA = [
@@ -231,10 +237,14 @@ const COURSE_DATA = [
   }
 ];
 
-// Calculate total questions
-const TOTAL_QUESTIONS = COURSE_DATA.reduce((acc, unit) => 
-  acc + unit.levels.reduce((a, l) => a + l.questions.length, 0), 0
+// Flatten all questions for test mode
+const ALL_QUESTIONS = COURSE_DATA.flatMap(unit => 
+  unit.levels.flatMap(level => 
+    level.questions.map(q => ({ ...q, levelTitle: level.title, unitTitle: unit.title }))
+  )
 );
+
+const TOTAL_QUESTIONS = ALL_QUESTIONS.length;
 
 // Get all level IDs in order
 const ALL_LEVEL_IDS = COURSE_DATA.flatMap(unit => unit.levels.map(l => l.id));
@@ -290,17 +300,25 @@ const getTierData = (score) => {
 
 // --- MAIN APP ---
 const App = () => {
-  const [view, setView] = useState('home'); // home, lesson, results
+  const [mode] = useState(getMode()); // 'test' or 'train'
+  const [view, setView] = useState('home'); // home, lesson, results, test
   const [activeLevel, setActiveLevel] = useState(null);
   const [completedLevels, setCompletedLevels] = useState([]);
-  const [levelScores, setLevelScores] = useState({}); // { l1: { correct: 2, total: 3 }, ... }
+  const [levelScores, setLevelScores] = useState({});
   const [copied, setCopied] = useState(false);
+  
+  // Test mode state
+  const [testAnswers, setTestAnswers] = useState({});
+  const [currentTestQ, setCurrentTestQ] = useState(0);
+  const [selectedTestOpt, setSelectedTestOpt] = useState(null);
 
   // Check if all levels are completed
   const allComplete = ALL_LEVEL_IDS.every(id => completedLevels.includes(id));
 
-  // Calculate total score
-  const totalCorrect = Object.values(levelScores).reduce((acc, s) => acc + s.correct, 0);
+  // Calculate total score (works for both modes)
+  const totalCorrect = mode === 'test' 
+    ? Object.values(testAnswers).filter(Boolean).length
+    : Object.values(levelScores).reduce((acc, s) => acc + s.correct, 0);
   const score = Math.round((totalCorrect / TOTAL_QUESTIONS) * 100);
   const tierData = getTierData(score);
 
@@ -314,7 +332,6 @@ const App = () => {
     setCompletedLevels(prev => [...new Set([...prev, levelId])]);
     setLevelScores(prev => ({ ...prev, [levelId]: { correct, total } }));
     
-    // Check if this was the last level
     const newCompleted = [...new Set([...completedLevels, levelId])];
     if (ALL_LEVEL_IDS.every(id => newCompleted.includes(id))) {
       setView('results');
@@ -326,18 +343,162 @@ const App = () => {
   const resetQuiz = () => {
     setCompletedLevels([]);
     setLevelScores({});
+    setTestAnswers({});
+    setCurrentTestQ(0);
+    setSelectedTestOpt(null);
     setView('home');
   };
 
+  const startTest = () => {
+    setTestAnswers({});
+    setCurrentTestQ(0);
+    setSelectedTestOpt(null);
+    setView('test');
+  };
+
+  const submitTestAnswer = () => {
+    if (selectedTestOpt === null) return;
+    const q = ALL_QUESTIONS[currentTestQ];
+    const isCorrect = q.options[selectedTestOpt].correct;
+    setTestAnswers(prev => ({ ...prev, [currentTestQ]: isCorrect }));
+    
+    if (currentTestQ + 1 < TOTAL_QUESTIONS) {
+      setCurrentTestQ(i => i + 1);
+      setSelectedTestOpt(null);
+    } else {
+      setView('results');
+    }
+  };
+
   const copyResult = () => {
-    const text = `I just scored ${score}/100 (${tierData.tier} ${tierData.emoji}) on the Ad Editor Crash Course. Can you beat my ROAS? https://adlingo.onrender.com`;
+    const modeLabel = mode === 'test' ? 'Certification Test' : 'Training';
+    const text = `I just scored ${score}/100 (${tierData.tier} ${tierData.emoji}) on the Adlingo ${modeLabel}. Can you beat my ROAS? https://adlingo.onrender.com${mode === 'test' ? '?mode=test' : ''}`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // --- HOME VIEW (The Map) ---
-  if (view === 'home') {
+  // ============================================
+  // TEST MODE - HOME SCREEN
+  // ============================================
+  if (mode === 'test' && view === 'home') {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white font-sans flex flex-col items-center justify-center p-6">
+        <div className="max-w-md w-full text-center">
+          <img src={robotStatic} alt="Adlingo Bot" className="w-32 h-32 mx-auto mb-6" />
+          <h1 className="text-3xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-red-500 mb-2">
+            ADLINGO
+          </h1>
+          <p className="text-gray-400 mb-8">Performance Editor Certification Test</p>
+
+          <div className="bg-gray-800 rounded-2xl p-6 mb-8 border border-gray-700 text-left">
+            <div className="flex items-center mb-4">
+              <GraduationCap className="text-orange-400 mr-3" size={24} />
+              <span className="font-bold text-lg">Exam Rules</span>
+            </div>
+            <ul className="text-gray-400 text-sm space-y-2">
+              <li>• {TOTAL_QUESTIONS} questions total</li>
+              <li>• No feedback until the end</li>
+              <li>• Your final score will be revealed after submission</li>
+              <li>• Results are screenshot-ready for sharing</li>
+            </ul>
+          </div>
+
+          <button 
+            onClick={startTest}
+            className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black text-lg rounded-2xl shadow-lg border-b-4 border-orange-700 active:translate-y-1 active:shadow-none transition-all uppercase tracking-widest"
+          >
+            Begin Certification
+          </button>
+
+          <a 
+            href="/"
+            className="block mt-6 text-gray-500 hover:text-gray-300 text-sm transition"
+          >
+            ← Switch to Training Mode
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================================
+  // TEST MODE - QUIZ FLOW (No Feedback)
+  // ============================================
+  if (mode === 'test' && view === 'test') {
+    const q = ALL_QUESTIONS[currentTestQ];
+    const progress = ((currentTestQ) / TOTAL_QUESTIONS) * 100;
+
+    return (
+      <div className="min-h-screen bg-gray-900 text-white font-sans flex flex-col">
+        {/* Top Bar */}
+        <div className="px-4 py-4 flex items-center gap-4 border-b border-gray-800">
+          <div className="flex-1 h-3 bg-gray-800 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <div className="text-gray-400 font-bold text-sm">{currentTestQ + 1}/{TOTAL_QUESTIONS}</div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-6 pb-32">
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-4">
+              <span className="bg-gray-800 text-gray-500 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-700">
+                {q.unitTitle}
+              </span>
+            </div>
+
+            <h2 className="text-xl font-black text-center mb-8 leading-tight">{q.question}</h2>
+
+            <div className="space-y-3">
+              {q.options.map((opt, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedTestOpt(idx)}
+                  className={`
+                    w-full p-4 rounded-xl border-2 text-left font-medium transition-all
+                    ${selectedTestOpt === idx 
+                      ? 'border-orange-500 bg-orange-500/10 text-orange-300' 
+                      : 'border-gray-700 bg-gray-800 text-gray-300 hover:border-gray-600'}
+                  `}
+                >
+                  <div className="flex items-start">
+                    <div className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center mr-3 text-sm font-black shrink-0
+                      ${selectedTestOpt === idx ? 'border-orange-500 text-orange-500' : 'border-gray-600 text-gray-600'}
+                    `}>
+                      {String.fromCharCode(65 + idx)}
+                    </div>
+                    <span className="pt-1">{opt.text}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="fixed bottom-0 w-full bg-gray-900/98 border-t border-gray-800 backdrop-blur-lg">
+          <div className="max-w-2xl mx-auto p-4">
+            <button 
+              onClick={submitTestAnswer}
+              disabled={selectedTestOpt === null}
+              className="w-full py-4 rounded-xl font-black text-base uppercase tracking-wider transition-all bg-orange-500 hover:bg-orange-400 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {currentTestQ + 1 < TOTAL_QUESTIONS ? 'Next Question' : 'Submit & See Results'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================================
+  // TRAINING MODE - HOME (The Map)
+  // ============================================
+  if (mode === 'train' && view === 'home') {
     return (
       <div className="min-h-screen bg-gray-900 text-white font-sans">
         {/* Header */}
@@ -349,6 +510,12 @@ const App = () => {
             </div>
           </div>
           <div className="flex items-center space-x-3 text-sm font-bold">
+            <a 
+              href="?mode=test" 
+              className="text-gray-500 hover:text-orange-400 flex items-center bg-gray-800 px-3 py-1 rounded-full border border-gray-700 transition"
+            >
+              <GraduationCap size={14} className="mr-1" /> Test
+            </a>
             <div className="text-orange-400 flex items-center bg-orange-500/10 px-3 py-1 rounded-full">
               <Trophy size={16} className="mr-1" /> {completedLevels.length}/{ALL_LEVEL_IDS.length}
             </div>
@@ -359,7 +526,9 @@ const App = () => {
         <div className="p-4">
           <div className="max-w-2xl mx-auto bg-gray-800 rounded-xl p-4 border border-gray-700">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-bold text-gray-400">Certification Progress</span>
+              <span className="text-sm font-bold text-gray-400 flex items-center">
+                <Dumbbell size={14} className="mr-2" /> Training Progress
+              </span>
               <span className="text-sm font-bold text-orange-400">{Math.round((completedLevels.length / ALL_LEVEL_IDS.length) * 100)}%</span>
             </div>
             <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
@@ -373,9 +542,8 @@ const App = () => {
 
         {/* Course Map */}
         <div className="p-4 pb-24 space-y-8">
-          {COURSE_DATA.map((unit, unitIdx) => (
+          {COURSE_DATA.map((unit) => (
             <div key={unit.id} className="max-w-2xl mx-auto">
-              {/* Unit Header */}
               <div className={`p-5 rounded-2xl mb-8 ${unit.color} text-white shadow-lg border-b-4 border-black/20 relative overflow-hidden`}>
                 <div className="relative z-10">
                   <h2 className="font-black text-lg uppercase tracking-wider">{unit.title}</h2>
@@ -384,18 +552,12 @@ const App = () => {
                 <Zap size={70} className="absolute -right-2 -bottom-2 opacity-20 rotate-12 text-black" />
               </div>
 
-              {/* Levels */}
               <div className="flex flex-col items-center space-y-6">
-                {unit.levels.map((level, levelIdx) => {
+                {unit.levels.map((level) => {
                   const isCompleted = completedLevels.includes(level.id);
-                  
-                  // Lock logic: first level of first unit is always unlocked
-                  // Otherwise, previous level must be completed
                   const globalLevelIndex = ALL_LEVEL_IDS.indexOf(level.id);
                   const prevLevelId = globalLevelIndex > 0 ? ALL_LEVEL_IDS[globalLevelIndex - 1] : null;
                   const isLocked = !isCompleted && prevLevelId && !completedLevels.includes(prevLevelId);
-                  
-                  // Score display
                   const levelScore = levelScores[level.id];
 
                   return (
@@ -426,7 +588,6 @@ const App = () => {
                         )}
                       </button>
                       
-                      {/* Label */}
                       <div className="mt-2 text-center">
                         <div className={`text-xs font-bold uppercase tracking-wide ${isLocked ? 'text-gray-600' : 'text-white'}`}>
                           {level.title}
@@ -444,7 +605,6 @@ const App = () => {
             </div>
           ))}
 
-          {/* See Results Button (only if all complete) */}
           {allComplete && (
             <div className="max-w-2xl mx-auto pt-8">
               <button
@@ -460,7 +620,9 @@ const App = () => {
     );
   }
 
-  // --- LESSON VIEW ---
+  // ============================================
+  // TRAINING MODE - LESSON
+  // ============================================
   if (view === 'lesson' && activeLevel) {
     return (
       <LessonEngine
@@ -471,28 +633,29 @@ const App = () => {
     );
   }
 
-  // --- RESULTS VIEW ---
+  // ============================================
+  // RESULTS VIEW (Both Modes)
+  // ============================================
   if (view === 'results') {
-  return (
+    return (
       <div className={`min-h-screen ${tierData.bgColor} text-white font-sans flex flex-col`}>
         <div className="flex-1 flex flex-col items-center justify-center p-6">
           <div className="max-w-sm w-full">
             
-            {/* Result Card */}
             <div className={`bg-gray-900 rounded-3xl p-6 border-2 ${tierData.borderColor} shadow-2xl relative overflow-hidden`}>
               
-              {/* Header */}
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center font-black text-xs">AD</div>
-                  <span className="font-bold text-gray-400 text-sm">Campaign Results</span>
+                  <span className="font-bold text-gray-400 text-sm">
+                    {mode === 'test' ? 'Certification Exam' : 'Training Complete'}
+                  </span>
                 </div>
                 <div className={`px-2 py-1 rounded text-xs font-bold ${tierData.textColor} bg-black/30`}>
-                  CERTIFIED
+                  {mode === 'test' ? 'CERTIFIED' : 'TRAINED'}
                 </div>
               </div>
 
-              {/* Big Score */}
               <div className="text-center mb-6">
                 <div className={`text-7xl font-black bg-gradient-to-r ${tierData.color} bg-clip-text text-transparent`}>
                   {score}
@@ -500,19 +663,16 @@ const App = () => {
                 <div className="text-gray-500 font-bold text-sm uppercase tracking-widest">/ 100 ROAS Score</div>
               </div>
 
-              {/* Tier Badge */}
               <div className={`bg-gradient-to-r ${tierData.color} rounded-2xl p-4 text-center mb-6`}>
                 <div className="text-4xl mb-1">{tierData.emoji}</div>
                 <div className="font-black text-xl uppercase tracking-wider">{tierData.tier}</div>
               </div>
 
-              {/* Headline & Body */}
               <div className="text-center mb-6">
                 <h2 className="text-xl font-black mb-2">{tierData.headline}</h2>
                 <p className="text-gray-400 text-sm leading-relaxed">{tierData.body}</p>
               </div>
 
-              {/* Stats Row */}
               <div className="grid grid-cols-3 gap-2 text-center bg-black/30 rounded-xl p-3">
                 <div>
                   <div className="text-green-400 font-black text-lg">{totalCorrect}</div>
@@ -522,19 +682,17 @@ const App = () => {
                   <div className="text-red-400 font-black text-lg">{TOTAL_QUESTIONS - totalCorrect}</div>
                   <div className="text-gray-500 text-xs uppercase">Wrong</div>
                 </div>
-      <div>
+                <div>
                   <div className="text-blue-400 font-black text-lg">{TOTAL_QUESTIONS}</div>
                   <div className="text-gray-500 text-xs uppercase">Total</div>
                 </div>
               </div>
 
-              {/* Watermark */}
               <div className="mt-4 text-center">
                 <span className="text-gray-600 text-xs font-bold">adlingo.onrender.com</span>
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="mt-6 space-y-3">
               <button 
                 onClick={copyResult}
@@ -555,8 +713,17 @@ const App = () => {
                 onClick={resetQuiz}
                 className="w-full py-4 rounded-xl font-bold uppercase tracking-wider bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all flex items-center justify-center border border-gray-700"
               >
-                <RotateCcw size={20} className="mr-2" /> Retake Quiz
+                <RotateCcw size={20} className="mr-2" /> {mode === 'test' ? 'Retake Exam' : 'Reset Training'}
               </button>
+
+              {mode === 'test' && (
+                <a 
+                  href="/"
+                  className="block text-center text-gray-500 hover:text-orange-400 text-sm transition mt-4"
+                >
+                  → Try Training Mode (with corrections)
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -567,7 +734,7 @@ const App = () => {
   return null;
 };
 
-// --- LESSON ENGINE COMPONENT ---
+// --- LESSON ENGINE COMPONENT (Training Mode Only) ---
 const LessonEngine = ({ level, onComplete, onExit }) => {
   const [qIndex, setQIndex] = useState(0);
   const [status, setStatus] = useState('idle');
@@ -590,14 +757,12 @@ const LessonEngine = ({ level, onComplete, onExit }) => {
       setStatus('idle');
       setSelectedOpt(null);
     } else {
-      // Level complete
       onComplete(correctCount + (status === 'correct' ? 0 : 0), level.questions.length);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white font-sans flex flex-col">
-      {/* Top Bar */}
       <div className="px-4 py-4 flex items-center gap-4 border-b border-gray-800">
         <button onClick={onExit} className="p-2 hover:bg-gray-800 rounded-full transition">
           <XCircle className="text-gray-400 hover:text-white" size={24} />
@@ -611,18 +776,14 @@ const LessonEngine = ({ level, onComplete, onExit }) => {
         <div className="text-gray-400 font-bold text-sm">{qIndex + 1}/{level.questions.length}</div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 overflow-y-auto p-6 pb-48">
         <div className="max-w-2xl mx-auto">
-          
-          {/* Level Title */}
           <div className="text-center mb-4">
             <span className="bg-gray-800 text-gray-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-gray-700">
               {level.title}
             </span>
           </div>
 
-          {/* Robot */}
           <div className="flex justify-center mb-6">
             <div className="w-24 h-24 relative">
               <img 
@@ -640,10 +801,8 @@ const LessonEngine = ({ level, onComplete, onExit }) => {
             </div>
           </div>
 
-          {/* Question */}
           <h2 className="text-xl font-black text-center mb-8 leading-tight">{q.question}</h2>
 
-          {/* Options */}
           <div className="space-y-3">
             {q.options.map((opt, idx) => (
               <button
@@ -676,7 +835,6 @@ const LessonEngine = ({ level, onComplete, onExit }) => {
         </div>
       </div>
 
-      {/* Bottom Action Sheet */}
       <div className={`fixed bottom-0 w-full border-t transition-colors duration-300 ${
         status === 'correct' ? 'bg-green-900/95 border-green-700' : 
         status === 'wrong' ? 'bg-red-900/95 border-red-700' : 'bg-gray-900/98 border-gray-800'

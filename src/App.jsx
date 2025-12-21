@@ -25,79 +25,252 @@ const firebaseConfig = {
 // const auth = getAuth(app);
 // const db = getFirestore(app);
 
-// --- 🛠️ IMPROVED CURRICULUM DATA 🛠️ ---
+// --- 🛠️ PERFORMANCE VIDEO EDITOR CERTIFICATION 🛠️ ---
 const COURSE_DATA = [
   {
     id: 1,
-    title: "Unit 1: The Hook (0-3s)",
-    description: "Stop the scroll or die trying.",
+    title: "Level 1: The Core Philosophy",
+    description: "Mindset shift from filmmaker to performance editor.",
     color: "bg-green-500",
     levels: [
       {
         id: "l1",
-        title: "Visual Pacing",
-        icon: "⚡",
-        description: "Identify slow cuts.",
-        xOffset: 0, // Center
+        title: "Algorithm Psychology",
+        icon: "🧠",
+        description: "How to think about viewers.",
+        xOffset: 0,
         questions: [
           {
-            type: "video_choice",
-            question: "Which clip has better retention pacing?",
-            media: {
-              a: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2Q.../giphy.gif", // Placeholder
-              b: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjEx.../giphy.gif"
-            },
+            type: "choice",
+            question: "In performance marketing, what is the primary algorithmic goal regarding viewers who are NOT your target customer?",
             options: [
-              { text: "Clip A (Slow Zoom)", correct: false },
-              { text: "Clip B (Snap Zoom)", correct: true }
+              { text: "Entertain them anyway to increase the video's overall 'Viral Score'", correct: false },
+              { text: "Actively disqualify them immediately so the algorithm stops wasting impressions on them", correct: true },
+              { text: "Use clickbait to trick them into visiting the website to retarget them later", correct: false },
+              { text: "Keep the hook vague to appeal to the widest possible audience", correct: false }
             ],
-            directorNote: "Clip A is too passive. Clip B uses a 'Snap Zoom' which forces the eye to refocus, resetting the user's attention span."
+            directorNote: "The algorithm learns from engagement. If non-buyers watch your ad, it shows it to MORE non-buyers. Disqualification saves budget and trains the algo to find real customers."
           },
           {
             type: "choice",
-            question: "What is the max duration for a static frame?",
+            question: "When a viewer is in 'AFK Mode' (mindless scrolling), what is their primary biological limitation that you must accommodate?",
             options: [
-              { text: "2 Seconds", correct: true },
-              { text: "5 Seconds", correct: false }
+              { text: "They cannot read text, so everything must be voiceover", correct: false },
+              { text: "They are colorblind to pastel colors", correct: false },
+              { text: "Their eyes struggle to track complex movement; they need the focal point to remain static", correct: true },
+              { text: "They will only stop for high-budget, cinematic footage", correct: false }
             ],
-            directorNote: "On TikTok/Reels, anything over 2s without movement causes a 40% drop-off."
+            directorNote: "In passive scroll mode, the brain conserves energy. Complex eye-tracking causes cognitive load → swipe. Keep the focal point (usually eyes or text) center-screen and static."
+          },
+          {
+            type: "choice",
+            question: "A junior editor spends 4 hours creating a complex 'Masking Transition' between scenes. How does a Performance Editor evaluate this?",
+            options: [
+              { text: "Great work, high production value builds trust", correct: false },
+              { text: "Good, but make it faster", correct: false },
+              { text: "Waste of time. A simple cut with a Social Proof element (like a testimonial) converts better", correct: true },
+              { text: "Essential. Transitions are the #1 driver of Retention", correct: false }
+            ],
+            directorNote: "Time spent on 'cool' transitions is time NOT spent on conversion elements. A $0 jump cut + a trust badge outperforms a $500 motion graphics package every time."
           }
         ]
-      },
-      {
-        id: "l2",
-        title: "Pattern Interrupts",
-        icon: "🪝",
-        description: "Breaking expectations.",
-        xOffset: 40, // Shift Right
-        questions: []
-      },
-      {
-        id: "l3",
-        title: "Audio Swells",
-        icon: "🔊",
-        description: "Using SFX to hide cuts.",
-        xOffset: -40, // Shift Left
-        questions: []
       }
     ]
   },
   {
     id: 2,
-    title: "Unit 2: The Hold (3-15s)",
-    description: "Structuring the narrative payoff.",
+    title: "Level 2: Anatomy of the Ad",
+    description: "The science behind what makes people stop and watch.",
     color: "bg-purple-500",
     levels: [
-      { id: "l4", title: "B-Roll Timing", icon: "🎞️", xOffset: 0, questions: [] },
-      { id: "l5", title: "Text Stacking", icon: "T", xOffset: 40, questions: [] },
+      {
+        id: "l2",
+        title: "Curiosity Hooks",
+        icon: "👁️",
+        description: "Stop the scroll with intrigue.",
+        xOffset: 0,
+        questions: [
+          {
+            type: "choice",
+            question: "You decide to pixelate a strange object or show a 'gross' close-up (like a toenail) in the first 3 seconds. What is the psychological mechanism at play here?",
+            options: [
+              { text: "Shock Value: Scaring the customer into buying", correct: false },
+              { text: "Intrigue/Curiosity: Forcing the viewer to stop scrolling just to figure out what the image is", correct: true },
+              { text: "Brand Recall: Making the brand memorable through disgust", correct: false },
+              { text: "Filtering: Only people with that specific problem will watch", correct: false }
+            ],
+            directorNote: "The 'What IS that?' reflex is hardwired. The brain MUST resolve ambiguity before it can move on. Pixelation and strange visuals exploit this biological pause."
+          },
+          {
+            type: "choice",
+            question: "Why are Split Screens (showing two videos side-by-side) scientifically effective for increasing watch time?",
+            options: [
+              { text: "They allow you to show the product from more angles", correct: false },
+              { text: "They look more premium than single video layers", correct: false },
+              { text: "The human brain takes longer to process two distinct inputs, artificially creating a 'pause' in scrolling behavior", correct: true },
+              { text: "They are the default format for Instagram Reels", correct: false }
+            ],
+            directorNote: "Dual processing = doubled cognitive load. The brain literally cannot scroll until it has processed BOTH images. This buys you 1-2 extra seconds of attention."
+          }
+        ]
+      },
+      {
+        id: "l3",
+        title: "Target Mirroring",
+        icon: "🪞",
+        description: "Show them themselves.",
+        xOffset: 40,
+        questions: [
+          {
+            type: "choice",
+            question: "You are selling a weight loss supplement for women over 40. You have high-quality footage of a 20-year-old fitness model. Do you use it?",
+            options: [
+              { text: "Yes, she represents the 'aspiration' (what they want to become)", correct: false },
+              { text: "Yes, high-quality footage always performs better than low-quality footage", correct: false },
+              { text: "No, you must use the 'Target Audience Mirror' rule: Show a 40-year-old so the viewer relates instantly", correct: true },
+              { text: "No, because she is not wearing the brand colors", correct: false }
+            ],
+            directorNote: "Aspiration is for brand ads. In Direct Response, instant RECOGNITION converts. The viewer must see themselves in the first 2 seconds or they scroll."
+          },
+          {
+            type: "choice",
+            question: "Which of the following is a high-converting visual format for 'Social Proof' (beyond just a talking head)?",
+            options: [
+              { text: "A cinematic shot of the product on a table", correct: false },
+              { text: "A 'Grid View' (2x2 or 3x3) of multiple customers holding the product simultaneously", correct: true },
+              { text: "A slow-motion shot of the founder smiling", correct: false },
+              { text: "An animated text overlay saying '5 Stars'", correct: false }
+            ],
+            directorNote: "Grid layouts imply volume and community. Seeing 4-9 real people at once triggers 'Everyone has this, I'm missing out' (FOMO). It's the visual equivalent of a crowd."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: "Level 3: Technical Workflow",
+    description: "The rules of the timeline.",
+    color: "bg-blue-500",
+    levels: [
+      {
+        id: "l4",
+        title: "The 2-Second Rule",
+        icon: "⏱️",
+        description: "Visual rhythm mastery.",
+        xOffset: 0,
+        questions: [
+          {
+            type: "choice",
+            question: "The '2-Second Rule' states that audio alone is not enough to hold attention. What must happen on the timeline every 2 seconds?",
+            options: [
+              { text: "The music beat must drop", correct: false },
+              { text: "A visual change must occur (Cut, Zoom, Overlay, or Jump Cut)", correct: true },
+              { text: "The subtitles must change color", correct: false },
+              { text: "The logo must flash", correct: false }
+            ],
+            directorNote: "The human attention span in passive mode resets every ~2 seconds. A visual change (any change) acts like a 'refresh' button, resetting the timer."
+          },
+          {
+            type: "choice",
+            question: "You are performing the 'Scrub Test' (dragging the playhead rapidly). What specific spatial consistency are you checking for?",
+            options: [
+              { text: "That the color grading is consistent across clips", correct: false },
+              { text: "That the audio levels don't peak into the red", correct: false },
+              { text: "That the viewer's focal point (eyes) stays in the center/same area to prevent eye fatigue", correct: true },
+              { text: "That there are no black frames between cuts", correct: false }
+            ],
+            directorNote: "If the 'eye anchor' jumps around the frame, the viewer experiences micro-stress. The Scrub Test visually reveals if you're making them 'work' too hard."
+          }
+        ]
+      },
+      {
+        id: "l5",
+        title: "Sound Design Rules",
+        icon: "🔊",
+        description: "Audio-visual synchronization.",
+        xOffset: -40,
+        questions: [
+          {
+            type: "choice",
+            question: "What is the 'Movement Rule' regarding Sound Design?",
+            options: [
+              { text: "Music should be louder than the voiceover", correct: false },
+              { text: "Only use sound effects for transitions", correct: false },
+              { text: "If an element moves on screen (slide-in, text pop, transition), it must have a corresponding sound effect", correct: true },
+              { text: "Never use cartoon sound effects in serious ads", correct: false }
+            ],
+            directorNote: "Movement without sound feels 'incomplete' to the brain. The SFX confirms the action happened and adds subconscious weight to the visual."
+          },
+          {
+            type: "choice",
+            question: "How should the music track evolve over the course of a 60-second Problem/Solution ad?",
+            options: [
+              { text: "Use one high-energy track to keep momentum up", correct: false },
+              { text: "Use a sad track to build empathy", correct: false },
+              { text: "Start with a 'Problem' track (monotone/dark), then hard cut to a 'Solution' track (uplifting) when the product is introduced", correct: true },
+              { text: "No music, only ASMR sounds", correct: false }
+            ],
+            directorNote: "The audio arc mirrors the emotional journey. Dark → Light. This subconsciously tells the viewer: 'Your life is bad now, but the product will fix it.'"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: "Level 4: Scenarios (Mastery)",
+    description: "Real-world editing decisions.",
+    color: "bg-orange-500",
+    levels: [
+      {
+        id: "l6",
+        title: "Pain Visualization",
+        icon: "💥",
+        description: "Making problems feel real.",
+        xOffset: 0,
+        questions: [
+          {
+            type: "choice",
+            question: "Scenario: You are editing a scene showing a person rubbing their back in pain. The client wants to make the pain feel 'real.' What audio layer do you add?",
+            options: [
+              { text: "Sad violin music", correct: false },
+              { text: "A voiceover saying 'Ouch'", correct: false },
+              { text: "A visceral 'Crunch,' 'Crack,' or deep 'Rumble' sound effect underneath the movement", correct: true },
+              { text: "Louder ambient room noise", correct: false }
+            ],
+            directorNote: "Visceral SFX trigger a physical empathy response. The viewer 'feels' the crunch in their own body. This is 100x more effective than sad music."
+          }
+        ]
+      },
+      {
+        id: "l7",
+        title: "CTA Engineering",
+        icon: "🎯",
+        description: "Force the click.",
+        xOffset: 40,
+        questions: [
+          {
+            type: "choice",
+            question: "Scenario: You are designing the final 5 seconds (CTA). You have the logo and the URL. What else do you add to psychologically force the click?",
+            options: [
+              { text: "A complex animation of the logo spinning", correct: false },
+              { text: "Visual cue (Arrow), Urgency (Countdown/Timer), and Value (Discount/Guarantee)", correct: true },
+              { text: "A 'Thank You for Watching' text", correct: false },
+              { text: "A fade to black", correct: false }
+            ],
+            directorNote: "The CTA is a stack: Direction (where to look) + Scarcity (why now) + Value (what they get). Missing any one of these reduces CTR by 30-50%."
+          }
+        ]
+      }
     ]
   }
 ];
 
 const RANKS = [
-  { name: "Intern", minXp: 0, bonus: "Base Rate" },
-  { name: "Jr. Editor", minXp: 100, bonus: "+5% Bonus" },
-  { name: "Retention God", minXp: 500, bonus: "+20% & RevShare" },
+  { name: "Content Creator", minXp: 0, bonus: "Base Rate", desc: "Risk of burning budget" },
+  { name: "Junior Ad Editor", minXp: 180, bonus: "+10% Bonus", desc: "Solid foundation" },
+  { name: "Senior Performance Editor", minXp: 240, bonus: "+20% & RevShare", desc: "Ready to scale" },
 ];
 
 // --- COMPONENTS ---
@@ -110,9 +283,9 @@ const App = () => {
 
   // Auth & Data Sync Logic
   useEffect(() => {
-    // Mock User for MVP
+    // Mock User for MVP - Start fresh for certification
     const mockUser = {
-        xp: 120, streak: 3, hearts: 5, completedLevels: ['l1'], 
+        xp: 0, streak: 1, hearts: 5, completedLevels: [], 
         displayName: "Demo Editor", email: "editor@agency.com"
     };
     setUserData(mockUser);

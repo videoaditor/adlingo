@@ -287,12 +287,116 @@ const COURSE_DATA = [
   },
   {
     id: 5,
-    title: "Level 5: The CTA",
+    title: "Level 5: Clip Selection",
+    description: "What would you search for?",
+    color: "bg-pink-500",
+    levels: [
+      {
+        id: "l8",
+        title: "Finding Pain Shots",
+        icon: "🎬",
+        xOffset: 0,
+        questions: [
+          {
+            question: "You're editing for a DANDRUFF SHAMPOO. What shot best shows the pain point?",
+            options: [
+              { text: "Woman flipping her shiny, healthy hair in slow motion", correct: false },
+              { text: "Top-down close-up of a scalp with visible white flakes", correct: true },
+              { text: "Person happily washing their hair in the shower", correct: false },
+              { text: "Before/after split screen of hair transformation", correct: false }
+            ],
+            directorNote: "Show the PROBLEM, not the solution. A gross close-up of flaky scalp makes people with dandruff think 'that's me' and feel the urgency to fix it."
+          },
+          {
+            question: "You're editing for a TEETH WHITENING kit. What shot best shows the pain point?",
+            options: [
+              { text: "Celebrity smiling with perfect white teeth", correct: false },
+              { text: "Product box with '10 shades whiter' text overlay", correct: false },
+              { text: "Close-up of yellowed, stained teeth next to a coffee cup", correct: true },
+              { text: "Time-lapse of the whitening process working", correct: false }
+            ],
+            directorNote: "The coffee cup adds context (why they're stained). Show the embarrassing reality—yellow teeth—not the aspirational result."
+          },
+          {
+            question: "You're editing for a POSTURE CORRECTOR. What shot best shows the pain point?",
+            options: [
+              { text: "Person standing tall with perfect posture, smiling", correct: false },
+              { text: "3D animation of a healthy spine alignment", correct: false },
+              { text: "Someone hunched over a laptop, rubbing their neck in pain", correct: true },
+              { text: "Athlete stretching and doing back exercises", correct: false }
+            ],
+            directorNote: "Show the relatable moment: hunched at a desk, in pain. That's what your target audience does every day. They need to see themselves."
+          },
+          {
+            question: "You're editing for a FOOT CREAM for cracked heels. What shot best shows the pain point?",
+            options: [
+              { text: "Smooth, moisturized feet on a beach towel", correct: false },
+              { text: "Extreme close-up of dry, cracked heel skin", correct: true },
+              { text: "Person applying cream to their foot at bedtime", correct: false },
+              { text: "Happy customer testimonial about soft feet", correct: false }
+            ],
+            directorNote: "Gross close-ups work. The cracked skin makes people with that problem feel seen—and grossed out enough to want the fix NOW."
+          }
+        ]
+      },
+      {
+        id: "l9",
+        title: "Solution Shots",
+        icon: "✨",
+        xOffset: 40,
+        questions: [
+          {
+            question: "You're editing for a BLENDER. What shot best shows the product working?",
+            options: [
+              { text: "The blender sitting on a kitchen counter, unboxed", correct: false },
+              { text: "Overhead view of ingredients being crushed and blended in real-time", correct: true },
+              { text: "Happy family drinking smoothies at breakfast", correct: false },
+              { text: "List of specs and features as text overlays", correct: false }
+            ],
+            directorNote: "Show the product IN ACTION—the satisfying moment of blending. 'Action shots' prove it works better than specs or smiling faces."
+          },
+          {
+            question: "You're editing for WATERPROOF SHOES. What shot best proves the claim?",
+            options: [
+              { text: "Model walking down a runway in the shoes", correct: false },
+              { text: "Customer saying 'these are so waterproof!'", correct: false },
+              { text: "Close-up of water being poured directly on the shoe and beading off", correct: true },
+              { text: "5-star review screenshots scrolling by", correct: false }
+            ],
+            directorNote: "Don't TELL them it's waterproof—SHOW the water bouncing off. Visual proof beats testimonials for product claims."
+          },
+          {
+            question: "You're editing for a VACUUM CLEANER. What shot best shows it works?",
+            options: [
+              { text: "Person smiling while vacuuming a clean floor", correct: false },
+              { text: "Close-up of dirt and crumbs being sucked up in one pass", correct: true },
+              { text: "The vacuum sitting in a tidy living room", correct: false },
+              { text: "Side-by-side comparison chart vs competitors", correct: false }
+            ],
+            directorNote: "The satisfying 'sucking up dirt' shot is visual proof. Show the problem (crumbs) disappearing—that's more convincing than any claim."
+          },
+          {
+            question: "You're editing for a STAIN REMOVER. What shot best shows it works?",
+            options: [
+              { text: "Clean white shirt hanging on a clothesline", correct: false },
+              { text: "Spray bottle with 'powerful formula' text overlay", correct: false },
+              { text: "Close-up of a red wine stain disappearing as the product is applied", correct: true },
+              { text: "Person happily doing laundry and folding clothes", correct: false }
+            ],
+            directorNote: "Show the transformation IN REAL-TIME. The stain vanishing is the 'magic moment'—that's what makes people believe and buy."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: "Level 6: The CTA",
     description: "Making them click.",
     color: "bg-orange-500",
     levels: [
       {
-        id: "l8",
+        id: "l10",
         title: "CTA Engineering",
         icon: "🎯",
         xOffset: 0,

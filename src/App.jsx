@@ -25,7 +25,7 @@ const COURSE_DATA = [
     levels: [
       {
         id: "l1",
-        title: "Algorithm Psychology",
+        title: "Mindset Shift",
         icon: "🧠",
         xOffset: 0,
         questions: [
@@ -40,6 +40,26 @@ const COURSE_DATA = [
             directorNote: "The algorithm learns from who watches. If non-buyers watch, it finds MORE non-buyers. You want the wrong people to scroll away FAST so the algo learns to find real buyers."
           },
           {
+            question: "What is the GOAL of a performance ad?",
+            options: [
+              { text: "Get as many views as possible to build awareness", correct: false },
+              { text: "Go viral so people share it with friends", correct: false },
+              { text: "Get clicks and purchases from the RIGHT people—even if views are low", correct: true },
+              { text: "Collect likes and comments to boost engagement score", correct: false }
+            ],
+            directorNote: "We don't want views. We want RESULTS. A video with 1,000 views that gets 50 sales beats a video with 1 million views and 10 sales."
+          },
+          {
+            question: "You finish editing an ad. It looks kinda ugly, but the clips show the problem clearly and the message is strong. What do you do?",
+            options: [
+              { text: "Spend more time polishing it—ugly ads hurt the brand", correct: false },
+              { text: "Add transitions and effects to make it look more professional", correct: false },
+              { text: "Ship it. Ugly ads that work beat pretty ads that don't", correct: true },
+              { text: "Send it to the client and warn them it needs more work", correct: false }
+            ],
+            directorNote: "Production value doesn't sell products. Psychology and clip selection do. Some of the best-performing ads look 'cheap'—and that's fine."
+          },
+          {
             question: "When someone is scrolling on autopilot (zoned out), what is their brain bad at doing?",
             options: [
               { text: "Reading text—they can only process audio", correct: false },
@@ -48,16 +68,6 @@ const COURSE_DATA = [
               { text: "Hearing sounds—audio doesn't register until they stop scrolling", correct: false }
             ],
             directorNote: "Zoned-out brains save energy. If you make their eyes chase things around the screen, it's tiring and they swipe. Keep the main thing (face, text, product) in the center."
-          },
-          {
-            question: "An editor spends 4 hours on a fancy transition effect. Is this good use of time?",
-            options: [
-              { text: "Yes—high production value makes people trust the brand more", correct: false },
-              { text: "Yes—smooth transitions keep people watching longer", correct: false },
-              { text: "No—that time should be spent on things that make people BUY, like testimonials", correct: true },
-              { text: "Depends on the client's budget for the project", correct: false }
-            ],
-            directorNote: "Cool transitions don't make people buy. A plain jump cut plus a customer quote beats a fancy transition every time. Spend time on conversion, not cinema."
           }
         ]
       }
@@ -65,16 +75,26 @@ const COURSE_DATA = [
   },
   {
     id: 2,
-    title: "Level 2: Anatomy of the Ad",
-    description: "What makes people stop and watch.",
+    title: "Level 2: The Hook",
+    description: "The first 3 seconds decide everything.",
     color: "bg-purple-500",
     levels: [
       {
         id: "l2",
-        title: "Curiosity Hooks",
-        icon: "👁️",
+        title: "Disqualification",
+        icon: "🚫",
         xOffset: 0,
         questions: [
+          {
+            question: "You're selling a product for dog owners. Your hook shows a gross close-up of a dog's dirty teeth. Why is this GOOD?",
+            options: [
+              { text: "Gross visuals are trending on TikTok right now", correct: false },
+              { text: "It makes non-dog-owners scroll away, so the algorithm finds dog owners faster", correct: true },
+              { text: "It shocks people into watching, even if they don't have dogs", correct: false },
+              { text: "Dog content always performs well on social media", correct: false }
+            ],
+            directorNote: "You WANT people without dogs to scroll away. That teaches the algorithm to stop showing your ad to them and find dog owners instead."
+          },
           {
             question: "You blur out part of an image in the first 2 seconds. Why does this make people stop scrolling?",
             options: [
@@ -84,25 +104,25 @@ const COURSE_DATA = [
               { text: "Blurred visuals are calming and make people want to stay", correct: false }
             ],
             directorNote: "The brain can't handle not knowing. When something is blurred or hidden, your brain MUST solve it before you can scroll. This buys you 1-2 seconds of attention."
-          },
-          {
-            question: "Why do split screens (two videos side by side) make people watch longer?",
-            options: [
-              { text: "They look more professional than a single video", correct: false },
-              { text: "People like having choices of what to look at", correct: false },
-              { text: "The brain takes longer to process two things at once, so they pause", correct: true },
-              { text: "It reminds people of video calls, which feels personal", correct: false }
-            ],
-            directorNote: "Two images = twice the brain work. Your brain literally can't scroll until it processes BOTH sides. This forces an extra second or two of attention."
           }
         ]
       },
       {
         id: "l3",
-        title: "Target Mirroring",
+        title: "POV & Mirroring",
         icon: "🪞",
         xOffset: 40,
         questions: [
+          {
+            question: "You're making an ad about nose blackheads. What camera angle works best in the hook?",
+            options: [
+              { text: "Professional studio lighting with a model looking at camera", correct: false },
+              { text: "Selfie-style close-up, like someone looking in a mirror", correct: true },
+              { text: "Wide shot showing the full face and shoulders", correct: false },
+              { text: "Side profile to show the nose clearly", correct: false }
+            ],
+            directorNote: "POV means 'Point of View.' Show what the viewer would actually SEE when looking at their own nose in a mirror. That's the selfie camera angle."
+          },
           {
             question: "You're selling to women over 40. You have footage of a fit 20-year-old. Should you use it?",
             options: [
@@ -112,6 +132,60 @@ const COURSE_DATA = [
               { text: "Yes—but only if she's using the product", correct: false }
             ],
             directorNote: "People scroll past anyone who doesn't look like them. In the first 2 seconds, they need to think 'that's ME.' A 40-year-old sells to 40-year-olds."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: "Level 3: The Body",
+    description: "Building trust and showing the problem.",
+    color: "bg-blue-500",
+    levels: [
+      {
+        id: "l4",
+        title: "Pointing the Flashlight",
+        icon: "🔦",
+        xOffset: 0,
+        questions: [
+          {
+            question: "A product fixes a problem you CAN'T see (like bacteria in your gut). How do you show the problem?",
+            options: [
+              { text: "Just describe it with voiceover—visuals aren't needed", correct: false },
+              { text: "Use a stock image of someone looking sick", correct: false },
+              { text: "Create or find a visual (3D render, X-ray, animation) that SHOWS the invisible problem", correct: true },
+              { text: "Skip the problem section and focus on the solution", correct: false }
+            ],
+            directorNote: "Your job is 'pointing the flashlight' at problems people can't normally see. Use 3D explainers, AI visuals, or medical-style animations to make the invisible visible."
+          },
+          {
+            question: "Why do 3D medical explainer visuals build trust?",
+            options: [
+              { text: "They look expensive, so people think the brand has money", correct: false },
+              { text: "People associate them with real medical research—they feel scientific", correct: true },
+              { text: "They're trendy on social media right now", correct: false },
+              { text: "They're easier to understand than real footage", correct: false }
+            ],
+            directorNote: "We're trained to trust medical animations because real science uses them. When viewers see that style, they assume someone did real research. Use this to your advantage."
+          }
+        ]
+      },
+      {
+        id: "l5",
+        title: "Social Proof & Trust",
+        icon: "👥",
+        xOffset: -40,
+        questions: [
+          {
+            question: "What's the BEST way to show that lots of people have the same problem?",
+            options: [
+              { text: "Say 'millions of people struggle with this' in the voiceover", correct: false },
+              { text: "Show many different people with the problem on screen at once", correct: true },
+              { text: "Display a statistic like '73% of adults have this issue'", correct: false },
+              { text: "Have one person describe how common it is", correct: false }
+            ],
+            directorNote: "Showing multiple faces triggers 'herd mentality.' When viewers SEE many people with the problem, they feel understood and less alone. Numbers don't do this."
           },
           {
             question: "What's the BEST way to show that lots of people love your product?",
@@ -128,26 +202,26 @@ const COURSE_DATA = [
     ]
   },
   {
-    id: 3,
-    title: "Level 3: Technical Workflow",
-    description: "The rules of the timeline.",
-    color: "bg-blue-500",
+    id: 4,
+    title: "Level 4: Timeline Rules",
+    description: "The technical rules of editing.",
+    color: "bg-cyan-500",
     levels: [
       {
-        id: "l4",
+        id: "l6",
         title: "The 2-Second Rule",
         icon: "⏱️",
         xOffset: 0,
         questions: [
           {
-            question: "Every 2 seconds, something must change on screen. What KIND of change?",
+            question: "Every 2-3 seconds, something must change on screen. What KIND of change?",
             options: [
               { text: "The information—say something new", correct: false },
               { text: "The visual—cut, zoom, overlay, or move something", correct: true },
               { text: "The audio—change the music or add a sound", correct: false },
               { text: "The color—shift the tones or filters", correct: false }
             ],
-            directorNote: "Attention resets every 2 seconds. A visual change (any change you can SEE) acts like a refresh button. Audio alone won't do it—it must be visual."
+            directorNote: "Attention resets every 2-3 seconds. A visual change (any change you can SEE) acts like a refresh button. Audio alone won't do it—it must be visual."
           },
           {
             question: "The 'Scrub Test' means dragging quickly through your timeline. What are you checking?",
@@ -158,14 +232,24 @@ const COURSE_DATA = [
               { text: "That there are no black frames between cuts", correct: false }
             ],
             directorNote: "If the main thing keeps jumping to different parts of the screen, it tires people out. The scrub test shows you if your cuts are making viewers' eyes work too hard."
+          },
+          {
+            question: "Where should captions/text be placed on screen?",
+            options: [
+              { text: "At the top so they don't cover the person's face", correct: false },
+              { text: "Under the chin, near the center of the action", correct: true },
+              { text: "On the left side where people start reading", correct: false },
+              { text: "Wherever there's empty space in the frame", correct: false }
+            ],
+            directorNote: "The focal point is usually the face/center. Put text just under the chin so eyes don't have to travel far. This keeps everything in one spot."
           }
         ]
       },
       {
-        id: "l5",
-        title: "Sound Design Rules",
+        id: "l7",
+        title: "Sound Design",
         icon: "🔊",
-        xOffset: -40,
+        xOffset: 40,
         questions: [
           {
             question: "When does an element on screen NEED a sound effect?",
@@ -175,7 +259,7 @@ const COURSE_DATA = [
               { text: "When it MOVES—slides in, pops up, or transitions", correct: true },
               { text: "Never—sound effects feel cheap and unprofessional", correct: false }
             ],
-            directorNote: "Movement without sound feels wrong to the brain. When something moves, add a sound. When something is still, no sound needed."
+            directorNote: "Movement without sound feels wrong. When something moves, add a sound. This is called the 'Movement Rule.' Swipe = woosh. Pop-up = click."
           },
           {
             question: "In a Problem → Solution ad, how should the background music change?",
@@ -186,40 +270,32 @@ const COURSE_DATA = [
               { text: "Start upbeat to hook attention, then go quiet for the testimonials", correct: false }
             ],
             directorNote: "Music tells an emotional story. Dark = 'life is hard.' Bright = 'the product fixes it.' The switch should happen exactly when the product is shown."
+          },
+          {
+            question: "The ad is about stomach pain. What sound helps viewers FEEL the pain?",
+            options: [
+              { text: "Sad, slow piano music", correct: false },
+              { text: "A stomach rumbling or bubbling sound effect", correct: true },
+              { text: "The person groaning or saying 'ow'", correct: false },
+              { text: "Silence to let the visual speak for itself", correct: false }
+            ],
+            directorNote: "Use sounds that match the BODY part. Stomach = rumble. Back/knees = crack/crunch. Fire/acid = sizzle. These sounds make viewers feel it in their own body."
           }
         ]
       }
     ]
   },
   {
-    id: 4,
-    title: "Level 4: Scenarios (Mastery)",
-    description: "Real editing decisions.",
+    id: 5,
+    title: "Level 5: The CTA",
+    description: "Making them click.",
     color: "bg-orange-500",
     levels: [
       {
-        id: "l6",
-        title: "Pain Visualization",
-        icon: "💥",
-        xOffset: 0,
-        questions: [
-          {
-            question: "Someone is rubbing their aching back on screen. How do you make viewers FEEL that pain?",
-            options: [
-              { text: "Add sad music to set the mood", correct: false },
-              { text: "Have them say 'ouch' or show their pained face", correct: false },
-              { text: "Add a crunching, cracking, or rumbling sound under the movement", correct: true },
-              { text: "Use slow motion so people have time to notice", correct: false }
-            ],
-            directorNote: "Crunch sounds make viewers feel the pain in their own body. Music makes them understand pain. The crunch makes them EXPERIENCE it. Big difference."
-          }
-        ]
-      },
-      {
-        id: "l7",
+        id: "l8",
         title: "CTA Engineering",
         icon: "🎯",
-        xOffset: 40,
+        xOffset: 0,
         questions: [
           {
             question: "You're designing the last 5 seconds (the CTA). You have the logo and link. What 3 things must you add?",
@@ -230,6 +306,16 @@ const COURSE_DATA = [
               { text: "Keep it clean—too much looks desperate", correct: false }
             ],
             directorNote: "CTAs need three things: Direction (arrow/pointer), Urgency (countdown/deadline), Value (discount/bonus). Miss one = lose 30-50% of clicks."
+          },
+          {
+            question: "Why should you show the actual LANDING PAGE in the CTA?",
+            options: [
+              { text: "It makes the ad look more official", correct: false },
+              { text: "It proves the website is real and not a scam", correct: false },
+              { text: "It shows viewers what to expect after clicking, so they're more likely to click", correct: true },
+              { text: "It fills empty space in the frame", correct: false }
+            ],
+            directorNote: "When people see the landing page, they already know what's coming. No surprises = more confidence = more clicks. They're mentally prepared to buy."
           }
         ]
       }

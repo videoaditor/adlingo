@@ -20,7 +20,7 @@ const COURSE_DATA = [
   {
     id: 1,
     title: "Level 1: Core Philosophy",
-    description: "Mindset shift from filmmaker to performance editor.",
+    description: "How to think like a performance editor.",
     color: "bg-green-500",
     levels: [
       {
@@ -30,34 +30,34 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "In performance marketing, what is the primary algorithmic goal regarding viewers who are NOT your target customer?",
+            question: "Someone who will NEVER buy your product watches your entire ad. What does this do to your ad account?",
             options: [
-              { text: "Filter them out gradually by showing product benefits mid-video so only interested viewers remain", correct: false },
-              { text: "Actively disqualify them immediately so the algorithm stops wasting impressions on them", correct: true },
-              { text: "Maximize total watch time to boost the video's organic reach and lower CPM", correct: false },
-              { text: "Hook everyone first, then let the landing page qualify the real buyers", correct: false }
+              { text: "It helps! More watch time means the algorithm shows it to more people", correct: false },
+              { text: "It hurts. The algorithm learns to show your ad to MORE people like them—who also won't buy", correct: true },
+              { text: "It doesn't matter. The algorithm only cares about clicks, not who watches", correct: false },
+              { text: "It helps build brand awareness, which pays off later", correct: false }
             ],
-            directorNote: "The algorithm learns from engagement. If non-buyers watch your ad, it shows it to MORE non-buyers. Disqualification saves budget and trains the algo to find real customers."
+            directorNote: "The algorithm learns from who watches. If non-buyers watch, it finds MORE non-buyers. You want the wrong people to scroll away FAST so the algo learns to find real buyers."
           },
           {
-            question: "When a viewer is in 'AFK Mode' (mindless scrolling), what is their primary biological limitation that you must accommodate?",
+            question: "When someone is scrolling on autopilot (zoned out), what is their brain bad at doing?",
             options: [
-              { text: "Their eyes need constant movement to stay engaged, so use dynamic panning shots", correct: false },
-              { text: "They respond best to pattern interrupts, so rapidly change the focal point every second", correct: false },
-              { text: "Their eyes struggle to track complex movement; they need the focal point to remain static", correct: true },
-              { text: "They are drawn to faces, so always start with a close-up of someone talking", correct: false }
+              { text: "Reading text—they can only process audio", correct: false },
+              { text: "Looking at bright colors—everything looks gray to them", correct: false },
+              { text: "Tracking movement—their eyes want to stay in one spot", correct: true },
+              { text: "Hearing sounds—audio doesn't register until they stop scrolling", correct: false }
             ],
-            directorNote: "In passive scroll mode, the brain conserves energy. Complex eye-tracking causes cognitive load → swipe. Keep the focal point (usually eyes or text) center-screen and static."
+            directorNote: "Zoned-out brains save energy. If you make their eyes chase things around the screen, it's tiring and they swipe. Keep the main thing (face, text, product) in the center."
           },
           {
-            question: "A junior editor spends 4 hours creating a complex 'Masking Transition' between scenes. How does a Performance Editor evaluate this?",
+            question: "An editor spends 4 hours on a fancy transition effect. Is this good use of time?",
             options: [
-              { text: "Worth it if the transition includes the product reveal—production value increases perceived value", correct: false },
-              { text: "Smart investment. Smooth transitions increase watch time which lowers CPM", correct: false },
-              { text: "Waste of time. A simple cut with a Social Proof element (like a testimonial) converts better", correct: true },
-              { text: "Good technique, but only use it once per video to avoid fatigue", correct: false }
+              { text: "Yes—high production value makes people trust the brand more", correct: false },
+              { text: "Yes—smooth transitions keep people watching longer", correct: false },
+              { text: "No—that time should be spent on things that make people BUY, like testimonials", correct: true },
+              { text: "Depends on the client's budget for the project", correct: false }
             ],
-            directorNote: "Time spent on 'cool' transitions is time NOT spent on conversion elements. A $0 jump cut + a trust badge outperforms a $500 motion graphics package every time."
+            directorNote: "Cool transitions don't make people buy. A plain jump cut plus a customer quote beats a fancy transition every time. Spend time on conversion, not cinema."
           }
         ]
       }
@@ -66,7 +66,7 @@ const COURSE_DATA = [
   {
     id: 2,
     title: "Level 2: Anatomy of the Ad",
-    description: "The science behind what makes people stop and watch.",
+    description: "What makes people stop and watch.",
     color: "bg-purple-500",
     levels: [
       {
@@ -76,24 +76,24 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "You decide to pixelate a strange object or show a 'gross' close-up (like a toenail) in the first 3 seconds. What is the psychological mechanism at play here?",
+            question: "You blur out part of an image in the first 2 seconds. Why does this make people stop scrolling?",
             options: [
-              { text: "Pattern Interrupt: The unexpected visual breaks the scroll trance and grabs attention", correct: false },
-              { text: "Intrigue/Curiosity: Forcing the viewer to stop scrolling just to figure out what the image is", correct: true },
-              { text: "Emotional Trigger: Disgust is a high-arousal emotion that increases memory encoding", correct: false },
-              { text: "Relatability: People who have this problem will immediately recognize it and stop", correct: false }
+              { text: "The blur looks premium and signals high production quality", correct: false },
+              { text: "Their brain HAS TO figure out what's hidden before it can move on", correct: true },
+              { text: "It creates mystery about the brand, building anticipation", correct: false },
+              { text: "Blurred visuals are calming and make people want to stay", correct: false }
             ],
-            directorNote: "The 'What IS that?' reflex is hardwired. The brain MUST resolve ambiguity before it can move on. Pixelation and strange visuals exploit this biological pause."
+            directorNote: "The brain can't handle not knowing. When something is blurred or hidden, your brain MUST solve it before you can scroll. This buys you 1-2 seconds of attention."
           },
           {
-            question: "Why are Split Screens (showing two videos side-by-side) scientifically effective for increasing watch time?",
+            question: "Why do split screens (two videos side by side) make people watch longer?",
             options: [
-              { text: "They create visual variety which prevents boredom and keeps viewers engaged longer", correct: false },
-              { text: "They show before/after simultaneously, making the transformation more believable", correct: false },
-              { text: "The human brain takes longer to process two distinct inputs, artificially creating a 'pause' in scrolling behavior", correct: true },
-              { text: "They double the content density, giving viewers more value per second", correct: false }
+              { text: "They look more professional than a single video", correct: false },
+              { text: "People like having choices of what to look at", correct: false },
+              { text: "The brain takes longer to process two things at once, so they pause", correct: true },
+              { text: "It reminds people of video calls, which feels personal", correct: false }
             ],
-            directorNote: "Dual processing = doubled cognitive load. The brain literally cannot scroll until it has processed BOTH images. This buys you 1-2 extra seconds of attention."
+            directorNote: "Two images = twice the brain work. Your brain literally can't scroll until it processes BOTH sides. This forces an extra second or two of attention."
           }
         ]
       },
@@ -104,24 +104,24 @@ const COURSE_DATA = [
         xOffset: 40,
         questions: [
           {
-            question: "You are selling a weight loss supplement for women over 40. You have high-quality footage of a 20-year-old fitness model. Do you use it?",
+            question: "You're selling to women over 40. You have footage of a fit 20-year-old. Should you use it?",
             options: [
-              { text: "Yes, she represents the end-state transformation that motivates the viewer to buy", correct: false },
-              { text: "Yes, but only in the 'After' section—use a relatable person for the 'Before'", correct: false },
-              { text: "No, you must use the 'Target Audience Mirror' rule: Show a 40-year-old so the viewer relates instantly", correct: true },
-              { text: "Yes, aspirational content performs better because it triggers desire", correct: false }
+              { text: "Yes—she shows what customers could become", correct: false },
+              { text: "Yes—pretty people always get more views", correct: false },
+              { text: "No—the viewer needs to see someone like THEMSELVES to stop and watch", correct: true },
+              { text: "Yes—but only if she's using the product", correct: false }
             ],
-            directorNote: "Aspiration is for brand ads. In Direct Response, instant RECOGNITION converts. The viewer must see themselves in the first 2 seconds or they scroll."
+            directorNote: "People scroll past anyone who doesn't look like them. In the first 2 seconds, they need to think 'that's ME.' A 40-year-old sells to 40-year-olds."
           },
           {
-            question: "Which of the following is a high-converting visual format for 'Social Proof' (beyond just a talking head)?",
+            question: "What's the BEST way to show that lots of people love your product?",
             options: [
-              { text: "A scrolling ticker of 5-star reviews with customer names", correct: false },
-              { text: "A 'Grid View' (2x2 or 3x3) of multiple customers holding the product simultaneously", correct: true },
-              { text: "A single emotional testimonial with high production value and B-roll", correct: false },
-              { text: "Screenshot of the product's Amazon rating overlaid on the video", correct: false }
+              { text: "Show a 5-star rating graphic", correct: false },
+              { text: "Show 4-9 real customers on screen at the same time (grid layout)", correct: true },
+              { text: "Have one customer tell their story with emotion", correct: false },
+              { text: "Display the number of sales or reviews as text", correct: false }
             ],
-            directorNote: "Grid layouts imply volume and community. Seeing 4-9 real people at once triggers 'Everyone has this, I'm missing out' (FOMO). It's the visual equivalent of a crowd."
+            directorNote: "Seeing many faces at once triggers 'everyone has this—I'm missing out.' A grid of real people works better than any number or single testimonial."
           }
         ]
       }
@@ -140,24 +140,24 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "The '2-Second Rule' states that audio alone is not enough to hold attention. What must happen on the timeline every 2 seconds?",
+            question: "Every 2 seconds, something must change on screen. What KIND of change?",
             options: [
-              { text: "New information must be introduced—either a new claim, stat, or benefit", correct: false },
-              { text: "A visual change must occur (Cut, Zoom, Overlay, or Jump Cut)", correct: true },
-              { text: "The speaker must change their vocal inflection or tone to re-engage", correct: false },
-              { text: "A sound effect or audio cue must play to reset the attention cycle", correct: false }
+              { text: "The information—say something new", correct: false },
+              { text: "The visual—cut, zoom, overlay, or move something", correct: true },
+              { text: "The audio—change the music or add a sound", correct: false },
+              { text: "The color—shift the tones or filters", correct: false }
             ],
-            directorNote: "The human attention span in passive mode resets every ~2 seconds. A visual change (any change) acts like a 'refresh' button, resetting the timer."
+            directorNote: "Attention resets every 2 seconds. A visual change (any change you can SEE) acts like a refresh button. Audio alone won't do it—it must be visual."
           },
           {
-            question: "You are performing the 'Scrub Test' (dragging the playhead rapidly). What specific spatial consistency are you checking for?",
+            question: "The 'Scrub Test' means dragging quickly through your timeline. What are you checking?",
             options: [
-              { text: "That the visual pacing feels consistent and doesn't have jarring speed changes", correct: false },
-              { text: "That each cut introduces enough visual change to maintain novelty", correct: false },
-              { text: "That the viewer's focal point (eyes) stays in the center/same area to prevent eye fatigue", correct: true },
-              { text: "That the subject remains in frame and isn't cropped awkwardly between cuts", correct: false }
+              { text: "That the pacing feels good and not too slow", correct: false },
+              { text: "That there's enough variety in the visuals", correct: false },
+              { text: "That the viewer's eyes can stay in ONE spot and not jump around", correct: true },
+              { text: "That there are no black frames between cuts", correct: false }
             ],
-            directorNote: "If the 'eye anchor' jumps around the frame, the viewer experiences micro-stress. The Scrub Test visually reveals if you're making them 'work' too hard."
+            directorNote: "If the main thing keeps jumping to different parts of the screen, it tires people out. The scrub test shows you if your cuts are making viewers' eyes work too hard."
           }
         ]
       },
@@ -168,24 +168,24 @@ const COURSE_DATA = [
         xOffset: -40,
         questions: [
           {
-            question: "What is the 'Movement Rule' regarding Sound Design?",
+            question: "When does an element on screen NEED a sound effect?",
             options: [
-              { text: "Sound effects should match the emotional tone of the scene to reinforce the message", correct: false },
-              { text: "Every visual element needs audio support, including static text and background images", correct: false },
-              { text: "If an element moves on screen (slide-in, text pop, transition), it must have a corresponding sound effect", correct: true },
-              { text: "Sound design should be subtle—viewers shouldn't consciously notice the SFX", correct: false }
+              { text: "When the moment is emotional and needs more impact", correct: false },
+              { text: "Every few seconds to keep the audio interesting", correct: false },
+              { text: "When it MOVES—slides in, pops up, or transitions", correct: true },
+              { text: "Never—sound effects feel cheap and unprofessional", correct: false }
             ],
-            directorNote: "Movement without sound feels 'incomplete' to the brain. The SFX confirms the action happened and adds subconscious weight to the visual."
+            directorNote: "Movement without sound feels wrong to the brain. When something moves, add a sound. When something is still, no sound needed."
           },
           {
-            question: "How should the music track evolve over the course of a 60-second Problem/Solution ad?",
+            question: "In a Problem → Solution ad, how should the background music change?",
             options: [
-              { text: "Build gradually from soft to intense, peaking at the CTA for maximum urgency", correct: false },
-              { text: "Keep the music consistent so it doesn't distract from the voiceover message", correct: false },
-              { text: "Start with a 'Problem' track (monotone/dark), then hard cut to a 'Solution' track (uplifting) when the product is introduced", correct: true },
-              { text: "Start upbeat to hook attention, then soften during testimonials for authenticity", correct: false }
+              { text: "Stay the same so it doesn't distract from the message", correct: false },
+              { text: "Get louder and faster as you approach the CTA", correct: false },
+              { text: "Start dark/tense for the problem, then switch to upbeat when the product appears", correct: true },
+              { text: "Start upbeat to hook attention, then go quiet for the testimonials", correct: false }
             ],
-            directorNote: "The audio arc mirrors the emotional journey. Dark → Light. This subconsciously tells the viewer: 'Your life is bad now, but the product will fix it.'"
+            directorNote: "Music tells an emotional story. Dark = 'life is hard.' Bright = 'the product fixes it.' The switch should happen exactly when the product is shown."
           }
         ]
       }
@@ -194,7 +194,7 @@ const COURSE_DATA = [
   {
     id: 4,
     title: "Level 4: Scenarios (Mastery)",
-    description: "Real-world editing decisions.",
+    description: "Real editing decisions.",
     color: "bg-orange-500",
     levels: [
       {
@@ -204,14 +204,14 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "Scenario: You are editing a scene showing a person rubbing their back in pain. The client wants to make the pain feel 'real.' What audio layer do you add?",
+            question: "Someone is rubbing their aching back on screen. How do you make viewers FEEL that pain?",
             options: [
-              { text: "Tense, minor-key music that mirrors the discomfort the viewer should feel", correct: false },
-              { text: "A sharp inhale or wince sound from the person to show authentic pain reaction", correct: false },
-              { text: "A visceral 'Crunch,' 'Crack,' or deep 'Rumble' sound effect underneath the movement", correct: true },
-              { text: "Silence—let the visual speak for itself so the pain moment has more weight", correct: false }
+              { text: "Add sad music to set the mood", correct: false },
+              { text: "Have them say 'ouch' or show their pained face", correct: false },
+              { text: "Add a crunching, cracking, or rumbling sound under the movement", correct: true },
+              { text: "Use slow motion so people have time to notice", correct: false }
             ],
-            directorNote: "Visceral SFX trigger a physical empathy response. The viewer 'feels' the crunch in their own body. This is 100x more effective than sad music."
+            directorNote: "Crunch sounds make viewers feel the pain in their own body. Music makes them understand pain. The crunch makes them EXPERIENCE it. Big difference."
           }
         ]
       },
@@ -222,14 +222,14 @@ const COURSE_DATA = [
         xOffset: 40,
         questions: [
           {
-            question: "Scenario: You are designing the final 5 seconds (CTA). You have the logo and the URL. What else do you add to psychologically force the click?",
+            question: "You're designing the last 5 seconds (the CTA). You have the logo and link. What 3 things must you add?",
             options: [
-              { text: "A bold 'Shop Now' button animation with satisfying click sound effect", correct: false },
-              { text: "Visual cue (Arrow), Urgency (Countdown/Timer), and Value (Discount/Guarantee)", correct: true },
-              { text: "Customer testimonial quote reinforcing the key benefit one more time", correct: false },
-              { text: "Clean, minimal design—let the product speak for itself without pressure", correct: false }
+              { text: "Animation, music swell, and brand tagline", correct: false },
+              { text: "Arrow (where to look), timer (why act now), discount (what they get)", correct: true },
+              { text: "One more testimonial, the product image, and a 'thank you'", correct: false },
+              { text: "Keep it clean—too much looks desperate", correct: false }
             ],
-            directorNote: "The CTA is a stack: Direction (where to look) + Scarcity (why now) + Value (what they get). Missing any one of these reduces CTR by 30-50%."
+            directorNote: "CTAs need three things: Direction (arrow/pointer), Urgency (countdown/deadline), Value (discount/bonus). Miss one = lose 30-50% of clicks."
           }
         ]
       }
@@ -259,8 +259,8 @@ const getTierData = (score) => {
       bgColor: "bg-purple-900",
       borderColor: "border-purple-500",
       textColor: "text-purple-300",
-      headline: "Money Printer Go Brrr!",
-      body: "You are a Direct Response God. You understand that editing is 90% psychology and 10% buttons. Media buyers fight to work with you. Name your price."
+      headline: "You Get It.",
+      body: "You know editing is about psychology, not fancy effects. Media buyers want to work with you. You make ads that print money."
     };
   } else if (score >= 80) {
     return {
@@ -270,8 +270,8 @@ const getTierData = (score) => {
       bgColor: "bg-green-900",
       borderColor: "border-green-500",
       textColor: "text-green-300",
-      headline: "Ready to Spend $10k/Day",
-      body: "You are profitable and dangerous. You know the rules of engagement. With a little more focus on deep-psychology diagnostics, you'll be unstoppable."
+      headline: "Almost There.",
+      body: "You know the basics well. A few more details about attention and psychology and you'll be unstoppable."
     };
   } else if (score >= 60) {
     return {
@@ -281,8 +281,8 @@ const getTierData = (score) => {
       bgColor: "bg-orange-900",
       borderColor: "border-orange-500",
       textColor: "text-orange-300",
-      headline: "You Keep the Lights On... Barely.",
-      body: "You make ads that look nice, but they don't print cash. You're relying too much on visuals and not enough on disqualification and hooks. Go review the 'Eye-Tracing' module."
+      headline: "Not Bad, But...",
+      body: "Your ads look nice but don't make money. You're focused on pretty visuals instead of what makes people buy. Review the training!"
     };
   } else {
     return {
@@ -292,8 +292,8 @@ const getTierData = (score) => {
       bgColor: "bg-red-900",
       borderColor: "border-red-500",
       textColor: "text-red-300",
-      headline: "You Owe Mark Zuckerberg Money.",
-      body: "Stop! Turn off the ads! You are editing for 'cinematography' or 'likes,' not for sales. You need to completely unlearn your filmmaking habits and start fresh."
+      headline: "Time to Learn!",
+      body: "You're editing like a filmmaker, not a salesperson. That burns ad budget. Go through the training mode to learn the rules."
     };
   }
 };

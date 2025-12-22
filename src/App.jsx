@@ -30,44 +30,44 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "A teenager watches your entire ad for a luxury watch brand targeting 45-year-old executives. What happens to your ad account?",
+            question: "You're editing an ad for luxury watches targeting 45-year-old executives. Your hook shows a flashy sports car. What's the problem?",
             options: [
-              { text: "It helps! More watch time means the algorithm shows it to more people", correct: false },
-              { text: "It hurts. The algorithm learns to find MORE teenagers who also won't buy", correct: true },
-              { text: "Neutral. The algorithm only tracks clicks, not who watches", correct: false },
-              { text: "It helps build brand awareness for when they're older", correct: false }
+              { text: "Sports cars are off-brand for luxury watches", correct: false },
+              { text: "It will attract car enthusiasts who won't buy watches, training the algorithm wrong", correct: true },
+              { text: "The footage is probably too expensive to license", correct: false },
+              { text: "Sports cars only work for younger audiences", correct: false }
             ],
-            directorNote: "The algorithm learns from who watches. If wrong people watch, it finds MORE wrong people. You want non-buyers to scroll away FAST."
+            directorNote: "The hook must FILTER for your buyer. Car content attracts car people. You need to attract watch people from second one, or the algorithm learns wrong."
           },
           {
-            question: "What is the GOAL of a performance ad?",
+            question: "You finish editing an ad. It looks rough and 'ugly,' but the message is clear and the clips show the problem well. What do you do?",
             options: [
-              { text: "Get as many views as possible to build awareness", correct: false },
-              { text: "Go viral so people share it with friends", correct: false },
-              { text: "Get purchases from the RIGHT people—even if total views are low", correct: true },
-              { text: "Collect likes and comments to boost engagement", correct: false }
+              { text: "Spend 2 more hours polishing transitions and color grading", correct: false },
+              { text: "Add smooth transitions and motion graphics", correct: false },
+              { text: "Ship it—clear message beats pretty visuals", correct: true },
+              { text: "Send to client with a warning that it needs more work", correct: false }
             ],
-            directorNote: "We don't want views. We want RESULTS. 1,000 views with 50 sales beats 1 million views with 10 sales."
+            directorNote: "Production value doesn't sell. Psychology does. Some of the highest-converting ads look 'cheap.' Ship it and test."
           },
           {
-            question: "You finish editing an ad. It looks rough, but the message is clear and clips show the problem well. What do you do?",
+            question: "The script says 'millions of people have this problem.' How do you visualize this line?",
             options: [
-              { text: "Spend more time polishing—ugly ads hurt the brand", correct: false },
-              { text: "Add smooth transitions to look more professional", correct: false },
-              { text: "Ship it. Rough ads that sell beat pretty ads that don't", correct: true },
-              { text: "Send to client and warn them it needs more work", correct: false }
+              { text: "Text overlay saying 'MILLIONS AFFECTED'", correct: false },
+              { text: "Stock footage of a crowded city street", correct: false },
+              { text: "Grid of 6-9 different people all experiencing the problem", correct: true },
+              { text: "Animated counter going from 0 to 1,000,000", correct: false }
             ],
-            directorNote: "Production value doesn't sell products. Psychology does. Some of the best-performing ads look 'cheap'—and that's fine."
+            directorNote: "Faces beat numbers. Showing multiple real people triggers 'I'm not alone' and 'everyone has this.' Stats and text don't create that feeling."
           },
           {
-            question: "When someone scrolls on autopilot (zoned out), what can't their brain do well?",
+            question: "You're cutting between clips of different people talking. In clip 1, the person's face is center-left. Where should clip 2's subject be?",
             options: [
-              { text: "Read text—they can only process audio", correct: false },
-              { text: "See bright colors—everything looks gray", correct: false },
-              { text: "Track movement—their eyes want to stay in one spot", correct: true },
-              { text: "Hear sounds—audio doesn't register until they stop", correct: false }
+              { text: "Center-right for visual balance", correct: false },
+              { text: "Full screen close-up for variety", correct: false },
+              { text: "Center-left, same spot as clip 1", correct: true },
+              { text: "Wherever they naturally are in the footage", correct: false }
             ],
-            directorNote: "Zoned-out brains save energy. Making eyes chase things around the screen is tiring—they swipe. Keep the main thing in the center."
+            directorNote: "The viewer's eyes should stay in ONE spot. If the focal point jumps around, it's tiring and they scroll. Keep faces/action in the same position across cuts."
           }
         ]
       }
@@ -81,29 +81,29 @@ const COURSE_DATA = [
     levels: [
       {
         id: "l2",
-        title: "Disqualification",
+        title: "Disqualification Hooks",
         icon: "🚫",
         xOffset: 0,
         questions: [
           {
-            question: "You're selling a sleep supplement. Your hook shows someone tossing and turning at 3am, staring at the ceiling. Why is this GOOD?",
+            question: "You're editing for a sleep supplement. The script starts with 'Can't fall asleep?' What visual do you open with?",
             options: [
-              { text: "Dark bedroom footage is cinematic and eye-catching", correct: false },
-              { text: "People who sleep fine will scroll away, so the algorithm finds insomniacs faster", correct: true },
-              { text: "It creates drama that makes everyone curious", correct: false },
-              { text: "Nighttime content performs well on all platforms", correct: false }
+              { text: "Product bottle with calming blue background", correct: false },
+              { text: "Person tossing and turning, staring at ceiling at 3am", correct: true },
+              { text: "Peaceful sunrise over mountains", correct: false },
+              { text: "Happy customer waking up refreshed", correct: false }
             ],
-            directorNote: "You WANT good sleepers to scroll away. That teaches the algorithm to stop showing them your ad and find people with sleep problems instead."
+            directorNote: "Show the PAIN first. Someone who sleeps fine will scroll away—good. You want insomniacs to stop and think 'that's me every night.'"
           },
           {
-            question: "Your hook shows a blurred object being unwrapped. Why does this stop the scroll?",
+            question: "The script says 'This miracle serum fixes everything.' You need a curiosity hook. What do you show?",
             options: [
-              { text: "Blur effects look premium and professional", correct: false },
-              { text: "The brain HAS TO figure out what's hidden before it can move on", correct: true },
-              { text: "It builds brand mystery and anticipation", correct: false },
-              { text: "Unboxing content is trending on social media", correct: false }
+              { text: "The product bottle with sparkle effects", correct: false },
+              { text: "Close-up of clear, glowing skin (the result)", correct: false },
+              { text: "Blurred/pixelated dropper applying mysterious liquid", correct: true },
+              { text: "Before/after comparison side by side", correct: false }
             ],
-            directorNote: "The brain can't handle not knowing. When something is hidden, your brain MUST solve it before scrolling. This buys you 1-2 extra seconds."
+            directorNote: "Blur or pixelate something and the brain MUST figure out what it is before scrolling. The mystery buys you 1-2 seconds of attention."
           }
         ]
       },
@@ -114,24 +114,24 @@ const COURSE_DATA = [
         xOffset: 40,
         questions: [
           {
-            question: "You're making an ad for a hair growth serum. What camera angle works best in the hook?",
+            question: "The script says 'Are those wrinkles getting worse?' What angle do you use?",
             options: [
-              { text: "Professional studio shot of a model with perfect hair", correct: false },
-              { text: "Someone looking at their hairline in the bathroom mirror (selfie angle)", correct: true },
-              { text: "Wide shot showing before/after side by side", correct: false },
-              { text: "Close-up of the product bottle with sleek lighting", correct: false }
+              { text: "Professional beauty shot with studio lighting", correct: false },
+              { text: "Selfie-angle close-up, like someone checking themselves in a mirror", correct: true },
+              { text: "Side profile showing the jawline", correct: false },
+              { text: "Wide shot of person at a vanity table", correct: false }
             ],
-            directorNote: "POV means 'Point of View.' Show what the viewer actually SEES when checking their own hairline. That's the bathroom mirror angle."
+            directorNote: "POV = Point of View. Show exactly what they SEE when they check their own face. That's the selfie/mirror angle—raw and relatable."
           },
           {
-            question: "You're selling running shoes to weekend joggers in their 30s. You have footage of an Olympic sprinter. Should you use it?",
+            question: "You're selling yoga mats to beginners in their 40s. You have footage of a flexible 22-year-old doing advanced poses. What do you use instead?",
             options: [
-              { text: "Yes—elite athletes inspire people to buy", correct: false },
-              { text: "Yes—athletic content gets more engagement", correct: false },
-              { text: "No—show a regular person jogging so viewers think 'that's me'", correct: true },
-              { text: "Yes—but only in slow motion for dramatic effect", correct: false }
+              { text: "The 22-year-old but slow it down to look easier", correct: false },
+              { text: "A 40-something doing simple stretches, looking a bit stiff", correct: true },
+              { text: "Just the yoga mat with text about features", correct: false },
+              { text: "The 22-year-old with 'You could be this flexible' text", correct: false }
             ],
-            directorNote: "People scroll past anyone who doesn't look like them. In 2 seconds, they need to think 'that's ME.' Regular joggers sell to regular joggers."
+            directorNote: "Viewers need to see THEMSELVES in the first 2 seconds. A stiff 40-year-old sells to stiff 40-year-olds. They'll scroll past anyone who doesn't look like them."
           }
         ]
       }
@@ -150,52 +150,52 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "A mattress brand claims their foam 'distributes pressure evenly.' You can't see pressure. How do you show it?",
+            question: "The script says 'Toxins are building up in your gut.' You can't see toxins. What do you show?",
             options: [
-              { text: "Just explain it in the voiceover—no visual needed", correct: false },
-              { text: "Show someone sleeping comfortably and smiling", correct: false },
-              { text: "Use a thermal camera or pressure map animation that SHOWS the pressure points", correct: true },
-              { text: "Skip this claim and focus on other benefits", correct: false }
+              { text: "Person holding their stomach looking uncomfortable", correct: false },
+              { text: "Text overlay saying 'TOXIC BUILDUP'", correct: false },
+              { text: "3D animation of gross particles accumulating inside intestines", correct: true },
+              { text: "Stock footage of unhealthy fast food", correct: false }
             ],
-            directorNote: "Your job is making invisible things visible. Thermal cameras, X-rays, 3D animations—these 'prove' claims that words alone can't."
+            directorNote: "Your job is 'pointing the flashlight' at invisible problems. 3D medical animations make the unseen feel REAL and urgent."
           },
           {
-            question: "Why do 3D explainer animations (like showing ingredients entering cells) build trust?",
+            question: "The script says 'Our formula penetrates deep into the skin.' How do you visualize this?",
             options: [
-              { text: "They're expensive, so people think the brand has money", correct: false },
-              { text: "People link them with real science and research—they feel factual", correct: true },
-              { text: "Animations are trending on social media right now", correct: false },
-              { text: "They're easier to understand than real footage", correct: false }
+              { text: "Close-up of someone applying the cream", correct: false },
+              { text: "Text saying 'DEEP PENETRATION TECHNOLOGY'", correct: false },
+              { text: "3D cross-section animation showing molecules going into skin layers", correct: true },
+              { text: "Customer testimonial saying 'I could really feel it working'", correct: false }
             ],
-            directorNote: "We're trained to trust scientific animations because documentaries and doctors use them. When viewers see that style, they assume real research happened."
+            directorNote: "Claims need visual PROOF. 3D explainers feel scientific because documentaries use them. Viewers assume real research happened."
           }
         ]
       },
       {
         id: "l5",
-        title: "Social Proof & Trust",
+        title: "Social Proof",
         icon: "👥",
         xOffset: -40,
         questions: [
           {
-            question: "You're selling a meal prep container. What's the BEST way to show it's popular?",
+            question: "The script says 'Thousands of customers love it.' How do you visualize this?",
             options: [
-              { text: "Display '500,000+ sold' as text on screen", correct: false },
-              { text: "Show a grid of 6-9 different people using it in their kitchens", correct: true },
-              { text: "Have one customer give an emotional 30-second testimonial", correct: false },
-              { text: "Show the Amazon rating and review count", correct: false }
+              { text: "Text saying '10,000+ 5-Star Reviews'", correct: false },
+              { text: "Screenshot of Amazon rating", correct: false },
+              { text: "Grid of 6-9 different customers holding the product at once", correct: true },
+              { text: "One emotional customer telling their story for 20 seconds", correct: false }
             ],
-            directorNote: "Multiple faces on screen triggers 'everyone has this.' A grid of real people works better than any number or single testimonial."
+            directorNote: "Faces on screen = social proof. Seeing 6-9 real people at once triggers 'everyone has this, I'm missing out.' Numbers don't do that."
           },
           {
-            question: "You want viewers to feel they're not alone with their problem. What works best?",
+            question: "The script mentions 'Recommended by Dr. Sarah Chen, Harvard Medical.' What visual do you add?",
             options: [
-              { text: "Say 'millions of people struggle with this' in voiceover", correct: false },
-              { text: "Show many different people experiencing the same problem at once", correct: true },
-              { text: "Display a statistic like '73% of adults have this issue'", correct: false },
-              { text: "Have one person describe how common it is", correct: false }
+              { text: "Just show her name as text with 'MD' after it", correct: false },
+              { text: "AI-generated headshot of a doctor", correct: false },
+              { text: "Real photo/video of Dr. Chen in a white coat with Harvard logo visible", correct: true },
+              { text: "Generic stock photo of a laboratory", correct: false }
             ],
-            directorNote: "When viewers SEE many people with their problem, they feel understood. Numbers and stats don't create that feeling—faces do."
+            directorNote: "Authority needs VISUAL proof. Real face + real credentials + real institution visible on screen. Anything less feels fake."
           }
         ]
       }
@@ -214,34 +214,34 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "Attention resets every 2-3 seconds. What KIND of change keeps people watching?",
+            question: "Your timeline shows the same shot for 4 seconds straight. What do you do?",
             options: [
-              { text: "New information—say something different", correct: false },
-              { text: "Visual change—cut, zoom, overlay, or move something", correct: true },
-              { text: "Audio change—switch the music or add a sound", correct: false },
-              { text: "Color shift—change the filter or tones", correct: false }
+              { text: "Add a voiceover to keep it interesting", correct: false },
+              { text: "Add a zoom, cut, or overlay at the 2-second mark", correct: true },
+              { text: "Speed up the clip to 2x", correct: false },
+              { text: "Leave it—some shots need breathing room", correct: false }
             ],
-            directorNote: "A visual change (anything you can SEE) resets the attention timer. Audio alone won't do it—it must be visible."
+            directorNote: "Every 2-3 seconds needs a VISUAL change. Zoom, cut, text pop, overlay—anything you can SEE. Audio changes alone don't reset attention."
           },
           {
-            question: "The 'Scrub Test' means dragging quickly through your timeline. What are you looking for?",
+            question: "You drag quickly through your timeline (scrub test) and notice the person's face jumps from left to center to right across cuts. What's wrong?",
             options: [
-              { text: "That the pacing feels smooth and not choppy", correct: false },
-              { text: "That there's enough variety in your clips", correct: false },
-              { text: "That the viewer's focal point stays in the SAME spot across cuts", correct: true },
-              { text: "That there are no black frames or gaps", correct: false }
+              { text: "The cuts are too fast", correct: false },
+              { text: "The colors aren't matched between clips", correct: false },
+              { text: "The focal point is jumping around—eyes can't rest in one spot", correct: true },
+              { text: "Nothing—variety is good for engagement", correct: false }
             ],
-            directorNote: "If the main subject keeps jumping around the frame, it tires viewers out. The scrub test reveals if you're making their eyes work too hard."
+            directorNote: "If the main thing jumps around the frame, viewers' eyes get tired and they swipe. Keep faces/action in the same screen position."
           },
           {
-            question: "Where should captions be placed on a talking-head video?",
+            question: "Your talking-head video needs captions. Where do you place them?",
             options: [
-              { text: "At the top so they don't cover the face", correct: false },
-              { text: "Just below the chin, near the center", correct: true },
-              { text: "On the left side where reading starts", correct: false },
-              { text: "Wherever there's empty space", correct: false }
+              { text: "Top of the screen so they don't block the face", correct: false },
+              { text: "Just below the chin, centered", correct: true },
+              { text: "Left side where English readers start", correct: false },
+              { text: "Bottom of the screen like movie subtitles", correct: false }
             ],
-            directorNote: "The focal point is usually the face. Put text just below the chin so eyes don't have to travel. Everything stays in one spot."
+            directorNote: "Eyes focus on the face (center). Put captions just below the chin so eyes don't travel. Everything stays in one zone."
           }
         ]
       },
@@ -252,34 +252,34 @@ const COURSE_DATA = [
         xOffset: 40,
         questions: [
           {
-            question: "A text box slides onto the screen. Does it need a sound effect?",
+            question: "A text box slides onto the screen. Do you add a sound effect?",
             options: [
-              { text: "Only if the message is important", correct: false },
-              { text: "No—sound effects feel cheap", correct: false },
-              { text: "Yes—anything that MOVES needs a matching sound", correct: true },
+              { text: "No—sounds distract from the message", correct: false },
+              { text: "Only if it's an important message", correct: false },
+              { text: "Yes—add a 'whoosh' or 'pop' sound", correct: true },
               { text: "Only if there's no music playing", correct: false }
             ],
-            directorNote: "Movement without sound feels incomplete. When something moves, add a sound. Slide = woosh. Pop = click. This is the 'Movement Rule.'"
+            directorNote: "Movement Rule: anything that MOVES needs a sound. Slide = whoosh. Pop-up = click. Movement without sound feels incomplete."
           },
           {
-            question: "Your ad shows a problem, then the product as the solution. How should the music change?",
+            question: "The script structure is: Problem → Agitation → Solution. You're picking music. What do you do?",
             options: [
-              { text: "Stay consistent so it's not distracting", correct: false },
-              { text: "Build louder toward the end for urgency", correct: false },
-              { text: "Start tense/dark for the problem, switch to upbeat when the product appears", correct: true },
-              { text: "Start upbeat to grab attention, then soften for credibility", correct: false }
+              { text: "Use one consistent track throughout", correct: false },
+              { text: "Start upbeat, then go quiet for the testimonials", correct: false },
+              { text: "Start dark/tense, then switch to upbeat right when the product appears", correct: true },
+              { text: "No music—let the voiceover carry it", correct: false }
             ],
-            directorNote: "Music tells an emotional story. Dark = 'life is hard.' Bright = 'the product fixes it.' The switch happens exactly when the product is revealed."
+            directorNote: "Music mirrors the emotional journey. Dark = 'life is hard.' The second the product shows, switch to bright/upbeat = 'problem solved.'"
           },
           {
-            question: "The ad shows someone with a stiff, aching neck. What sound makes viewers FEEL it?",
+            question: "The script says 'My joints were killing me.' The visual shows someone rubbing their knee. What sound do you add UNDER the visual?",
             options: [
-              { text: "Gentle, sad piano music", correct: false },
-              { text: "A cracking or creaking sound effect", correct: true },
-              { text: "The person saying 'ow' or wincing", correct: false },
-              { text: "Silence so the visual has more weight", correct: false }
+              { text: "Sad piano music", correct: false },
+              { text: "A creaking/cracking bone sound effect", correct: true },
+              { text: "The person's voice saying 'ouch'", correct: false },
+              { text: "No sound—the visual speaks for itself", correct: false }
             ],
-            directorNote: "Use sounds that match the body part. Neck/back = crack. Stomach = rumble. Joints = creak. These sounds make viewers feel it in their own body."
+            directorNote: "Body sounds make pain REAL. Joints = creak. Back = crack. Stomach = rumble. Viewers feel it in their own body."
           }
         ]
       }
@@ -293,97 +293,97 @@ const COURSE_DATA = [
     levels: [
       {
         id: "l8",
-        title: "Finding Pain Shots",
+        title: "Pain Shots",
         icon: "🎬",
         xOffset: 0,
         questions: [
           {
-            question: "You're editing for a DANDRUFF SHAMPOO. What shot best shows the pain point?",
+            question: "You're editing for a dandruff shampoo. The script says 'Embarrassing flakes ruining your look?' What do you search for?",
             options: [
-              { text: "Woman flipping her shiny, healthy hair in slow motion", correct: false },
-              { text: "Top-down close-up of a scalp with visible white flakes", correct: true },
-              { text: "Person happily washing their hair in the shower", correct: false },
-              { text: "Before/after split screen of hair transformation", correct: false }
+              { text: "Woman flipping shiny healthy hair in slow-mo", correct: false },
+              { text: "Top-down close-up of scalp with visible white flakes", correct: true },
+              { text: "Person happily washing hair in shower", correct: false },
+              { text: "Split screen before/after transformation", correct: false }
             ],
-            directorNote: "Show the PROBLEM, not the solution. A gross close-up of flaky scalp makes people with dandruff think 'that's me' and feel the urgency to fix it."
+            directorNote: "Show the PROBLEM. A gross close-up of flaky scalp makes people with dandruff think 'that's me.' They feel the urgency."
           },
           {
-            question: "You're editing for a TEETH WHITENING kit. What shot best shows the pain point?",
+            question: "You're editing for a teeth whitening kit. The script says 'Yellow teeth holding you back?' What shot opens the ad?",
             options: [
-              { text: "Celebrity smiling with perfect white teeth", correct: false },
-              { text: "Product box with '10 shades whiter' text overlay", correct: false },
-              { text: "Close-up of yellowed, stained teeth next to a coffee cup", correct: true },
-              { text: "Time-lapse of the whitening process working", correct: false }
+              { text: "Celebrity with perfect white smile", correct: false },
+              { text: "Product box with '10 shades whiter' text", correct: false },
+              { text: "Close-up of yellowed teeth next to a coffee cup", correct: true },
+              { text: "Time-lapse of whitening process", correct: false }
             ],
-            directorNote: "The coffee cup adds context (why they're stained). Show the embarrassing reality—yellow teeth—not the aspirational result."
+            directorNote: "Show the embarrassing reality first. Coffee cup adds context (why they're stained). Pain before solution."
           },
           {
-            question: "You're editing for a POSTURE CORRECTOR. What shot best shows the pain point?",
+            question: "You're editing for a posture corrector. The script says 'Slouching all day?' What do you show?",
             options: [
-              { text: "Person standing tall with perfect posture, smiling", correct: false },
-              { text: "3D animation of a healthy spine alignment", correct: false },
-              { text: "Someone hunched over a laptop, rubbing their neck in pain", correct: true },
-              { text: "Athlete stretching and doing back exercises", correct: false }
+              { text: "Person standing tall with perfect posture", correct: false },
+              { text: "3D animation of healthy spine", correct: false },
+              { text: "Someone hunched over laptop, rubbing their neck", correct: true },
+              { text: "Athlete doing stretches", correct: false }
             ],
-            directorNote: "Show the relatable moment: hunched at a desk, in pain. That's what your target audience does every day. They need to see themselves."
+            directorNote: "Show the relatable moment they experience every day. Hunched at desk, in pain. They see themselves and feel understood."
           },
           {
-            question: "You're editing for a FOOT CREAM for cracked heels. What shot best shows the pain point?",
+            question: "You're editing for a foot cream. The script says 'Cracked heels you're embarrassed to show?' What's your pain shot?",
             options: [
-              { text: "Smooth, moisturized feet on a beach towel", correct: false },
+              { text: "Smooth feet on a beach towel", correct: false },
               { text: "Extreme close-up of dry, cracked heel skin", correct: true },
-              { text: "Person applying cream to their foot at bedtime", correct: false },
-              { text: "Happy customer testimonial about soft feet", correct: false }
+              { text: "Person applying cream at bedtime", correct: false },
+              { text: "Testimonial about soft feet", correct: false }
             ],
-            directorNote: "Gross close-ups work. The cracked skin makes people with that problem feel seen—and grossed out enough to want the fix NOW."
+            directorNote: "Gross close-ups work. They make people with that problem feel seen—and grossed out enough to want the fix NOW."
           }
         ]
       },
       {
         id: "l9",
-        title: "Solution Shots",
+        title: "Proof Shots",
         icon: "✨",
         xOffset: 40,
         questions: [
           {
-            question: "You're editing for a BLENDER. What shot best shows the product working?",
+            question: "You're editing for a blender. The script says 'Crushes ice in seconds.' How do you PROVE it?",
             options: [
-              { text: "The blender sitting on a kitchen counter, unboxed", correct: false },
-              { text: "Overhead view of ingredients being crushed and blended in real-time", correct: true },
-              { text: "Happy family drinking smoothies at breakfast", correct: false },
-              { text: "List of specs and features as text overlays", correct: false }
+              { text: "Show the blender on a kitchen counter", correct: false },
+              { text: "Overhead shot of ice cubes being pulverized in real-time", correct: true },
+              { text: "Happy family drinking smoothies", correct: false },
+              { text: "Text listing motor specs and wattage", correct: false }
             ],
-            directorNote: "Show the product IN ACTION—the satisfying moment of blending. 'Action shots' prove it works better than specs or smiling faces."
+            directorNote: "Don't tell—SHOW. The satisfying destruction of ice cubes proves the claim better than any spec sheet."
           },
           {
-            question: "You're editing for WATERPROOF SHOES. What shot best proves the claim?",
+            question: "You're editing for waterproof shoes. The script says 'Completely waterproof.' How do you prove it?",
             options: [
-              { text: "Model walking down a runway in the shoes", correct: false },
-              { text: "Customer saying 'these are so waterproof!'", correct: false },
-              { text: "Close-up of water being poured directly on the shoe and beading off", correct: true },
-              { text: "5-star review screenshots scrolling by", correct: false }
+              { text: "Model walking on a rainy street", correct: false },
+              { text: "Customer saying 'These are so waterproof!'", correct: false },
+              { text: "Close-up of water being poured directly on shoe and beading off", correct: true },
+              { text: "5-star review screenshots", correct: false }
             ],
-            directorNote: "Don't TELL them it's waterproof—SHOW the water bouncing off. Visual proof beats testimonials for product claims."
+            directorNote: "Pour water on it. Show the water bounce off. Visual proof beats any testimonial or review for product claims."
           },
           {
-            question: "You're editing for a VACUUM CLEANER. What shot best shows it works?",
+            question: "You're editing for a vacuum. The script says 'Picks up everything in one pass.' How do you prove it?",
             options: [
               { text: "Person smiling while vacuuming a clean floor", correct: false },
-              { text: "Close-up of dirt and crumbs being sucked up in one pass", correct: true },
-              { text: "The vacuum sitting in a tidy living room", correct: false },
-              { text: "Side-by-side comparison chart vs competitors", correct: false }
+              { text: "Close-up of dirt and crumbs disappearing in one swipe", correct: true },
+              { text: "The vacuum sitting in a tidy room", correct: false },
+              { text: "Comparison chart vs competitors", correct: false }
             ],
-            directorNote: "The satisfying 'sucking up dirt' shot is visual proof. Show the problem (crumbs) disappearing—that's more convincing than any claim."
+            directorNote: "Show the problem (crumbs) disappearing in real-time. The satisfying 'suck' proves it works."
           },
           {
-            question: "You're editing for a STAIN REMOVER. What shot best shows it works?",
+            question: "You're editing for a stain remover. The script says 'Removes stains instantly.' What's your money shot?",
             options: [
-              { text: "Clean white shirt hanging on a clothesline", correct: false },
-              { text: "Spray bottle with 'powerful formula' text overlay", correct: false },
-              { text: "Close-up of a red wine stain disappearing as the product is applied", correct: true },
-              { text: "Person happily doing laundry and folding clothes", correct: false }
+              { text: "Clean white shirt on a clothesline", correct: false },
+              { text: "Product bottle with 'Powerful Formula' text", correct: false },
+              { text: "Red wine stain disappearing as product is applied", correct: true },
+              { text: "Person happily folding laundry", correct: false }
             ],
-            directorNote: "Show the transformation IN REAL-TIME. The stain vanishing is the 'magic moment'—that's what makes people believe and buy."
+            directorNote: "The 'magic moment' is the stain vanishing in real-time. That transformation is what makes people believe and buy."
           }
         ]
       }
@@ -402,24 +402,24 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "The last 5 seconds of your ad need to drive action. You have the logo and link. What 3 elements must you add?",
+            question: "You're building the last 5 seconds. You have the logo and URL. The client says 'Make them click.' What do you add?",
             options: [
-              { text: "Animated logo, music swell, brand slogan", correct: false },
-              { text: "Arrow pointing where to click, countdown timer, discount offer", correct: true },
-              { text: "Final testimonial, product close-up, 'thank you' text", correct: false },
-              { text: "Keep it minimal—busy CTAs feel desperate", correct: false }
+              { text: "Animated logo spin with brand jingle", correct: false },
+              { text: "Arrow pointing at button + countdown timer + discount badge", correct: true },
+              { text: "One more customer testimonial", correct: false },
+              { text: "Fade to black with URL centered", correct: false }
             ],
-            directorNote: "CTAs need three things: Direction (where to look), Urgency (why act now), Value (what they get). Missing one = 30-50% fewer clicks."
+            directorNote: "CTAs need Direction (arrow), Urgency (timer/deadline), and Value (discount/offer). Missing any = 30-50% fewer clicks."
           },
           {
-            question: "Why show the actual landing page or checkout screen in your CTA?",
+            question: "The client gives you a screenshot of their checkout page. Where do you put it in the ad?",
             options: [
-              { text: "It looks more professional and official", correct: false },
-              { text: "It proves the website exists and isn't a scam", correct: false },
-              { text: "Viewers see what's coming, so they're more ready to click", correct: true },
-              { text: "It fills empty space in the final frame", correct: false }
+              { text: "Don't use it—screenshots look unprofessional", correct: false },
+              { text: "In the middle of the ad to break up the testimonials", correct: false },
+              { text: "In the final CTA, so viewers know exactly what happens after they click", correct: true },
+              { text: "At the very beginning as a hook", correct: false }
             ],
-            directorNote: "When people see the landing page, they know what to expect. No surprises = more confidence = more clicks. They're mentally ready."
+            directorNote: "Show them what's coming. When people see the landing page, they know what to expect. No surprises = more confidence = more clicks."
           }
         ]
       }

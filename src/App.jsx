@@ -30,44 +30,44 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "Someone who will NEVER buy your product watches your entire ad. What does this do to your ad account?",
+            question: "A teenager watches your entire ad for a luxury watch brand targeting 45-year-old executives. What happens to your ad account?",
             options: [
               { text: "It helps! More watch time means the algorithm shows it to more people", correct: false },
-              { text: "It hurts. The algorithm learns to show your ad to MORE people like them—who also won't buy", correct: true },
-              { text: "It doesn't matter. The algorithm only cares about clicks, not who watches", correct: false },
-              { text: "It helps build brand awareness, which pays off later", correct: false }
+              { text: "It hurts. The algorithm learns to find MORE teenagers who also won't buy", correct: true },
+              { text: "Neutral. The algorithm only tracks clicks, not who watches", correct: false },
+              { text: "It helps build brand awareness for when they're older", correct: false }
             ],
-            directorNote: "The algorithm learns from who watches. If non-buyers watch, it finds MORE non-buyers. You want the wrong people to scroll away FAST so the algo learns to find real buyers."
+            directorNote: "The algorithm learns from who watches. If wrong people watch, it finds MORE wrong people. You want non-buyers to scroll away FAST."
           },
           {
             question: "What is the GOAL of a performance ad?",
             options: [
               { text: "Get as many views as possible to build awareness", correct: false },
               { text: "Go viral so people share it with friends", correct: false },
-              { text: "Get clicks and purchases from the RIGHT people—even if views are low", correct: true },
-              { text: "Collect likes and comments to boost engagement score", correct: false }
+              { text: "Get purchases from the RIGHT people—even if total views are low", correct: true },
+              { text: "Collect likes and comments to boost engagement", correct: false }
             ],
-            directorNote: "We don't want views. We want RESULTS. A video with 1,000 views that gets 50 sales beats a video with 1 million views and 10 sales."
+            directorNote: "We don't want views. We want RESULTS. 1,000 views with 50 sales beats 1 million views with 10 sales."
           },
           {
-            question: "You finish editing an ad. It looks kinda ugly, but the clips show the problem clearly and the message is strong. What do you do?",
+            question: "You finish editing an ad. It looks rough, but the message is clear and clips show the problem well. What do you do?",
             options: [
-              { text: "Spend more time polishing it—ugly ads hurt the brand", correct: false },
-              { text: "Add transitions and effects to make it look more professional", correct: false },
-              { text: "Ship it. Ugly ads that work beat pretty ads that don't", correct: true },
-              { text: "Send it to the client and warn them it needs more work", correct: false }
+              { text: "Spend more time polishing—ugly ads hurt the brand", correct: false },
+              { text: "Add smooth transitions to look more professional", correct: false },
+              { text: "Ship it. Rough ads that sell beat pretty ads that don't", correct: true },
+              { text: "Send to client and warn them it needs more work", correct: false }
             ],
-            directorNote: "Production value doesn't sell products. Psychology and clip selection do. Some of the best-performing ads look 'cheap'—and that's fine."
+            directorNote: "Production value doesn't sell products. Psychology does. Some of the best-performing ads look 'cheap'—and that's fine."
           },
           {
-            question: "When someone is scrolling on autopilot (zoned out), what is their brain bad at doing?",
+            question: "When someone scrolls on autopilot (zoned out), what can't their brain do well?",
             options: [
-              { text: "Reading text—they can only process audio", correct: false },
-              { text: "Looking at bright colors—everything looks gray to them", correct: false },
-              { text: "Tracking movement—their eyes want to stay in one spot", correct: true },
-              { text: "Hearing sounds—audio doesn't register until they stop scrolling", correct: false }
+              { text: "Read text—they can only process audio", correct: false },
+              { text: "See bright colors—everything looks gray", correct: false },
+              { text: "Track movement—their eyes want to stay in one spot", correct: true },
+              { text: "Hear sounds—audio doesn't register until they stop", correct: false }
             ],
-            directorNote: "Zoned-out brains save energy. If you make their eyes chase things around the screen, it's tiring and they swipe. Keep the main thing (face, text, product) in the center."
+            directorNote: "Zoned-out brains save energy. Making eyes chase things around the screen is tiring—they swipe. Keep the main thing in the center."
           }
         ]
       }
@@ -86,24 +86,24 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "You're selling a product for dog owners. Your hook shows a gross close-up of a dog's dirty teeth. Why is this GOOD?",
+            question: "You're selling a sleep supplement. Your hook shows someone tossing and turning at 3am, staring at the ceiling. Why is this GOOD?",
             options: [
-              { text: "Gross visuals are trending on TikTok right now", correct: false },
-              { text: "It makes non-dog-owners scroll away, so the algorithm finds dog owners faster", correct: true },
-              { text: "It shocks people into watching, even if they don't have dogs", correct: false },
-              { text: "Dog content always performs well on social media", correct: false }
+              { text: "Dark bedroom footage is cinematic and eye-catching", correct: false },
+              { text: "People who sleep fine will scroll away, so the algorithm finds insomniacs faster", correct: true },
+              { text: "It creates drama that makes everyone curious", correct: false },
+              { text: "Nighttime content performs well on all platforms", correct: false }
             ],
-            directorNote: "You WANT people without dogs to scroll away. That teaches the algorithm to stop showing your ad to them and find dog owners instead."
+            directorNote: "You WANT good sleepers to scroll away. That teaches the algorithm to stop showing them your ad and find people with sleep problems instead."
           },
           {
-            question: "You blur out part of an image in the first 2 seconds. Why does this make people stop scrolling?",
+            question: "Your hook shows a blurred object being unwrapped. Why does this stop the scroll?",
             options: [
-              { text: "The blur looks premium and signals high production quality", correct: false },
-              { text: "Their brain HAS TO figure out what's hidden before it can move on", correct: true },
-              { text: "It creates mystery about the brand, building anticipation", correct: false },
-              { text: "Blurred visuals are calming and make people want to stay", correct: false }
+              { text: "Blur effects look premium and professional", correct: false },
+              { text: "The brain HAS TO figure out what's hidden before it can move on", correct: true },
+              { text: "It builds brand mystery and anticipation", correct: false },
+              { text: "Unboxing content is trending on social media", correct: false }
             ],
-            directorNote: "The brain can't handle not knowing. When something is blurred or hidden, your brain MUST solve it before you can scroll. This buys you 1-2 seconds of attention."
+            directorNote: "The brain can't handle not knowing. When something is hidden, your brain MUST solve it before scrolling. This buys you 1-2 extra seconds."
           }
         ]
       },
@@ -114,24 +114,24 @@ const COURSE_DATA = [
         xOffset: 40,
         questions: [
           {
-            question: "You're making an ad about nose blackheads. What camera angle works best in the hook?",
+            question: "You're making an ad for a hair growth serum. What camera angle works best in the hook?",
             options: [
-              { text: "Professional studio lighting with a model looking at camera", correct: false },
-              { text: "Selfie-style close-up, like someone looking in a mirror", correct: true },
-              { text: "Wide shot showing the full face and shoulders", correct: false },
-              { text: "Side profile to show the nose clearly", correct: false }
+              { text: "Professional studio shot of a model with perfect hair", correct: false },
+              { text: "Someone looking at their hairline in the bathroom mirror (selfie angle)", correct: true },
+              { text: "Wide shot showing before/after side by side", correct: false },
+              { text: "Close-up of the product bottle with sleek lighting", correct: false }
             ],
-            directorNote: "POV means 'Point of View.' Show what the viewer would actually SEE when looking at their own nose in a mirror. That's the selfie camera angle."
+            directorNote: "POV means 'Point of View.' Show what the viewer actually SEES when checking their own hairline. That's the bathroom mirror angle."
           },
           {
-            question: "You're selling to women over 40. You have footage of a fit 20-year-old. Should you use it?",
+            question: "You're selling running shoes to weekend joggers in their 30s. You have footage of an Olympic sprinter. Should you use it?",
             options: [
-              { text: "Yes—she shows what customers could become", correct: false },
-              { text: "Yes—pretty people always get more views", correct: false },
-              { text: "No—the viewer needs to see someone like THEMSELVES to stop and watch", correct: true },
-              { text: "Yes—but only if she's using the product", correct: false }
+              { text: "Yes—elite athletes inspire people to buy", correct: false },
+              { text: "Yes—athletic content gets more engagement", correct: false },
+              { text: "No—show a regular person jogging so viewers think 'that's me'", correct: true },
+              { text: "Yes—but only in slow motion for dramatic effect", correct: false }
             ],
-            directorNote: "People scroll past anyone who doesn't look like them. In the first 2 seconds, they need to think 'that's ME.' A 40-year-old sells to 40-year-olds."
+            directorNote: "People scroll past anyone who doesn't look like them. In 2 seconds, they need to think 'that's ME.' Regular joggers sell to regular joggers."
           }
         ]
       }
@@ -145,29 +145,29 @@ const COURSE_DATA = [
     levels: [
       {
         id: "l4",
-        title: "Pointing the Flashlight",
+        title: "Making Problems Visible",
         icon: "🔦",
         xOffset: 0,
         questions: [
           {
-            question: "A product fixes a problem you CAN'T see (like bacteria in your gut). How do you show the problem?",
+            question: "A mattress brand claims their foam 'distributes pressure evenly.' You can't see pressure. How do you show it?",
             options: [
-              { text: "Just describe it with voiceover—visuals aren't needed", correct: false },
-              { text: "Use a stock image of someone looking sick", correct: false },
-              { text: "Create or find a visual (3D render, X-ray, animation) that SHOWS the invisible problem", correct: true },
-              { text: "Skip the problem section and focus on the solution", correct: false }
+              { text: "Just explain it in the voiceover—no visual needed", correct: false },
+              { text: "Show someone sleeping comfortably and smiling", correct: false },
+              { text: "Use a thermal camera or pressure map animation that SHOWS the pressure points", correct: true },
+              { text: "Skip this claim and focus on other benefits", correct: false }
             ],
-            directorNote: "Your job is 'pointing the flashlight' at problems people can't normally see. Use 3D explainers, AI visuals, or medical-style animations to make the invisible visible."
+            directorNote: "Your job is making invisible things visible. Thermal cameras, X-rays, 3D animations—these 'prove' claims that words alone can't."
           },
           {
-            question: "Why do 3D medical explainer visuals build trust?",
+            question: "Why do 3D explainer animations (like showing ingredients entering cells) build trust?",
             options: [
-              { text: "They look expensive, so people think the brand has money", correct: false },
-              { text: "People associate them with real medical research—they feel scientific", correct: true },
-              { text: "They're trendy on social media right now", correct: false },
+              { text: "They're expensive, so people think the brand has money", correct: false },
+              { text: "People link them with real science and research—they feel factual", correct: true },
+              { text: "Animations are trending on social media right now", correct: false },
               { text: "They're easier to understand than real footage", correct: false }
             ],
-            directorNote: "We're trained to trust medical animations because real science uses them. When viewers see that style, they assume someone did real research. Use this to your advantage."
+            directorNote: "We're trained to trust scientific animations because documentaries and doctors use them. When viewers see that style, they assume real research happened."
           }
         ]
       },
@@ -178,24 +178,24 @@ const COURSE_DATA = [
         xOffset: -40,
         questions: [
           {
-            question: "What's the BEST way to show that lots of people have the same problem?",
+            question: "You're selling a meal prep container. What's the BEST way to show it's popular?",
             options: [
-              { text: "Say 'millions of people struggle with this' in the voiceover", correct: false },
-              { text: "Show many different people with the problem on screen at once", correct: true },
+              { text: "Display '500,000+ sold' as text on screen", correct: false },
+              { text: "Show a grid of 6-9 different people using it in their kitchens", correct: true },
+              { text: "Have one customer give an emotional 30-second testimonial", correct: false },
+              { text: "Show the Amazon rating and review count", correct: false }
+            ],
+            directorNote: "Multiple faces on screen triggers 'everyone has this.' A grid of real people works better than any number or single testimonial."
+          },
+          {
+            question: "You want viewers to feel they're not alone with their problem. What works best?",
+            options: [
+              { text: "Say 'millions of people struggle with this' in voiceover", correct: false },
+              { text: "Show many different people experiencing the same problem at once", correct: true },
               { text: "Display a statistic like '73% of adults have this issue'", correct: false },
               { text: "Have one person describe how common it is", correct: false }
             ],
-            directorNote: "Showing multiple faces triggers 'herd mentality.' When viewers SEE many people with the problem, they feel understood and less alone. Numbers don't do this."
-          },
-          {
-            question: "What's the BEST way to show that lots of people love your product?",
-            options: [
-              { text: "Show a 5-star rating graphic", correct: false },
-              { text: "Show 4-9 real customers on screen at the same time (grid layout)", correct: true },
-              { text: "Have one customer tell their story with emotion", correct: false },
-              { text: "Display the number of sales or reviews as text", correct: false }
-            ],
-            directorNote: "Seeing many faces at once triggers 'everyone has this—I'm missing out.' A grid of real people works better than any number or single testimonial."
+            directorNote: "When viewers SEE many people with their problem, they feel understood. Numbers and stats don't create that feeling—faces do."
           }
         ]
       }
@@ -214,34 +214,34 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "Every 2-3 seconds, something must change on screen. What KIND of change?",
+            question: "Attention resets every 2-3 seconds. What KIND of change keeps people watching?",
             options: [
-              { text: "The information—say something new", correct: false },
-              { text: "The visual—cut, zoom, overlay, or move something", correct: true },
-              { text: "The audio—change the music or add a sound", correct: false },
-              { text: "The color—shift the tones or filters", correct: false }
+              { text: "New information—say something different", correct: false },
+              { text: "Visual change—cut, zoom, overlay, or move something", correct: true },
+              { text: "Audio change—switch the music or add a sound", correct: false },
+              { text: "Color shift—change the filter or tones", correct: false }
             ],
-            directorNote: "Attention resets every 2-3 seconds. A visual change (any change you can SEE) acts like a refresh button. Audio alone won't do it—it must be visual."
+            directorNote: "A visual change (anything you can SEE) resets the attention timer. Audio alone won't do it—it must be visible."
           },
           {
-            question: "The 'Scrub Test' means dragging quickly through your timeline. What are you checking?",
+            question: "The 'Scrub Test' means dragging quickly through your timeline. What are you looking for?",
             options: [
-              { text: "That the pacing feels good and not too slow", correct: false },
-              { text: "That there's enough variety in the visuals", correct: false },
-              { text: "That the viewer's eyes can stay in ONE spot and not jump around", correct: true },
-              { text: "That there are no black frames between cuts", correct: false }
+              { text: "That the pacing feels smooth and not choppy", correct: false },
+              { text: "That there's enough variety in your clips", correct: false },
+              { text: "That the viewer's focal point stays in the SAME spot across cuts", correct: true },
+              { text: "That there are no black frames or gaps", correct: false }
             ],
-            directorNote: "If the main thing keeps jumping to different parts of the screen, it tires people out. The scrub test shows you if your cuts are making viewers' eyes work too hard."
+            directorNote: "If the main subject keeps jumping around the frame, it tires viewers out. The scrub test reveals if you're making their eyes work too hard."
           },
           {
-            question: "Where should captions/text be placed on screen?",
+            question: "Where should captions be placed on a talking-head video?",
             options: [
-              { text: "At the top so they don't cover the person's face", correct: false },
-              { text: "Under the chin, near the center of the action", correct: true },
-              { text: "On the left side where people start reading", correct: false },
-              { text: "Wherever there's empty space in the frame", correct: false }
+              { text: "At the top so they don't cover the face", correct: false },
+              { text: "Just below the chin, near the center", correct: true },
+              { text: "On the left side where reading starts", correct: false },
+              { text: "Wherever there's empty space", correct: false }
             ],
-            directorNote: "The focal point is usually the face/center. Put text just under the chin so eyes don't have to travel far. This keeps everything in one spot."
+            directorNote: "The focal point is usually the face. Put text just below the chin so eyes don't have to travel. Everything stays in one spot."
           }
         ]
       },
@@ -252,34 +252,34 @@ const COURSE_DATA = [
         xOffset: 40,
         questions: [
           {
-            question: "When does an element on screen NEED a sound effect?",
+            question: "A text box slides onto the screen. Does it need a sound effect?",
             options: [
-              { text: "When the moment is emotional and needs more impact", correct: false },
-              { text: "Every few seconds to keep the audio interesting", correct: false },
-              { text: "When it MOVES—slides in, pops up, or transitions", correct: true },
-              { text: "Never—sound effects feel cheap and unprofessional", correct: false }
+              { text: "Only if the message is important", correct: false },
+              { text: "No—sound effects feel cheap", correct: false },
+              { text: "Yes—anything that MOVES needs a matching sound", correct: true },
+              { text: "Only if there's no music playing", correct: false }
             ],
-            directorNote: "Movement without sound feels wrong. When something moves, add a sound. This is called the 'Movement Rule.' Swipe = woosh. Pop-up = click."
+            directorNote: "Movement without sound feels incomplete. When something moves, add a sound. Slide = woosh. Pop = click. This is the 'Movement Rule.'"
           },
           {
-            question: "In a Problem → Solution ad, how should the background music change?",
+            question: "Your ad shows a problem, then the product as the solution. How should the music change?",
             options: [
-              { text: "Stay the same so it doesn't distract from the message", correct: false },
-              { text: "Get louder and faster as you approach the CTA", correct: false },
-              { text: "Start dark/tense for the problem, then switch to upbeat when the product appears", correct: true },
-              { text: "Start upbeat to hook attention, then go quiet for the testimonials", correct: false }
+              { text: "Stay consistent so it's not distracting", correct: false },
+              { text: "Build louder toward the end for urgency", correct: false },
+              { text: "Start tense/dark for the problem, switch to upbeat when the product appears", correct: true },
+              { text: "Start upbeat to grab attention, then soften for credibility", correct: false }
             ],
-            directorNote: "Music tells an emotional story. Dark = 'life is hard.' Bright = 'the product fixes it.' The switch should happen exactly when the product is shown."
+            directorNote: "Music tells an emotional story. Dark = 'life is hard.' Bright = 'the product fixes it.' The switch happens exactly when the product is revealed."
           },
           {
-            question: "The ad is about stomach pain. What sound helps viewers FEEL the pain?",
+            question: "The ad shows someone with a stiff, aching neck. What sound makes viewers FEEL it?",
             options: [
-              { text: "Sad, slow piano music", correct: false },
-              { text: "A stomach rumbling or bubbling sound effect", correct: true },
-              { text: "The person groaning or saying 'ow'", correct: false },
-              { text: "Silence to let the visual speak for itself", correct: false }
+              { text: "Gentle, sad piano music", correct: false },
+              { text: "A cracking or creaking sound effect", correct: true },
+              { text: "The person saying 'ow' or wincing", correct: false },
+              { text: "Silence so the visual has more weight", correct: false }
             ],
-            directorNote: "Use sounds that match the BODY part. Stomach = rumble. Back/knees = crack/crunch. Fire/acid = sizzle. These sounds make viewers feel it in their own body."
+            directorNote: "Use sounds that match the body part. Neck/back = crack. Stomach = rumble. Joints = creak. These sounds make viewers feel it in their own body."
           }
         ]
       }
@@ -298,24 +298,24 @@ const COURSE_DATA = [
         xOffset: 0,
         questions: [
           {
-            question: "You're designing the last 5 seconds (the CTA). You have the logo and link. What 3 things must you add?",
+            question: "The last 5 seconds of your ad need to drive action. You have the logo and link. What 3 elements must you add?",
             options: [
-              { text: "Animation, music swell, and brand tagline", correct: false },
-              { text: "Arrow (where to look), timer (why act now), discount (what they get)", correct: true },
-              { text: "One more testimonial, the product image, and a 'thank you'", correct: false },
-              { text: "Keep it clean—too much looks desperate", correct: false }
+              { text: "Animated logo, music swell, brand slogan", correct: false },
+              { text: "Arrow pointing where to click, countdown timer, discount offer", correct: true },
+              { text: "Final testimonial, product close-up, 'thank you' text", correct: false },
+              { text: "Keep it minimal—busy CTAs feel desperate", correct: false }
             ],
-            directorNote: "CTAs need three things: Direction (arrow/pointer), Urgency (countdown/deadline), Value (discount/bonus). Miss one = lose 30-50% of clicks."
+            directorNote: "CTAs need three things: Direction (where to look), Urgency (why act now), Value (what they get). Missing one = 30-50% fewer clicks."
           },
           {
-            question: "Why should you show the actual LANDING PAGE in the CTA?",
+            question: "Why show the actual landing page or checkout screen in your CTA?",
             options: [
-              { text: "It makes the ad look more official", correct: false },
-              { text: "It proves the website is real and not a scam", correct: false },
-              { text: "It shows viewers what to expect after clicking, so they're more likely to click", correct: true },
-              { text: "It fills empty space in the frame", correct: false }
+              { text: "It looks more professional and official", correct: false },
+              { text: "It proves the website exists and isn't a scam", correct: false },
+              { text: "Viewers see what's coming, so they're more ready to click", correct: true },
+              { text: "It fills empty space in the final frame", correct: false }
             ],
-            directorNote: "When people see the landing page, they already know what's coming. No surprises = more confidence = more clicks. They're mentally prepared to buy."
+            directorNote: "When people see the landing page, they know what to expect. No surprises = more confidence = more clicks. They're mentally ready."
           }
         ]
       }
@@ -723,7 +723,7 @@ const App = () => {
   // RESULTS VIEW (Both Modes)
   // ============================================
   if (view === 'results') {
-    return (
+  return (
       <div className={`min-h-screen ${tierData.bgColor} text-white font-sans flex flex-col`}>
         <div className="flex-1 flex flex-col items-center justify-center p-6">
           <div className="max-w-sm w-full">
@@ -768,7 +768,7 @@ const App = () => {
                   <div className="text-red-400 font-black text-lg">{TOTAL_QUESTIONS - totalCorrect}</div>
                   <div className="text-gray-500 text-xs uppercase">Wrong</div>
                 </div>
-                <div>
+      <div>
                   <div className="text-blue-400 font-black text-lg">{TOTAL_QUESTIONS}</div>
                   <div className="text-gray-500 text-xs uppercase">Total</div>
                 </div>

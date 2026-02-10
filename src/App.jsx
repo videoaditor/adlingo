@@ -424,6 +424,194 @@ const COURSE_DATA = [
         ]
       }
     ]
+  },
+  {
+    id: 7,
+    title: "Level 7: B-roll Density",
+    description: "The #1 mistake that kills retention.",
+    color: "bg-red-500",
+    levels: [
+      {
+        id: "l11",
+        title: "The 2-3 Second Rule",
+        icon: "⏱️",
+        xOffset: 0,
+        questions: [
+          {
+            question: "Your timeline shows a talking head for 8 seconds straight. What do you do?",
+            options: [
+              { text: "Add a zoom at the 4-second mark", correct: false },
+              { text: "Cut to b-roll at 2-second mark, back to face, b-roll again at 5 seconds", correct: true },
+              { text: "Speed up the talking head to 1.2x", correct: false },
+              { text: "It's fine—let the message breathe", correct: false }
+            ],
+            directorNote: "B-roll every 2-3 seconds. NOT every 10 seconds. The eye needs constant visual change or it scrolls. A zoom doesn't count as a scene change."
+          },
+          {
+            question: "The script says 'I tried everything—diets, exercise, supplements, nothing worked.' How many b-roll clips do you need for this line?",
+            options: [
+              { text: "1 long montage clip", correct: false },
+              { text: "4-5 quick cuts (sad eating, treadmill, pills, frustrated face, scale)", correct: true },
+              { text: "Just text overlay listing 'Diets, Exercise, Supplements'", correct: false },
+              { text: "Keep on talking head with sad music underneath", correct: false }
+            ],
+            directorNote: "Each item in the list = its own visual. 'Diets' = sad salad eating. 'Exercise' = struggling on treadmill. 'Supplements' = pill bottles. SHOW each one."
+          },
+          {
+            question: "You scrub through your timeline quickly. You notice it looks 'static' even though there's b-roll. What's wrong?",
+            options: [
+              { text: "The b-roll clips are too similar to each other", correct: false },
+              { text: "The b-roll clips are too long—they're 5-10 seconds each instead of 1-2 seconds", correct: true },
+              { text: "The b-roll needs color grading to stand out", correct: false },
+              { text: "There's no music underneath", correct: false }
+            ],
+            directorNote: "The scrub test reveals pacing. If you scrub and it looks like a slideshow, your clips are too long. B-roll should be 1-2 second bursts, not 5+ second holds."
+          },
+          {
+            question: "The voiceover says 'Within just 2 weeks, I saw results.' How do you visualize this?",
+            options: [
+              { text: "Calendar animation showing 14 days passing", correct: false },
+              { text: "Before/after comparison appearing side by side", correct: false },
+              { text: "Text saying '2 WEEKS' then quick cut to smiling result shot", correct: true },
+              { text: "Timer counting up from 0 to 14", correct: false }
+            ],
+            directorNote: "Speed > accuracy for b-roll. A quick text flash + result shot takes 1.5 seconds. A calendar animation takes 3-4 seconds. Faster = higher retention."
+          }
+        ]
+      },
+      {
+        id: "l12",
+        title: "Visual Matching",
+        icon: "🎯",
+        xOffset: 40,
+        questions: [
+          {
+            question: "The script mentions 'bloating after every meal.' You have 3 clips: someone holding stomach, someone looking in mirror, someone pushing away food. What do you use?",
+            options: [
+              { text: "Just the stomach-holding clip—it's the most direct", correct: false },
+              { text: "All 3 in rapid succession (0.8s each) to show the full experience", correct: true },
+              { text: "The mirror clip because it shows self-consciousness", correct: false },
+              { text: "The food-pushing clip because it implies the consequence", correct: false }
+            ],
+            directorNote: "One problem = multiple angles. Stomach holding, then mirror check, then food frustration—all in 2.5 seconds. The viewer FEELS the full experience."
+          },
+          {
+            question: "The script says 'My joints were killing me.' What do you search for in your b-roll library?",
+            options: [
+              { text: "Person sitting sadly on couch", correct: false },
+              { text: "3D medical animation of inflamed joints", correct: false },
+              { text: "Close-up of hands rubbing knee + person wincing + standing up slowly", correct: true },
+              { text: "Doctor pointing at X-ray", correct: false }
+            ],
+            directorNote: "Pain needs SPECIFIC visuals. Not 'sad person'—knee rubbing, wincing, struggling to stand. The viewer should almost feel it in THEIR joints."
+          },
+          {
+            question: "The script says 'Waking up tired, dragging through the day.' How many scene changes should this line have?",
+            options: [
+              { text: "2 scenes (waking up + dragging through day)", correct: false },
+              { text: "4-5 scenes (alarm, rubbing eyes, coffee, yawning at desk, checking time)", correct: true },
+              { text: "1 long shot of someone looking exhausted", correct: false },
+              { text: "Just show a clock going from 6am to 6pm", correct: false }
+            ],
+            directorNote: "This line is ~3 seconds when spoken. That's 4-5 b-roll cuts at 0.6-0.8 seconds each. Alarm BEEP, rub eyes, reach for coffee, yawn, clock check. Rapid fire."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 8,
+    title: "Level 8: UGC Realism",
+    description: "Making AI and stock look authentic.",
+    color: "bg-teal-500",
+    levels: [
+      {
+        id: "l13",
+        title: "Logistical Realism",
+        icon: "📱",
+        xOffset: 0,
+        questions: [
+          {
+            question: "You're creating a 'bathroom mirror selfie check' moment. What lighting setup do you look for?",
+            options: [
+              { text: "Soft ring light with beauty filter", correct: false },
+              { text: "Harsh overhead vanity lights, unflattering angles, maybe slightly yellow", correct: true },
+              { text: "Natural window light from the side", correct: false },
+              { text: "Professional 3-point lighting setup", correct: false }
+            ],
+            directorNote: "UGC should look like real people actually film. Bathroom lights are harsh and unflattering. That's what makes it REAL."
+          },
+          {
+            question: "The brief says 'someone applying the serum in their bathroom.' What camera angle screams 'this is real UGC'?",
+            options: [
+              { text: "Tripod at eye level, perfectly framed", correct: false },
+              { text: "Phone propped against something, slightly tilted, maybe cut off at edges", correct: true },
+              { text: "Over-the-shoulder professional shot", correct: false },
+              { text: "Mirror reflection with ring light visible", correct: false }
+            ],
+            directorNote: "Ask: 'How would a normal person actually film this?' Phone propped against a shampoo bottle. Slightly crooked. Maybe finger covering corner briefly. That's UGC."
+          },
+          {
+            question: "You're generating AI footage of someone taking a supplement. The image looks too perfect. What imperfection do you add?",
+            options: [
+              { text: "Heavy Instagram filter", correct: false },
+              { text: "Slight motion blur, compression artifacts, maybe a strand of hair out of place", correct: true },
+              { text: "Dramatic shadows", correct: false },
+              { text: "Vintage film grain overlay", correct: false }
+            ],
+            directorNote: "Real phone videos have motion blur, focus hunting, compression. AI images look too crisp. Add imperfection to sell authenticity."
+          },
+          {
+            question: "The script needs a 'frustrated person at their desk' shot. What background details make it feel real?",
+            options: [
+              { text: "Clean minimalist desk with one plant", correct: false },
+              { text: "Cluttered desk—water bottle, random papers, maybe a snack wrapper, cables", correct: true },
+              { text: "Blurred background so desk details don't distract", correct: false },
+              { text: "Aesthetic home office with matching accessories", correct: false }
+            ],
+            directorNote: "Real people have messy desks. Random water bottles. Tangled cables. Post-it notes. The clutter = authenticity."
+          }
+        ]
+      },
+      {
+        id: "l14",
+        title: "Demo > Pitch",
+        icon: "🎬",
+        xOffset: -40,
+        questions: [
+          {
+            question: "You have two hooks: (A) Person talking about how great the product is, (B) Close-up of the product DOING the thing. Which is your A-test?",
+            options: [
+              { text: "A—testimonials build trust first", correct: false },
+              { text: "B—demo hooks outperform pitch hooks 2-3x", correct: true },
+              { text: "Start with A, then quickly show B", correct: false },
+              { text: "Use both simultaneously in split screen", correct: false }
+            ],
+            directorNote: "Our data shows demo ads beat pitch ads consistently. SHOW the product working. Don't tell me it works."
+          },
+          {
+            question: "The product is a blender. What's a demo hook vs a pitch hook?",
+            options: [
+              { text: "Demo: someone smiling while drinking smoothie. Pitch: ice being pulverized.", correct: false },
+              { text: "Demo: ice being pulverized in real-time. Pitch: person talking about motor power.", correct: true },
+              { text: "Demo: before/after comparison. Pitch: customer review.", correct: false },
+              { text: "They're the same thing with different words.", correct: false }
+            ],
+            directorNote: "Demo = the product DOING. Pitch = someone TALKING about the product. Ice getting destroyed = demo. 'This blender is so powerful' = pitch."
+          },
+          {
+            question: "The script says 'Watch how easy this is.' Why is this line powerful?",
+            options: [
+              { text: "The word 'easy' appeals to lazy buyers", correct: false },
+              { text: "'Watch' is a direct call to action", correct: false },
+              { text: "It promises a DEMONSTRATION is coming—creates anticipation", correct: true },
+              { text: "It's not powerful, it's generic", correct: false }
+            ],
+            directorNote: "'Watch how...' creates anticipation for proof. The viewer expects to SEE something. Now you MUST deliver a visual demo or you break the promise."
+          }
+        ]
+      }
+    ]
   }
 ];
 

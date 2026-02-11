@@ -1,0 +1,9 @@
+We need 4 images for the "visualize this hook" question:
+Hook: "Women are going crazy over this collagen"
+
+Option A: Social proof grid (correct) - 3x3 grid of women holding collagen product
+Option B: Pixelated intrigue shot - pixelated/censored face with question marks
+Option C: Woman in rage - angry woman, red tones (WRONG interpretation of "crazy")
+Option D: Red circle product page - product page screenshot with red circle
+
+For now using placeholders - will need real images

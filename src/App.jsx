@@ -59,6 +59,24 @@ const SKILL_QUESTIONS = [
   {
     id: 3,
     round: 1,
+    type: 'image-options',
+    visual: {
+      type: 'hook-text',
+      hookText: '"Women are going CRAZY over this collagen..."',
+      mascotSays: '🎯 How do you visualize this hook?',
+    },
+    question: "Pick the visual that best matches this hook:",
+    imageOptions: [
+      { imageSrc: '/quiz-images/ugc-gracen.png', label: 'Social proof grid — women holding the product', correct: true },
+      { imageSrc: '/quiz-images/ugc-bokeh-mistake.png', label: 'Pixelated intrigue — blur/question marks', correct: false },
+      { imageSrc: '/quiz-images/ugc-skeptic.png', label: 'Woman looking angry ("crazy" = rage)', correct: false },
+      { imageSrc: '/quiz-images/product-badge.png', label: 'Product page with red circles', correct: false },
+    ],
+    note: '"Going crazy" means excitement, not anger. Show a GRID of women genuinely excited about the product. That\'s what makes viewers think "I need what they have."',
+  },
+  {
+    id: 4,
+    round: 1,
     // Visual: show a grid of real UGC avatars from our work
     visual: {
       type: 'ugc-grid',
@@ -82,7 +100,7 @@ const SKILL_QUESTIONS = [
     note: "Grid triggers herd mentality. Seeing 6+ real faces at once makes viewers think 'everyone has this — I'm missing out.'",
   },
   {
-    id: 4,
+    id: 5,
     round: 1,
     // Visual: show a fake timeline with timing markers
     visual: {
@@ -99,7 +117,7 @@ const SKILL_QUESTIONS = [
     note: "The 2-Second Rule. Every 2-3 seconds needs a VISUAL change — zoom, cut, text pop, overlay. Audio changes alone don't reset attention.",
   },
   {
-    id: 5,
+    id: 6,
     round: 1,
     // Visual: show a waveform/timeline with SFX markers
     visual: {
@@ -116,7 +134,7 @@ const SKILL_QUESTIONS = [
     note: "Movement Rule: Everything that moves needs a sound. Slide = whoosh. Pop-up = click. Movement without sound feels incomplete.",
   },
   {
-    id: 6,
+    id: 7,
     round: 1,
     // Visual: show two-track music comparison
     visual: {
@@ -133,7 +151,7 @@ const SKILL_QUESTIONS = [
     note: "Music break signals emotional change — the shift from dark to bright buys you 10 more seconds of attention.",
   },
   {
-    id: 7,
+    id: 8,
     round: 1,
     // Visual: show the actual UGC image with bokeh background and circle the problem
     visual: {
@@ -152,7 +170,7 @@ const SKILL_QUESTIONS = [
     note: "iPhones don't blur backgrounds in video mode. If your AI UGC has bokeh, it screams 'fake' to anyone who's filmed with a phone.",
   },
   {
-    id: 8,
+    id: 9,
     round: 1,
     // Visual: show a product photo and ask about workflow
     visual: {
@@ -170,7 +188,7 @@ const SKILL_QUESTIONS = [
     note: "Kling frame mode preserves the exact product appearance. Without a reference image, AI will hallucinate your product.",
   },
   {
-    id: 9,
+    id: 10,
     round: 1,
     type: 'freetext',
     // Visual: show the actual AI-generated image
@@ -188,7 +206,7 @@ const SKILL_QUESTIONS = [
 
 const INTEL_QUESTIONS = [
   {
-    id: 10,
+    id: 11,
     round: 2,
     type: 'multiselect',
     visual: {
@@ -202,7 +220,7 @@ const INTEL_QUESTIONS = [
     ],
   },
   {
-    id: 11,
+    id: 12,
     round: 2,
     type: 'multiselect',
     visual: {
@@ -216,7 +234,7 @@ const INTEL_QUESTIONS = [
     ],
   },
   {
-    id: 12,
+    id: 13,
     round: 2,
     type: 'brandinfo',
     visual: {
@@ -523,6 +541,16 @@ const VisualPromptTest = ({ src }) => (
   </motion.div>
 );
 
+const VisualHookText = ({ hookText }) => (
+  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+    <div className="rounded-2xl border-2 border-orange-500/20 bg-gradient-to-br from-orange-500/10 to-transparent p-5 text-center">
+      <p className="text-xs text-orange-400/70 font-semibold mb-2 uppercase tracking-wider">📝 The Hook</p>
+      <p className="text-xl font-black text-white leading-snug">{hookText}</p>
+      <p className="text-xs text-white/40 mt-3">Pick the best visual below ↓</p>
+    </div>
+  </motion.div>
+);
+
 // Render the right visual for each question
 const QuestionVisual = ({ visual }) => {
   if (!visual || visual.type === 'none') return null;
@@ -536,6 +564,7 @@ const QuestionVisual = ({ visual }) => {
     case 'spot-the-error': return <VisualSpotError src={visual.src} />;
     case 'workflow-comparison': return <VisualWorkflow productSrc={visual.productSrc} />;
     case 'prompt-test': return <VisualPromptTest src={visual.src} />;
+    case 'hook-text': return <VisualHookText hookText={visual.hookText} />;
     default: return null;
   }
 };
@@ -578,6 +607,46 @@ const OptionButton = ({ text, index, selected, correct, status, onSelect, disabl
         </motion.div>
         <span className={`pt-0.5 ${textColor} font-medium text-[14px] leading-snug`}>{text}</span>
       </div>
+    </motion.button>
+  );
+};
+
+// ─── IMAGE OPTION BUTTON (for visual answer questions) ───
+const ImageOptionButton = ({ imageSrc, label, index, selected, correct, status, onSelect, disabled }) => {
+  const letters = ['A', 'B', 'C', 'D'];
+  const isSelected = selected === index;
+  const isCorrect = status !== 'idle' && correct;
+  const isWrong = status === 'wrong' && isSelected;
+
+  let borderColor = 'border-white/10';
+  let ringColor = '';
+  if (status === 'idle' && isSelected) { borderColor = 'border-orange-500'; ringColor = 'ring-2 ring-orange-500/30'; }
+  else if (isCorrect) { borderColor = 'border-emerald-500'; ringColor = 'ring-2 ring-emerald-500/30'; }
+  else if (isWrong) { borderColor = 'border-red-500'; ringColor = 'ring-2 ring-red-500/30'; }
+
+  return (
+    <motion.button
+      initial={{ scale: 0.9, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ delay: 0.05 + index * 0.08, type: 'spring', stiffness: 300, damping: 25 }}
+      onClick={() => !disabled && onSelect(index)}
+      disabled={disabled}
+      className={`relative rounded-xl border-2 ${borderColor} ${ringColor} overflow-hidden transition-all active:scale-[0.97] ${disabled ? '' : 'cursor-pointer'}`}
+    >
+      <img src={imageSrc} alt={label} className="w-full aspect-square object-cover" loading="eager" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      <motion.div
+        animate={isWrong ? { x: [0, -4, 4, -4, 4, 0] } : {}}
+        transition={{ duration: 0.4 }}
+        className={`absolute top-2 left-2 w-7 h-7 rounded-lg border-2 flex items-center justify-center text-xs font-black ${
+          isCorrect ? 'border-emerald-500 text-emerald-400 bg-emerald-500/80' :
+          isWrong ? 'border-red-500 text-red-400 bg-red-500/80' :
+          isSelected ? 'border-orange-500 text-orange-400 bg-orange-500/80' : 'border-white/40 text-white bg-black/60'
+        }`}
+      >
+        {isCorrect && status !== 'idle' ? <Check size={12} strokeWidth={3} /> : isWrong ? <X size={12} strokeWidth={3} /> : letters[index]}
+      </motion.div>
+      <p className="absolute bottom-2 left-2 right-2 text-[11px] font-semibold text-white/90 leading-tight">{label}</p>
     </motion.button>
   );
 };
@@ -773,10 +842,13 @@ const ThankYou = ({ tier }) => (
     <div className="max-w-sm w-full text-center">
       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200 }}><Mascot state="happy" size="lg" /></motion.div>
       <motion.h2 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="text-3xl font-black text-white mt-6 mb-2">Check Your Inbox! 📬</motion.h2>
-      <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="text-white/50 text-sm mb-8">Your personalized {tier.name} audit report is being generated.</motion.p>
-      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.7 }}>
-        <a href="https://aditor.ai" target="_blank" rel="noopener noreferrer" className="block w-full py-4 rounded-2xl font-bold text-white/70 border-2 border-white/10 hover:border-white/20 transition-all active:scale-[0.98]">
-          Visit Aditor.ai <ExternalLink size={14} className="inline ml-1" />
+      <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="text-white/50 text-sm mb-6">Your personalized {tier.name} audit report is being generated.</motion.p>
+      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.7 }} className="space-y-3">
+        <a href="https://whop.com/aditor-wisdom/ai-ads-masterclass-ecom/" target="_blank" rel="noopener noreferrer" className="block w-full py-4 rounded-2xl font-bold text-white border-2 transition-all active:scale-[0.98]" style={{ background: `linear-gradient(135deg, ${BRAND_ORANGE} 0%, #FF7A45 100%)`, borderColor: BRAND_ORANGE }}>
+          🔥 Steal Our AI Ads Workflows <ExternalLink size={14} className="inline ml-1" />
+        </a>
+        <a href="https://aditor.ai" target="_blank" rel="noopener noreferrer" className="block w-full py-3 rounded-2xl font-medium text-white/50 border border-white/10 hover:border-white/20 transition-all active:scale-[0.98] text-sm">
+          Visit Aditor.ai
         </a>
       </motion.div>
     </div>
@@ -800,7 +872,8 @@ const App = () => {
   const [mascotState, setMascotState] = useState('thinking');
 
   const q = ALL_QUESTIONS[qIndex];
-  const isSkillQ = q && q.round === 1 && q.type !== 'freetext';
+  const isImageOptionsQ = q && q.type === 'image-options';
+  const isSkillQ = q && q.round === 1 && q.type !== 'freetext' && q.type !== 'image-options';
   const isFreetextQ = q && q.type === 'freetext';
   const isMultiQ = q && q.type === 'multiselect';
   const isBrandQ = q && q.type === 'brandinfo';
@@ -815,7 +888,14 @@ const App = () => {
   };
 
   const handleCheck = () => {
-    if (isSkillQ) {
+    if (isImageOptionsQ) {
+      if (selected === null) return;
+      const isCorrect = q.imageOptions[selected].correct;
+      setStatus(isCorrect ? 'correct' : 'wrong');
+      setMascotState(isCorrect ? 'happy' : 'sad');
+      if (isCorrect) { setScore(s => s + 1); setShowConfetti(true); setTimeout(() => setShowConfetti(false), 1500); }
+      setAnswers(prev => ({ ...prev, [q.id]: { selected: q.imageOptions[selected].label, correct: isCorrect } }));
+    } else if (isSkillQ) {
       if (selected === null) return;
       const isCorrect = q.options[selected].correct;
       setStatus(isCorrect ? 'correct' : 'wrong');
@@ -904,6 +984,15 @@ const App = () => {
             </div>
           )}
 
+          {/* Image Options (visual answers) */}
+          {isImageOptionsQ && (
+            <div className="grid grid-cols-2 gap-2">
+              {q.imageOptions.map((opt, idx) => (
+                <ImageOptionButton key={`${q.id}-img-${idx}`} imageSrc={opt.imageSrc} label={opt.label} index={idx} selected={selected} correct={opt.correct} status={status} onSelect={handleSelect} disabled={status !== 'idle'} />
+              ))}
+            </div>
+          )}
+
           {/* Multi-select */}
           {isMultiQ && <ChipSelect options={q.options} selected={multiSelected} onToggle={(opt) => setMultiSelected(prev => prev.includes(opt) ? prev.filter(o => o !== opt) : [...prev, opt])} />}
 
@@ -929,11 +1018,11 @@ const App = () => {
         <div className="max-w-lg mx-auto p-4">
           {status === 'idle' ? (
             <button onClick={handleCheck}
-              disabled={isSkillQ ? selected === null : isFreetextQ ? !freeText.trim() : isMultiQ ? multiSelected.length === 0 : isBrandQ ? !brandName.trim() : true}
+              disabled={(isSkillQ || isImageOptionsQ) ? selected === null : isFreetextQ ? !freeText.trim() : isMultiQ ? multiSelected.length === 0 : isBrandQ ? !brandName.trim() : true}
               className="w-full py-4 rounded-2xl font-black text-white text-base uppercase tracking-wider active:scale-[0.98] transition-all disabled:opacity-30"
               style={{ background: `linear-gradient(135deg, ${BRAND_ORANGE}, #FF4500)` }}
             >
-              {isSkillQ ? 'Check' : 'Continue'}
+              {(isSkillQ || isImageOptionsQ) ? 'Check' : 'Continue'}
             </button>
           ) : (
             <motion.button initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} onClick={advance}

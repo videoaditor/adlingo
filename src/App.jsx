@@ -6,6 +6,7 @@ import { getAllLessonIds } from './data/courseData';
 import Header from './components/Header';
 import Login from './pages/Login';
 import WorldMap from './pages/WorldMap';
+import Course from './pages/Course';
 import Lesson from './pages/Lesson';
 import Admin from './pages/Admin';
 
@@ -107,6 +108,15 @@ const App = () => {
               <>
                 <Header user={user} onLogout={handleLogout} />
                 <WorldMap user={user} />
+              </>
+            }
+          />
+          <Route
+            path="/course"
+            element={
+              <>
+                <Header user={user} onLogout={handleLogout} />
+                <Course user={user} />
               </>
             }
           />

@@ -49,21 +49,20 @@ export default function Header({ user, onLogout }) {
       </header>
 
       {/* Bottom tab bar — iOS style */}
-      {location.pathname !== '/admin' && !location.pathname.startsWith('/lesson') && (
+      {location.pathname !== '/admin' && !location.pathname.startsWith('/lesson') && !location.pathname.startsWith('/admin') && (
         <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0f1328]/98 backdrop-blur-xl border-t border-white/5 pb-[env(safe-area-inset-bottom)]">
           <div className="max-w-lg mx-auto flex items-center justify-around px-2 py-1.5">
             <TabItem
-              icon={Map}
-              label="World"
-              active={location.pathname === '/'}
-              onClick={() => navigate('/')}
+              icon={BookOpen}
+              label="Course"
+              active={location.pathname === '/course'}
+              onClick={() => navigate('/course')}
             />
             <TabItem
-              icon={BookOpen}
-              label="Skills"
-              active={false}
-              onClick={() => {}}
-              disabled
+              icon={Map}
+              label="Test"
+              active={location.pathname === '/'}
+              onClick={() => navigate('/')}
             />
             <TabItem
               icon={BarChart3}

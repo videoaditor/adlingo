@@ -10,7 +10,7 @@ export default function Lesson({ user, onLessonComplete }) {
   const { lessonId } = useParams();
   const navigate = useNavigate();
   const { lesson, world } = getLessonById(lessonId);
-  const [phase, setPhase] = useState(lesson?.videoUrl ? 'video' : 'quiz');
+  const [phase, setPhase] = useState('quiz');
   const [result, setResult] = useState(null);
 
   if (!lesson || !world) {
@@ -147,7 +147,7 @@ export default function Lesson({ user, onLessonComplete }) {
             </motion.button>
             {!passed && (
               <motion.button
-                onClick={() => { setPhase(lesson.videoUrl ? 'video' : 'quiz'); setResult(null); }}
+                onClick={() => { setPhase('quiz'); setResult(null); }}
                 whileTap={{ scale: 0.97 }}
                 className="w-full py-4 bg-[#141833] text-gray-300 font-bold rounded-2xl text-[14px] border-2 border-white/[0.06] flex items-center justify-center gap-2"
               >

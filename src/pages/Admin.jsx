@@ -21,7 +21,7 @@ export default function Admin() {
   useEffect(() => {
     // Auto-auth if logged in as admin email
     const auth = getStoredAuth();
-    if (auth?.email === 'alan@aditor.ai') {
+    if (auth?.email?.endsWith('@aditor.ai')) {
       setAuthed(true);
     }
   }, []);

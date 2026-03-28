@@ -36,7 +36,7 @@ export default function Header({ user, onLogout }) {
               <Trophy size={13} strokeWidth={2.5} />
               {xp.toLocaleString()}
             </div>
-            {user?.email === 'alan@aditor.ai' && location.pathname !== '/admin' && (
+            {user?.email?.endsWith('@aditor.ai') && location.pathname !== '/admin' && (
               <button
                 onClick={() => navigate('/admin')}
                 className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition border border-white/5"

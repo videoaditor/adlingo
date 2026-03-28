@@ -43,85 +43,69 @@ export default function Course({ user }) {
   const selectedWorld = activeLesson?.world;
 
   // Sidebar content — shared between mobile and desktop
-  const renderSidebar = (isMobile = false) => (
-    <div className={`space-y-1 ${isMobile ? '' : ''}`}>
+  const renderSidebar = () => (
+    <div>
       {worlds.map((world) => {
         const unlocked = isWorldUnlocked(world);
         const sortedLessons = world.lessons.sort((a, b) => a.order - b.order);
 
         return (
-          <div key={world.id} className="mb-1">
+          <div key={world.id} className="mb-0.5">
             {/* World heading */}
-            <div className={`flex items-center gap-2.5 px-3 py-2.5 ${!unlocked ? 'opacity-40' : ''}`}>
-              <div
-                className={`w-1 h-5 rounded-full shrink-0 ${unlocked
-                  ? `bg-gradient-to-b ${world.themeColor}`
-                  : 'bg-gray-700'}`}
-              />
-              <span className={`text-[11px] font-black uppercase tracking-[0.12em] ${
-                unlocked ? 'text-gray-300' : 'text-gray-600'
+            <div className={`flex items-center gap-2 px-3 py-2 ${!unlocked ? 'opacity-30' : ''}`}>
+              {!unlocked && <Lock size={9} className="text-gray-600 shrink-0" />}
+              <span className={`text-[11px] font-bold uppercase tracking-[0.1em] ${
+                unlocked ? 'text-gray-400' : 'text-gray-600'
               }`}>
                 {world.name}
               </span>
-              {!unlocked && <Lock size={10} className="text-gray-600 ml-auto" />}
             </div>
 
-            {/* Lessons */}
-            <div className="space-y-0.5">
-              {sortedLessons.map((lesson, lIdx) => {
-                const isComplete = completedLessons.includes(lesson.id);
-                const lUnlocked = unlocked && isLessonUnlocked(lesson, world);
-                const isActive = selectedLesson?.id === lesson.id;
+            {/* Lessons — only show if unlocked */}
+            {unlocked && (
+              <div>
+                {sortedLessons.map((lesson, lIdx) => {
+                  const isComplete = completedLessons.includes(lesson.id);
+                  const lUnlocked = isLessonUnlocked(lesson, world);
+                  const isActive = selectedLesson?.id === lesson.id;
 
-                return (
-                  <button
-                    key={lesson.id}
-                    onClick={() => lUnlocked && setActiveLesson({ lesson, world })}
-                    disabled={!lUnlocked}
-                    className={`
-                      w-full flex items-center gap-2.5 px-3 py-2.5 text-left transition-all rounded-lg mx-0
-                      ${isActive
-                        ? 'bg-orange-500/15 border-l-2 border-orange-400'
-                        : lUnlocked
-                          ? 'hover:bg-white/[0.04] border-l-2 border-transparent'
-                          : 'opacity-35 cursor-not-allowed border-l-2 border-transparent'}
-                    `}
-                  >
-                    {/* Status icon */}
-                    <div className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 text-[10px] font-black
-                      ${isComplete
-                        ? 'bg-emerald-500/20 text-emerald-400'
-                        : isActive
-                          ? 'bg-orange-500/20 text-orange-400'
+                  return (
+                    <button
+                      key={lesson.id}
+                      onClick={() => lUnlocked && setActiveLesson({ lesson, world })}
+                      disabled={!lUnlocked}
+                      className={`
+                        w-full flex items-center gap-2 px-3 py-1.5 text-left transition-all
+                        ${isActive
+                          ? 'bg-orange-500/12 border-l-2 border-orange-400'
                           : lUnlocked
-                            ? 'bg-white/[0.05] text-gray-500'
-                            : 'text-gray-700'}
-                    `}>
+                            ? 'hover:bg-white/[0.03] border-l-2 border-transparent'
+                            : 'opacity-30 cursor-not-allowed border-l-2 border-transparent'}
+                      `}
+                    >
                       {isComplete ? (
-                        <CheckCircle size={12} strokeWidth={2.5} />
+                        <CheckCircle size={11} strokeWidth={2.5} className="text-emerald-400 shrink-0" />
                       ) : !lUnlocked ? (
-                        <Lock size={10} />
+                        <Lock size={10} className="text-gray-700 shrink-0" />
+                      ) : isActive ? (
+                        <Play size={10} className="text-orange-400 shrink-0" fill="currentColor" />
                       ) : (
-                        lIdx + 1
+                        <span className="text-[10px] text-gray-600 font-medium w-[11px] text-center shrink-0">{lIdx + 1}</span>
                       )}
-                    </div>
 
-                    <span className={`text-[13px] font-medium truncate flex-1 ${
-                      isActive ? 'text-orange-200'
-                      : isComplete ? 'text-emerald-300/70'
-                      : lUnlocked ? 'text-gray-300'
-                      : 'text-gray-600'
-                    }`}>
-                      {lesson.title}
-                    </span>
-
-                    {isActive && (
-                      <Play size={10} className="text-orange-400 shrink-0" fill="currentColor" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+                      <span className={`text-[13px] truncate flex-1 ${
+                        isActive ? 'text-orange-200 font-medium'
+                        : isComplete ? 'text-emerald-300/60'
+                        : lUnlocked ? 'text-gray-400'
+                        : 'text-gray-600'
+                      }`}>
+                        {lesson.title}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         );
       })}
@@ -316,7 +300,7 @@ export default function Course({ user }) {
 
             <div className="px-2">
               <div className="max-w-lg mx-auto">
-                {renderSidebar(true)}
+                {renderSidebar()}
               </div>
             </div>
           </div>

@@ -31,7 +31,7 @@ export default function Header({ user, onLogout }) {
           {/* Stats pills */}
           <div className="flex items-center gap-1.5">
             {streak > 0 && (
-              <div className="flex items-center gap-1 bg-orange-500/15 text-orange-400 px-2.5 py-1.5 rounded-xl text-xs font-bold border border-orange-500/20">
+              <div className="hidden lg:flex items-center gap-1 bg-orange-500/15 text-orange-400 px-2.5 py-1.5 rounded-xl text-xs font-bold border border-orange-500/20">
                 <Flame size={13} strokeWidth={2.5} />
                 {streak}
               </div>

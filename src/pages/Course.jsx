@@ -44,68 +44,87 @@ export default function Course({ user }) {
 
   // Sidebar content — shared between mobile and desktop
   const renderSidebar = () => (
-    <div>
+    <div className="space-y-3">
       {worlds.map((world) => {
         const unlocked = isWorldUnlocked(world);
         const sortedLessons = world.lessons.sort((a, b) => a.order - b.order);
 
+        if (!unlocked) {
+          // Locked world — just a grayed-out title
+          return (
+            <div key={world.id} className="flex items-center gap-2 px-3 py-2 opacity-30">
+              <Lock size={10} className="text-gray-600 shrink-0" />
+              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-gray-600">
+                {world.name}
+              </span>
+            </div>
+          );
+        }
+
+        // Unlocked world — show heading + all lessons
         return (
-          <div key={world.id} className="mb-0.5">
-            {/* World heading */}
-            <div className={`flex items-center gap-2 px-3 py-2 ${!unlocked ? 'opacity-30' : ''}`}>
-              {!unlocked && <Lock size={9} className="text-gray-600 shrink-0" />}
-              <span className={`text-[11px] font-bold uppercase tracking-[0.1em] ${
-                unlocked ? 'text-gray-400' : 'text-gray-600'
-              }`}>
+          <div key={world.id}>
+            <div className="flex items-center gap-2.5 px-3 py-2">
+              <div className={`w-1.5 h-5 rounded-full shrink-0 bg-gradient-to-b ${world.themeColor}`} />
+              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-gray-300">
                 {world.name}
               </span>
             </div>
 
-            {/* Lessons — only show if unlocked */}
-            {unlocked && (
-              <div>
-                {sortedLessons.map((lesson, lIdx) => {
-                  const isComplete = completedLessons.includes(lesson.id);
-                  const lUnlocked = isLessonUnlocked(lesson, world);
-                  const isActive = selectedLesson?.id === lesson.id;
+            <div className="space-y-0.5">
+              {sortedLessons.map((lesson, lIdx) => {
+                const isComplete = completedLessons.includes(lesson.id);
+                const lUnlocked = isLessonUnlocked(lesson, world);
+                const isActive = selectedLesson?.id === lesson.id;
 
-                  return (
-                    <button
-                      key={lesson.id}
-                      onClick={() => lUnlocked && setActiveLesson({ lesson, world })}
-                      disabled={!lUnlocked}
-                      className={`
-                        w-full flex items-center gap-2 px-3 py-1.5 text-left transition-all
-                        ${isActive
-                          ? 'bg-orange-500/12 border-l-2 border-orange-400'
+                return (
+                  <button
+                    key={lesson.id}
+                    onClick={() => lUnlocked && setActiveLesson({ lesson, world })}
+                    disabled={!lUnlocked}
+                    className={`
+                      w-full flex items-center gap-2.5 px-3 py-2 text-left transition-all rounded-lg
+                      ${isActive
+                        ? 'bg-orange-500/15 border-l-2 border-orange-400'
+                        : lUnlocked
+                          ? 'hover:bg-white/[0.04] border-l-2 border-transparent'
+                          : 'opacity-35 cursor-not-allowed border-l-2 border-transparent'}
+                    `}
+                  >
+                    <div className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 text-[10px] font-black
+                      ${isComplete
+                        ? 'bg-emerald-500/20 text-emerald-400'
+                        : isActive
+                          ? 'bg-orange-500/20 text-orange-400'
                           : lUnlocked
-                            ? 'hover:bg-white/[0.03] border-l-2 border-transparent'
-                            : 'opacity-30 cursor-not-allowed border-l-2 border-transparent'}
-                      `}
-                    >
+                            ? 'bg-white/[0.05] text-gray-500'
+                            : 'text-gray-700'}
+                    `}>
                       {isComplete ? (
-                        <CheckCircle size={11} strokeWidth={2.5} className="text-emerald-400 shrink-0" />
+                        <CheckCircle size={12} strokeWidth={2.5} />
                       ) : !lUnlocked ? (
-                        <Lock size={10} className="text-gray-700 shrink-0" />
-                      ) : isActive ? (
-                        <Play size={10} className="text-orange-400 shrink-0" fill="currentColor" />
+                        <Lock size={10} />
                       ) : (
-                        <span className="text-[10px] text-gray-600 font-medium w-[11px] text-center shrink-0">{lIdx + 1}</span>
+                        lIdx + 1
                       )}
+                    </div>
 
-                      <span className={`text-[13px] truncate flex-1 ${
-                        isActive ? 'text-orange-200 font-medium'
-                        : isComplete ? 'text-emerald-300/60'
-                        : lUnlocked ? 'text-gray-400'
-                        : 'text-gray-600'
-                      }`}>
-                        {lesson.title}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
+                    <span className={`text-[13px] font-medium truncate flex-1 ${
+                      isActive ? 'text-orange-200'
+                      : isComplete ? 'text-emerald-300/70'
+                      : lUnlocked ? 'text-gray-300'
+                      : 'text-gray-600'
+                    }`}>
+                      {lesson.title}
+                    </span>
+
+                    {isActive && (
+                      <Play size={10} className="text-orange-400 shrink-0" fill="currentColor" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         );
       })}

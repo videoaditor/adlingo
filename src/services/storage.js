@@ -7,7 +7,6 @@ const defaultUser = {
   xp: 45,
   streak: 3,
   hearts: 5,
-  gems: 120,
   completedLevels: [],
   currentRankIndex: 0,
   uid: 'guest'

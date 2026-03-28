@@ -16,13 +16,37 @@ const App = () => {
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState(null);
 
-  // Check stored auth on mount
+  // Check stored auth on mount — also handle auto-login from Hub via URL param
   useEffect(() => {
     const stored = getStoredAuth();
     if (stored) {
       setUser(stored);
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+
+    // Auto-login: check for ?email= param (passed from Editor Hub)
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get('email');
+    if (emailParam) {
+      // Clean up the URL (remove ?email= so it doesn't linger)
+      window.history.replaceState({}, '', window.location.pathname);
+      // Auto-login with the email
+      (async () => {
+        try {
+          const player = await findPlayerByEmail(emailParam.trim().toLowerCase());
+          if (player) {
+            storeAuth(player);
+            setUser(player);
+          }
+        } catch (err) {
+          console.error('Auto-login failed:', err);
+        }
+        setLoading(false);
+      })();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   // Login handler

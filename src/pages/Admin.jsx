@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Plus, Trash2, GripVertical, Save, ChevronDown, ChevronRight,
-  Video, Image, FileText, CheckCircle, X
+  Video, Image, FileText, CheckCircle, X, BookOpen, Map, Link, ExternalLink
 } from 'lucide-react';
 import { getWorlds, saveWorlds, generateId } from '../data/courseData';
 import { checkAdminPassword, getStoredAuth } from '../services/auth';
@@ -16,6 +16,7 @@ export default function Admin() {
   const [expandedWorld, setExpandedWorld] = useState(null);
   const [expandedLesson, setExpandedLesson] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [adminTab, setAdminTab] = useState('course'); // 'course' or 'tests'
 
   useEffect(() => {
     // Auto-auth if logged in as admin email
@@ -210,6 +211,93 @@ export default function Admin() {
         </button>
       </div>
 
+      {/* Tab toggle */}
+      <div className="max-w-3xl mx-auto px-4 pt-4">
+        <div className="flex gap-1 bg-gray-900 rounded-xl p-1 border border-gray-800">
+          <button
+            onClick={() => setAdminTab('course')}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all ${
+              adminTab === 'course'
+                ? 'bg-orange-500 text-white shadow-lg'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <BookOpen size={15} />
+            Course Videos
+          </button>
+          <button
+            onClick={() => setAdminTab('tests')}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all ${
+              adminTab === 'tests'
+                ? 'bg-orange-500 text-white shadow-lg'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <Map size={15} />
+            Test Questions
+          </button>
+        </div>
+      </div>
+
+      {/* Course Videos Tab */}
+      {adminTab === 'course' && (
+        <div className="max-w-3xl mx-auto p-4 space-y-4">
+          <p className="text-gray-500 text-xs">Add video URLs for each lesson. Supports Loom, YouTube, Tella, and Vimeo.</p>
+
+          {worlds.sort((a, b) => a.order - b.order).map((world) => (
+            <div key={world.id} className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+              {/* World header */}
+              <div className="flex items-center gap-3 p-4 border-b border-gray-800/50">
+                <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${world.themeColor} flex items-center justify-center text-xs font-black text-white`}>
+                  {world.order}
+                </div>
+                <div className="flex-1">
+                  <div className="font-bold text-sm">{world.name}</div>
+                  <div className="text-xs text-gray-500">{world.lessons.length} lessons</div>
+                </div>
+              </div>
+
+              {/* Lesson video list */}
+              <div className="divide-y divide-gray-800/50">
+                {world.lessons.sort((a, b) => a.order - b.order).map((lesson) => (
+                  <div key={lesson.id} className="px-4 py-3 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold text-white">{lesson.title}</span>
+                      {lesson.videoUrl ? (
+                        <span className="text-[9px] font-bold text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded uppercase">has video</span>
+                      ) : (
+                        <span className="text-[9px] font-bold text-gray-500 bg-gray-800 px-1.5 py-0.5 rounded uppercase">no video</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Link size={12} className="text-gray-600 shrink-0" />
+                      <input
+                        value={lesson.videoUrl || ''}
+                        onChange={(e) => updateLesson(world.id, lesson.id, 'videoUrl', e.target.value || null)}
+                        placeholder="Paste video URL (Loom, YouTube, Tella, Vimeo)..."
+                        className="flex-1 px-2.5 py-2 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                      />
+                      {lesson.videoUrl && (
+                        <a
+                          href={lesson.videoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 text-gray-500 hover:text-orange-400 transition shrink-0"
+                        >
+                          <ExternalLink size={14} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Tests Tab — existing full editor */}
+      {adminTab === 'tests' && (
       <div className="max-w-3xl mx-auto p-4 space-y-4">
         {/* Worlds */}
         {worlds.sort((a, b) => a.order - b.order).map((world) => (
@@ -465,6 +553,7 @@ export default function Admin() {
           <Plus size={18} /> Add World
         </button>
       </div>
+      )}
     </div>
   );
 }

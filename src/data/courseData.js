@@ -6,7 +6,7 @@ const STORAGE_KEY = 'adlingo_course_data';
 const SEED_WORLDS = [
   {
     id: 'w1',
-    name: 'Hook Highlands',
+    name: 'Timeline Town',
     subtitle: 'MASTER ATTENTION',
     themeColor: 'from-orange-600 to-amber-500',
     bgColor: 'bg-gradient-to-br from-orange-900/40 to-amber-900/20',
@@ -77,7 +77,7 @@ const SEED_WORLDS = [
       },
       {
         id: 'l2',
-        title: 'Disqualification Hooks',
+        title: 'AI Toolshop',
         subtitle: 'Filter for your buyer instantly',
         order: 2,
         videoUrl: null,
@@ -111,7 +111,7 @@ const SEED_WORLDS = [
       },
       {
         id: 'l3',
-        title: 'POV & Mirroring',
+        title: 'Mindset',
         subtitle: 'Make them see themselves',
         order: 3,
         videoUrl: null,

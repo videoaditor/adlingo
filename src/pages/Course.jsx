@@ -49,24 +49,15 @@ export default function Course({ user }) {
         const unlocked = isWorldUnlocked(world);
         const sortedLessons = world.lessons.sort((a, b) => a.order - b.order);
 
-        if (!unlocked) {
-          // Locked world — just a grayed-out title
-          return (
-            <div key={world.id} className="flex items-center gap-2 px-3 py-2 opacity-30">
-              <Lock size={10} className="text-gray-600 shrink-0" />
-              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-gray-600">
-                {world.name}
-              </span>
-            </div>
-          );
-        }
-
-        // Unlocked world — show heading + all lessons
         return (
           <div key={world.id}>
             <div className="flex items-center gap-2.5 px-3 py-2">
-              <div className={`w-1.5 h-5 rounded-full shrink-0 bg-gradient-to-b ${world.themeColor}`} />
-              <span className="text-[11px] font-black uppercase tracking-[0.12em] text-gray-300">
+              {unlocked ? (
+                <div className={`w-1.5 h-5 rounded-full shrink-0 bg-gradient-to-b ${world.themeColor}`} />
+              ) : (
+                <Lock size={10} className="text-gray-600 shrink-0" />
+              )}
+              <span className={`text-[11px] font-black uppercase tracking-[0.12em] ${unlocked ? 'text-gray-300' : 'text-gray-600'}`}>
                 {world.name}
               </span>
             </div>
@@ -74,7 +65,7 @@ export default function Course({ user }) {
             <div className="space-y-0.5">
               {sortedLessons.map((lesson, lIdx) => {
                 const isComplete = completedLessons.includes(lesson.id);
-                const lUnlocked = isLessonUnlocked(lesson, world);
+                const lUnlocked = unlocked && isLessonUnlocked(lesson, world);
                 const isActive = selectedLesson?.id === lesson.id;
 
                 return (
@@ -237,72 +228,89 @@ export default function Course({ user }) {
               </div>
             </div>
 
-            {/* Lessons in this world — below the video */}
+            {/* All worlds and lessons — below the video */}
             <div className="px-4 mt-6">
               <div className="max-w-lg mx-auto">
-                <div className="border-t border-white/5 pt-4">
-                  <h3 className="text-[12px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-3 px-1">
-                    {selectedWorld.name}
-                  </h3>
-                  <div className="space-y-1">
-                    {selectedWorld.lessons.sort((a, b) => a.order - b.order).map((lesson, lIdx) => {
-                      const isComplete = completedLessons.includes(lesson.id);
-                      const lUnlocked = isWorldUnlocked(selectedWorld) && isLessonUnlocked(lesson, selectedWorld);
-                      const isCurrent = lesson.id === selectedLesson.id;
+                <div className="border-t border-white/5 pt-4 space-y-4">
+                  {worlds.map((world) => {
+                    const worldUnlocked = isWorldUnlocked(world);
+                    const sortedLessons = world.lessons.sort((a, b) => a.order - b.order);
 
-                      return (
-                        <button
-                          key={lesson.id}
-                          onClick={() => lUnlocked && setActiveLesson({ lesson, world: selectedWorld })}
-                          disabled={!lUnlocked}
-                          className={`
-                            w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all
-                            ${isCurrent
-                              ? 'bg-orange-500/15 border border-orange-500/30'
-                              : lUnlocked
-                                ? 'hover:bg-white/[0.04] border border-transparent'
-                                : 'opacity-35 cursor-not-allowed border border-transparent'}
-                          `}
-                        >
-                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-[11px] font-black
-                            ${isComplete
-                              ? 'bg-emerald-500/20 text-emerald-400'
-                              : isCurrent
-                                ? 'bg-orange-500/20 text-orange-400'
-                                : lUnlocked
-                                  ? 'bg-white/[0.05] text-gray-500'
-                                  : 'text-gray-700'}
-                          `}>
-                            {isComplete ? (
-                              <CheckCircle size={13} strokeWidth={2.5} />
-                            ) : !lUnlocked ? (
-                              <Lock size={11} />
-                            ) : (
-                              lIdx + 1
-                            )}
-                          </div>
-
-                          <span className={`text-[13px] font-medium flex-1 truncate ${
-                            isCurrent ? 'text-orange-200'
-                            : isComplete ? 'text-emerald-300/70'
-                            : lUnlocked ? 'text-gray-300'
-                            : 'text-gray-600'
-                          }`}>
-                            {lesson.title}
+                    return (
+                      <div key={world.id}>
+                        <div className="flex items-center gap-2 mb-2 px-1">
+                          {worldUnlocked ? (
+                            <div className={`w-1.5 h-5 rounded-full shrink-0 bg-gradient-to-b ${world.themeColor}`} />
+                          ) : (
+                            <Lock size={10} className="text-gray-600 shrink-0" />
+                          )}
+                          <span className={`text-[12px] font-bold uppercase tracking-[0.12em] ${worldUnlocked ? 'text-gray-500' : 'text-gray-600 opacity-50'}`}>
+                            {world.name}
                           </span>
+                        </div>
 
-                          {isCurrent && (
-                            <span className="text-[9px] font-bold text-orange-400 bg-orange-400/10 px-1.5 py-0.5 rounded uppercase">
-                              Now
-                            </span>
-                          )}
-                          {!isCurrent && lUnlocked && !isComplete && (
-                            <Play size={11} className="text-gray-500 shrink-0" fill="currentColor" />
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
+                        <div className="space-y-1">
+                          {sortedLessons.map((lesson, lIdx) => {
+                            const isComplete = completedLessons.includes(lesson.id);
+                            const lUnlocked = worldUnlocked && isLessonUnlocked(lesson, world);
+                            const isCurrent = lesson.id === selectedLesson.id;
+
+                            return (
+                              <button
+                                key={lesson.id}
+                                onClick={() => lUnlocked && setActiveLesson({ lesson, world })}
+                                disabled={!lUnlocked}
+                                className={`
+                                  w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all
+                                  ${isCurrent
+                                    ? 'bg-orange-500/15 border border-orange-500/30'
+                                    : lUnlocked
+                                      ? 'hover:bg-white/[0.04] border border-transparent'
+                                      : 'opacity-35 cursor-not-allowed border border-transparent'}
+                                `}
+                              >
+                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-[11px] font-black
+                                  ${isComplete
+                                    ? 'bg-emerald-500/20 text-emerald-400'
+                                    : isCurrent
+                                      ? 'bg-orange-500/20 text-orange-400'
+                                      : lUnlocked
+                                        ? 'bg-white/[0.05] text-gray-500'
+                                        : 'text-gray-700'}
+                                `}>
+                                  {isComplete ? (
+                                    <CheckCircle size={13} strokeWidth={2.5} />
+                                  ) : !lUnlocked ? (
+                                    <Lock size={11} />
+                                  ) : (
+                                    lIdx + 1
+                                  )}
+                                </div>
+
+                                <span className={`text-[13px] font-medium flex-1 truncate ${
+                                  isCurrent ? 'text-orange-200'
+                                  : isComplete ? 'text-emerald-300/70'
+                                  : lUnlocked ? 'text-gray-300'
+                                  : 'text-gray-600'
+                                }`}>
+                                  {lesson.title}
+                                </span>
+
+                                {isCurrent && (
+                                  <span className="text-[9px] font-bold text-orange-400 bg-orange-400/10 px-1.5 py-0.5 rounded uppercase">
+                                    Now
+                                  </span>
+                                )}
+                                {!isCurrent && lUnlocked && !isComplete && (
+                                  <Play size={11} className="text-gray-500 shrink-0" fill="currentColor" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

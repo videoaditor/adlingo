@@ -6,7 +6,7 @@ const STORAGE_KEY = 'adlingo_course_data';
 const SEED_WORLDS = [
   {
     id: 'w1',
-    name: 'Timeline Town',
+    name: 'Editing Town',
     subtitle: 'MASTER ATTENTION',
     themeColor: 'from-orange-600 to-amber-500',
     bgColor: 'bg-gradient-to-br from-orange-900/40 to-amber-900/20',
@@ -147,7 +147,7 @@ const SEED_WORLDS = [
   },
   {
     id: 'w2',
-    name: 'CTA Canyon',
+    name: 'AI Toolkit',
     subtitle: 'CLOSING MASTERY',
     themeColor: 'from-cyan-600 to-blue-500',
     bgColor: 'bg-gradient-to-br from-cyan-900/40 to-blue-900/20',
@@ -264,7 +264,7 @@ const SEED_WORLDS = [
   },
   {
     id: 'w3',
-    name: 'Timeline Tundra',
+    name: 'Working Faster',
     subtitle: 'TECHNICAL PRECISION',
     themeColor: 'from-purple-600 to-violet-500',
     bgColor: 'bg-gradient-to-br from-purple-900/40 to-violet-900/20',
@@ -371,7 +371,7 @@ const SEED_WORLDS = [
   },
   {
     id: 'w4',
-    name: 'Clip Selection Caverns',
+    name: 'Troubleshooting',
     subtitle: 'VISUAL STORYTELLING',
     themeColor: 'from-pink-600 to-rose-500',
     bgColor: 'bg-gradient-to-br from-pink-900/40 to-rose-900/20',

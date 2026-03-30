@@ -6,7 +6,7 @@ import { getWorlds, getAllLessonIds } from '../data/courseData';
 
 // World-specific icons/emojis for visual variety
 const WORLD_ICONS = {
-  w1: '🎯', w2: '🏔️', w3: '⚡', w4: '🎬',
+  w1: '✂️', w2: '🤖', w3: '⚡', w4: '🔧',
 };
 
 export default function WorldMap({ user }) {

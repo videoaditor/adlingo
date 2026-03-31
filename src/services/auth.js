@@ -2,6 +2,7 @@
 // Admin uses a password gate
 
 const ADMIN_PASSWORD = 'aditor2024';
+const APP_PASSWORD = '404Error!';
 const STORAGE_KEY = 'adlingo_auth';
 
 export function getStoredAuth() {
@@ -23,4 +24,8 @@ export function clearAuth() {
 
 export function checkAdminPassword(password) {
   return password === ADMIN_PASSWORD;
+}
+
+export function checkAppPassword(password) {
+  return password === APP_PASSWORD;
 }

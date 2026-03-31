@@ -263,8 +263,8 @@ export default function Admin() {
 
               {expandedWorld === world.id && (
                 <div className="border-t border-gray-800/50">
-                  {/* World name/subtitle edit */}
-                  <div className="px-4 pt-3 pb-2 grid grid-cols-2 gap-2">
+                  {/* World settings */}
+                  <div className="px-4 pt-3 pb-2 space-y-2">
                     <div>
                       <label className="text-[10px] font-bold text-gray-500 mb-1 block">World Name</label>
                       <input
@@ -274,19 +274,20 @@ export default function Admin() {
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">Subtitle</label>
-                      <input
-                        value={world.subtitle}
-                        onChange={(e) => updateWorld(world.id, 'subtitle', e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
-                      />
-                    </div>
-                    <div className="col-span-2">
                       <label className="text-[10px] font-bold text-gray-500 mb-1 block">Description</label>
                       <input
                         value={world.description}
                         onChange={(e) => updateWorld(world.id, 'description', e.target.value)}
                         className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">Image URL <span className="text-gray-600 font-normal">(optional)</span></label>
+                      <input
+                        value={world.imageUrl || ''}
+                        onChange={(e) => updateWorld(world.id, 'imageUrl', e.target.value || null)}
+                        placeholder="https://..."
+                        className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
                       />
                     </div>
                   </div>
@@ -296,20 +297,12 @@ export default function Admin() {
                     {world.lessons.sort((a, b) => a.order - b.order).map((lesson) => (
                       <div key={lesson.id} className="px-4 py-3 space-y-2">
                         <div className="flex items-center gap-2">
-                          <div className="flex-1 grid grid-cols-2 gap-2">
-                            <input
-                              value={lesson.title}
-                              onChange={(e) => updateLesson(world.id, lesson.id, 'title', e.target.value)}
-                              placeholder="Lesson title..."
-                              className="px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-sm font-bold text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
-                            />
-                            <input
-                              value={lesson.subtitle || ''}
-                              onChange={(e) => updateLesson(world.id, lesson.id, 'subtitle', e.target.value)}
-                              placeholder="Subtitle..."
-                              className="px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
-                            />
-                          </div>
+                          <input
+                            value={lesson.title}
+                            onChange={(e) => updateLesson(world.id, lesson.id, 'title', e.target.value)}
+                            placeholder="Lesson title..."
+                            className="flex-1 px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-sm font-bold text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                          />
                           <button onClick={() => deleteLesson(world.id, lesson.id)} className="p-1.5 text-gray-600 hover:text-red-400 transition shrink-0">
                             <Trash2 size={14} />
                           </button>
@@ -327,15 +320,6 @@ export default function Admin() {
                               <ExternalLink size={14} />
                             </a>
                           )}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Image size={12} className="text-gray-600 shrink-0" />
-                          <input
-                            value={lesson.imageUrl || ''}
-                            onChange={(e) => updateLesson(world.id, lesson.id, 'imageUrl', e.target.value || null)}
-                            placeholder="Cover image URL..."
-                            className="flex-1 px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
-                          />
                         </div>
                       </div>
                     ))}

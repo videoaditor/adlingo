@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Plus, Trash2, GripVertical, Save, ChevronDown, ChevronRight,
-  Video, Image, FileText, CheckCircle, X, BookOpen, Map, Link, ExternalLink
+  Video, Image, FileText, CheckCircle, X, BookOpen, Map, Link, ExternalLink,
+  Users, RefreshCw, Search
 } from 'lucide-react';
 import { getWorlds, saveWorlds, generateId } from '../data/courseData';
 import { checkAdminPassword, getStoredAuth } from '../services/auth';
+import { getAllPlayers } from '../services/airtable';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -16,7 +18,10 @@ export default function Admin() {
   const [expandedWorld, setExpandedWorld] = useState(null);
   const [expandedLesson, setExpandedLesson] = useState(null);
   const [saved, setSaved] = useState(false);
-  const [adminTab, setAdminTab] = useState('course'); // 'course' or 'tests'
+  const [adminTab, setAdminTab] = useState('course'); // 'course', 'tests', or 'progress'
+  const [players, setPlayers] = useState([]);
+  const [playersLoading, setPlayersLoading] = useState(false);
+  const [playerSearch, setPlayerSearch] = useState('');
 
   useEffect(() => {
     // Auto-auth if logged in as admin email
@@ -29,6 +34,24 @@ export default function Admin() {
   useEffect(() => {
     if (authed) setWorlds(getWorlds());
   }, [authed]);
+
+  // Load players when Progress tab is selected
+  const loadPlayers = async () => {
+    setPlayersLoading(true);
+    try {
+      const data = await getAllPlayers();
+      setPlayers(data);
+    } catch (err) {
+      console.error('Failed to load players:', err);
+    }
+    setPlayersLoading(false);
+  };
+
+  useEffect(() => {
+    if (authed && adminTab === 'progress' && players.length === 0) {
+      loadPlayers();
+    }
+  }, [authed, adminTab]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -235,6 +258,17 @@ export default function Admin() {
           >
             <Map size={15} />
             Test Questions
+          </button>
+          <button
+            onClick={() => setAdminTab('progress')}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all ${
+              adminTab === 'progress'
+                ? 'bg-orange-500 text-white shadow-lg'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <Users size={15} />
+            Progress
           </button>
         </div>
       </div>
@@ -612,6 +646,141 @@ export default function Admin() {
           <Plus size={18} /> Add World
         </button>
       </div>
+      )}
+
+      {/* Progress Tab — Player progress from Airtable */}
+      {adminTab === 'progress' && (
+        <div className="max-w-4xl mx-auto p-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-gray-500 text-xs">Live editor progress from Airtable. Shows completed lessons and scores.</p>
+            <button
+              onClick={loadPlayers}
+              disabled={playersLoading}
+              className="flex items-center gap-1.5 text-xs font-bold text-orange-400 hover:text-orange-300 transition disabled:opacity-50"
+            >
+              <RefreshCw size={13} className={playersLoading ? 'animate-spin' : ''} />
+              Refresh
+            </button>
+          </div>
+
+          {/* Search */}
+          <div className="relative">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            <input
+              value={playerSearch}
+              onChange={(e) => setPlayerSearch(e.target.value)}
+              placeholder="Search by name or email..."
+              className="w-full pl-9 pr-3 py-2.5 bg-gray-900 border border-gray-800 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+            />
+          </div>
+
+          {playersLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : players.length === 0 ? (
+            <div className="text-center py-16 text-gray-600 text-sm">No players found in Airtable.</div>
+          ) : (
+            <div className="space-y-3">
+              {players
+                .filter((p) => {
+                  if (!playerSearch) return true;
+                  const q = playerSearch.toLowerCase();
+                  return (p.name || '').toLowerCase().includes(q) || (p.email || '').toLowerCase().includes(q);
+                })
+                .sort((a, b) => (b.progress?.xp || 0) - (a.progress?.xp || 0))
+                .map((player) => {
+                  const prog = player.progress || {};
+                  const completed = prog.completedLessons || [];
+                  const scores = prog.scores || {};
+                  const courseWorlds = getWorlds().sort((a, b) => a.order - b.order);
+                  const totalLessons = courseWorlds.reduce((sum, w) => sum + w.lessons.length, 0);
+                  const progressPercent = totalLessons > 0 ? Math.round((completed.length / totalLessons) * 100) : 0;
+
+                  return (
+                    <div key={player.id} className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+                      {/* Player header */}
+                      <div className="p-4">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-black text-sm shrink-0">
+                            {(player.name || '?')[0].toUpperCase()}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-bold text-sm text-white truncate">{player.name || 'Unknown'}</div>
+                            <div className="text-xs text-gray-500 truncate">{player.email}</div>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <div className="text-xs font-bold text-yellow-400">{prog.xp || 0} XP</div>
+                            <div className="text-[10px] text-gray-500">{player.rank}</div>
+                          </div>
+                        </div>
+
+                        {/* Overall progress bar */}
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div
+                              className="h-full rounded-full bg-gradient-to-r from-orange-500 to-amber-400 transition-all"
+                              style={{ width: `${progressPercent}%` }}
+                            />
+                          </div>
+                          <span className="text-[11px] font-bold text-gray-400 tabular-nums">
+                            {completed.length}/{totalLessons}
+                          </span>
+                        </div>
+
+                        {/* World-by-world breakdown */}
+                        <div className="space-y-2">
+                          {courseWorlds.map((world) => {
+                            const worldLessons = world.lessons.sort((a, b) => a.order - b.order);
+                            const worldDone = worldLessons.filter((l) => completed.includes(l.id)).length;
+                            const worldComplete = worldDone === worldLessons.length && worldLessons.length > 0;
+
+                            return (
+                              <div key={world.id}>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <div className={`w-1.5 h-3 rounded-full bg-gradient-to-b ${world.themeColor}`} />
+                                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">{world.name}</span>
+                                  {worldComplete && <CheckCircle size={10} className="text-emerald-400" />}
+                                  <span className="text-[10px] text-gray-600 ml-auto">{worldDone}/{worldLessons.length}</span>
+                                </div>
+                                <div className="flex gap-1 ml-3.5">
+                                  {worldLessons.map((lesson) => {
+                                    const done = completed.includes(lesson.id);
+                                    const score = scores[lesson.id];
+                                    return (
+                                      <div
+                                        key={lesson.id}
+                                        title={`${lesson.title}${score ? ` — ${score.correct}/${score.total}` : ''}`}
+                                        className={`group relative h-6 flex-1 rounded-md flex items-center justify-center text-[9px] font-bold transition-all cursor-default ${
+                                          done
+                                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                                            : 'bg-gray-800 text-gray-600 border border-gray-700/50'
+                                        }`}
+                                      >
+                                        {score ? `${score.correct}/${score.total}` : '—'}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Meta info */}
+                        {prog.streak > 0 && (
+                          <div className="mt-3 flex items-center gap-3 text-[10px] text-gray-500">
+                            <span>Streak: <span className="text-orange-400 font-bold">{prog.streak}d</span></span>
+                            {prog.lastActivity && <span>Last active: {prog.lastActivity}</span>}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

@@ -30,11 +30,8 @@ export default function WorldMap({ user }) {
   }
 
   function isLessonUnlocked(lesson, world) {
-    if (!isWorldUnlocked(world)) return false;
-    const worldLessons = world.lessons.sort((a, b) => a.order - b.order);
-    const idx = worldLessons.findIndex((l) => l.id === lesson.id);
-    if (idx === 0) return true;
-    return completedLessons.includes(worldLessons[idx - 1].id);
+    // All lessons in an unlocked world are accessible
+    return isWorldUnlocked(world);
   }
 
   // Find the current active lesson (first unlocked incomplete)

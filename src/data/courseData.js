@@ -148,54 +148,54 @@ const SEED_WORLDS = [
   {
     id: 'w2',
     name: 'AI Toolkit',
-    subtitle: 'CLOSING MASTERY',
+    subtitle: 'CREATING ASSETS WITH AI',
     themeColor: 'from-cyan-600 to-blue-500',
     bgColor: 'bg-gradient-to-br from-cyan-900/40 to-blue-900/20',
     borderColor: 'border-cyan-500/30',
     accentColor: 'text-cyan-400',
     order: 2,
     imageUrl: null,
-    description: 'Building trust, showing the problem, and making them click.',
+    description: 'Master AI tools for voices, talking heads, video generation, and images.',
     unlockAfterWorld: 'w1',
     lessons: [
       {
         id: 'l4',
-        title: 'Making Problems Visible',
-        subtitle: 'Point the flashlight at invisible pain',
+        title: 'Top AI Tools',
+        subtitle: 'Your AI content creation stack',
         order: 1,
-        videoUrl: null,
-        videoType: null,
+        videoUrl: 'https://www.tella.tv/video/top-ai-tools-for-content-creation-06vv',
+        videoType: 'tella',
         questions: [
           {
             id: 'q9',
             type: 'text',
-            question: "The script says 'Toxins are building up in your gut.' You can't see toxins. What do you show?",
+            question: "You need a realistic voiceover, a talking head video, and a product B-roll. Which tool stack covers all three?",
             options: [
-              { text: "Person holding their stomach looking uncomfortable", correct: false },
-              { text: "Text overlay saying 'TOXIC BUILDUP'", correct: false },
-              { text: "3D animation of gross particles accumulating inside intestines", correct: true },
-              { text: "Stock footage of unhealthy fast food", correct: false }
+              { text: "Canva for everything", correct: false },
+              { text: "ElevenLabs for voice, HeyGen for talking head, Sora for B-roll", correct: true },
+              { text: "ChatGPT for voice, Midjourney for video, Runway for B-roll", correct: false },
+              { text: "Just record everything yourself on your phone", correct: false }
             ],
-            directorNote: "Your job is 'pointing the flashlight' at invisible problems. 3D medical animations make the unseen feel REAL and urgent."
+            directorNote: "Each AI tool has a sweet spot. ElevenLabs = voices, HeyGen = talking heads, Sora/Veo = video generation. Know which tool to reach for."
           },
           {
             id: 'q10',
             type: 'text',
-            question: "The script says 'Our formula penetrates deep into the skin.' How do you visualize this?",
+            question: "You have a script but no creator footage. What's the fastest way to produce the full ad?",
             options: [
-              { text: "Close-up of someone applying the cream", correct: false },
-              { text: "Text saying 'DEEP PENETRATION TECHNOLOGY'", correct: false },
-              { text: "3D cross-section animation showing molecules going into skin layers", correct: true },
-              { text: "Customer testimonial saying 'I could really feel it working'", correct: false }
+              { text: "Wait for the client to send real UGC footage", correct: false },
+              { text: "Use stock footage for everything", correct: false },
+              { text: "Generate AI voice, AI talking head, and AI B-rolls from the script", correct: true },
+              { text: "Hire a freelance videographer", correct: false }
             ],
-            directorNote: "Claims need visual PROOF. 3D explainers feel scientific because documentaries use them."
+            directorNote: "AI lets you go from script to full ad without waiting on anyone. Voice + talking head + generated B-roll = complete ad."
           }
         ]
       },
       {
         id: 'l5',
-        title: 'Social Proof',
-        subtitle: 'Faces beat numbers every time',
+        title: 'Realistic AI Voices',
+        subtitle: 'Clone and create voices with ElevenLabs',
         order: 2,
         videoUrl: null,
         videoType: null,
@@ -203,60 +203,220 @@ const SEED_WORLDS = [
           {
             id: 'q11',
             type: 'text',
-            question: "The script says 'Thousands of customers love it.' How do you visualize this?",
+            question: "You need a voiceover that matches a brand's existing creator. What's the right workflow?",
             options: [
-              { text: "Text saying '10,000+ 5-Star Reviews'", correct: false },
-              { text: "Screenshot of Amazon rating", correct: false },
-              { text: "Grid of 6-9 different customers holding the product at once", correct: true },
-              { text: "One emotional customer telling their story for 20 seconds", correct: false }
+              { text: "Use a generic ElevenLabs preset voice", correct: false },
+              { text: "Record yourself doing an impression", correct: false },
+              { text: "Clone the creator's voice from a TikTok video using ElevenLabs instant voice cloning", correct: true },
+              { text: "Use text-to-speech with the default voice", correct: false }
             ],
-            directorNote: "Faces on screen = social proof. Seeing 6-9 real people at once triggers 'everyone has this, I'm missing out.'"
+            directorNote: "ElevenLabs can clone a voice from a short sample. Clone from existing creator content so the brand voice stays consistent."
           },
           {
             id: 'q12',
             type: 'text',
-            question: "The script mentions 'Recommended by Dr. Sarah Chen, Harvard Medical.' What visual do you add?",
+            question: "You've created a voice in ElevenLabs. How should you name it so the team can find it later?",
             options: [
-              { text: "Just show her name as text with 'MD' after it", correct: false },
-              { text: "AI-generated headshot of a doctor", correct: false },
-              { text: "Real photo/video of Dr. Chen in a white coat with Harvard logo visible", correct: true },
-              { text: "Generic stock photo of a laboratory", correct: false }
+              { text: "Voice_001", correct: false },
+              { text: "'Avatar first name' + 'brand name'", correct: true },
+              { text: "The date you created it", correct: false },
+              { text: "Just use the default auto-generated name", correct: false }
             ],
-            directorNote: "Authority needs VISUAL proof. Real face + real credentials + real institution visible on screen."
+            directorNote: "Name voices as 'avatar name + brand' so anyone on the team can find the right voice instantly. No guessing."
+          },
+          {
+            id: 'q13',
+            type: 'text',
+            question: "Your ElevenLabs v3 output sounds robotic. What do you do?",
+            options: [
+              { text: "Increase the speed to make it sound more natural", correct: false },
+              { text: "Click 'enhance' before generating, and if it's still off, try v2", correct: true },
+              { text: "Add background music to hide the robotic tone", correct: false },
+              { text: "Re-write the script with simpler words", correct: false }
+            ],
+            directorNote: "Always try 'enhance' on v3 first. If the output still isn't right, v2 can sometimes deliver a more natural result. Always double-check."
           }
         ]
       },
       {
         id: 'l6',
-        title: 'CTA Engineering',
-        subtitle: 'Make them click NOW',
+        title: 'Talking Heads',
+        subtitle: 'Create AI UGC with HeyGen',
         order: 3,
-        videoUrl: null,
-        videoType: null,
+        videoUrl: 'https://www.loom.com/share/cae714a66611485d846673d6ea398ba4',
+        videoType: 'loom',
         questions: [
-          {
-            id: 'q13',
-            type: 'text',
-            question: "You're building the last 5 seconds. You have the logo and URL. The client says 'Make them click.' What do you add?",
-            options: [
-              { text: "Animated logo spin with brand jingle", correct: false },
-              { text: "Arrow pointing at button + countdown timer + discount badge", correct: true },
-              { text: "One more customer testimonial", correct: false },
-              { text: "Fade to black with URL centered", correct: false }
-            ],
-            directorNote: "CTAs need Direction (arrow), Urgency (timer/deadline), and Value (discount/offer). Missing any = 30-50% fewer clicks."
-          },
           {
             id: 'q14',
             type: 'text',
-            question: "The client gives you a screenshot of their checkout page. Where do you put it in the ad?",
+            question: "You need a talking head video for an ad. What two things do you need before generating?",
             options: [
-              { text: "Don't use it—screenshots look unprofessional", correct: false },
-              { text: "In the middle of the ad to break up the testimonials", correct: false },
-              { text: "In the final CTA, so viewers know exactly what happens after they click", correct: true },
-              { text: "At the very beginning as a hook", correct: false }
+              { text: "A logo and a color palette", correct: false },
+              { text: "A voiceover and an avatar image", correct: true },
+              { text: "A storyboard and a mood board", correct: false },
+              { text: "A finished script and background music", correct: false }
             ],
-            directorNote: "Show them what's coming. When people see the landing page, they know what to expect."
+            directorNote: "Talking head generation needs two inputs: the voice (from ElevenLabs) and the avatar image. Everything else is optional."
+          },
+          {
+            id: 'q15',
+            type: 'text',
+            question: "Which tools can you use to generate AI talking head videos?",
+            options: [
+              { text: "Canva and Figma", correct: false },
+              { text: "HeyGen and Google Flow", correct: true },
+              { text: "Premiere Pro and After Effects", correct: false },
+              { text: "ChatGPT and Claude", correct: false }
+            ],
+            directorNote: "HeyGen (photo-to-video) and Google Flow are your go-to tools for generating realistic AI talking heads."
+          }
+        ]
+      },
+      {
+        id: 'l7',
+        title: 'Sora UGC Process',
+        subtitle: 'Generate B-rolls without creators',
+        order: 4,
+        videoUrl: 'https://www.loom.com/share/49a7ed0a4c32432ea0479ff7012fb45a',
+        videoType: 'loom',
+        questions: [
+          {
+            id: 'q16',
+            type: 'text',
+            question: "You need UGC-style B-roll but have no creator footage. What's the Sora workflow?",
+            options: [
+              { text: "Type a prompt directly into Sora and hope for the best", correct: false },
+              { text: "Create a Claude project, craft prompts there, then paste into Sora with a product image", correct: true },
+              { text: "Use Sora's auto-generate feature with just a brand name", correct: false },
+              { text: "Screenshot a competitor's ad and upload it to Sora", correct: false }
+            ],
+            directorNote: "The workflow is: Claude project for prompt crafting → Sora for generation. Always attach a product image so Sora knows what to show."
+          },
+          {
+            id: 'q17',
+            type: 'text',
+            question: "You have an inspo video you want to recreate with AI. What's the first step?",
+            options: [
+              { text: "Upload it directly to Sora and click 'remix'", correct: false },
+              { text: "Deconstruct it in Gemini first, then move to Claude to refine the prompt", correct: true },
+              { text: "Describe it from memory in a text prompt", correct: false },
+              { text: "Send it to the client and ask them to reshoot it", correct: false }
+            ],
+            directorNote: "Gemini can break down a video into its components. Take that breakdown to your Claude project to turn it into a precise Sora prompt."
+          }
+        ]
+      },
+      {
+        id: 'l8',
+        title: 'Image Generation',
+        subtitle: 'Create ad visuals that look real',
+        order: 5,
+        videoUrl: 'https://www.tella.tv/video/strategic-video-generation-focus-on-message-emotion-bc3x',
+        videoType: 'tella',
+        questions: [
+          {
+            id: 'q18',
+            type: 'text',
+            question: "You're generating a UGC-style avatar image. The output has blurry bokeh background and dramatic lighting. What's wrong?",
+            options: [
+              { text: "The resolution is too low", correct: false },
+              { text: "iPhones don't blur in video mode and real UGC has flat lighting — it looks too cinematic", correct: true },
+              { text: "You need to add a filter in post", correct: false },
+              { text: "Nothing — bokeh looks professional", correct: false }
+            ],
+            directorNote: "Real UGC is shot on phones: sharp background, flat even lighting, no dramatic shadows. If it looks like a movie, it won't feel authentic."
+          },
+          {
+            id: 'q19',
+            type: 'text',
+            question: "Your AI-generated person has a phone visible in the frame and a 'REC' timestamp overlay. How do you fix this?",
+            options: [
+              { text: "Crop the image to hide the phone", correct: false },
+              { text: "Add 'no phone visible, no text no UI no timestamp no REC' to the prompt", correct: true },
+              { text: "Paint it out in Photoshop", correct: false },
+              { text: "Generate at a lower resolution", correct: false }
+            ],
+            directorNote: "Always explicitly exclude what you don't want in the prompt. AI will add phones and UI overlays unless you tell it not to."
+          },
+          {
+            id: 'q20',
+            type: 'text',
+            question: "What format and resolution should UGC avatar images always be generated in?",
+            options: [
+              { text: "16:9, 1080p", correct: false },
+              { text: "1:1 square, 4K", correct: false },
+              { text: "9:16 vertical, 2K resolution", correct: true },
+              { text: "4:3, 720p", correct: false }
+            ],
+            directorNote: "Always 9:16 vertical (phone format) at 2K resolution. This matches how people hold their phones and scroll social media."
+          }
+        ]
+      },
+      {
+        id: 'l9',
+        title: 'Frames to Videos',
+        subtitle: 'Turn images into motion',
+        order: 6,
+        videoUrl: 'https://www.tella.tv/video/image-to-video-generation-with-vo-3-1-cling-3-0-g7r6',
+        videoType: 'tella',
+        questions: [
+          {
+            id: 'q21',
+            type: 'text',
+            question: "You need a quick B-roll from a product image. What's the fastest workflow?",
+            options: [
+              { text: "Animate it manually in After Effects", correct: false },
+              { text: "Attach the frame in Claude, describe what you want, paste the prompt into Veo via Flow", correct: true },
+              { text: "Upload to Canva and use their animation feature", correct: false },
+              { text: "Just use a static image with a Ken Burns zoom", correct: false }
+            ],
+            directorNote: "For quick B-rolls: Claude writes the prompt, Flow/Veo generates the video. Fast and easy."
+          },
+          {
+            id: 'q22',
+            type: 'text',
+            question: "You need a high-fidelity product application video (e.g., someone applying a serum). Which tool do you reach for?",
+            options: [
+              { text: "Sora — it's best for everything", correct: false },
+              { text: "Veo via Flow — fastest for all video", correct: false },
+              { text: "Kling AI frame mode — precise and high fidelity for application shots", correct: true },
+              { text: "Just use stock footage", correct: false }
+            ],
+            directorNote: "Kling is slower but more precise. When you need high fidelity (product application, detailed movements), Kling beats Veo. Speed vs precision — pick the right tool."
+          }
+        ]
+      },
+      {
+        id: 'l10',
+        title: 'The Editing Mindset',
+        subtitle: 'Work smarter, ship faster',
+        order: 7,
+        videoUrl: 'https://www.loom.com/share/317092ccaa0c477a9601e2a3f30b9549',
+        videoType: 'loom',
+        questions: [
+          {
+            id: 'q23',
+            type: 'text',
+            question: "You've spent 3 hours perfecting one 30-second ad. What's the problem?",
+            options: [
+              { text: "Nothing — quality takes time", correct: false },
+              { text: "You should have spent 4 hours to make it even better", correct: false },
+              { text: "Your hourly rate just dropped — perfectionism kills efficiency", correct: true },
+              { text: "You should charge more per video", correct: false }
+            ],
+            directorNote: "The longer you spend on one video, the lower your hourly rate. Find the fastest way to hit 90% quality and ship it."
+          },
+          {
+            id: 'q24',
+            type: 'text',
+            question: "You need a B-roll of someone pouring coffee. What should you ask yourself first?",
+            options: [
+              { text: "Which AI model generates the best coffee?", correct: false },
+              { text: "Do I even need AI for this, or can I find it in brand footage, YouTube, or TikTok?", correct: true },
+              { text: "Should I film it myself?", correct: false },
+              { text: "What resolution should I generate it in?", correct: false }
+            ],
+            directorNote: "Before reaching for AI, check if the footage already exists. Brand assets, YouTube, TikTok — don't generate what you can grab in 10 seconds."
           }
         ]
       }
@@ -276,7 +436,7 @@ const SEED_WORLDS = [
     unlockAfterWorld: 'w2',
     lessons: [
       {
-        id: 'l7',
+        id: 'l11',
         title: 'The 2-Second Rule',
         subtitle: 'Never let a shot breathe too long',
         order: 1,
@@ -284,7 +444,7 @@ const SEED_WORLDS = [
         videoType: null,
         questions: [
           {
-            id: 'q15',
+            id: 'q25',
             type: 'text',
             question: "Your timeline shows the same shot for 4 seconds straight. What do you do?",
             options: [
@@ -296,7 +456,7 @@ const SEED_WORLDS = [
             directorNote: "Every 2-3 seconds needs a VISUAL change. Zoom, cut, text pop, overlay—anything you can SEE."
           },
           {
-            id: 'q16',
+            id: 'q26',
             type: 'text',
             question: "You drag quickly through your timeline and notice the person's face jumps from left to center to right across cuts. What's wrong?",
             options: [
@@ -308,7 +468,7 @@ const SEED_WORLDS = [
             directorNote: "If the main thing jumps around the frame, viewers' eyes get tired and they swipe."
           },
           {
-            id: 'q17',
+            id: 'q27',
             type: 'text',
             question: "Your talking-head video needs captions. Where do you place them?",
             options: [
@@ -322,7 +482,7 @@ const SEED_WORLDS = [
         ]
       },
       {
-        id: 'l8',
+        id: 'l12',
         title: 'Sound Design',
         subtitle: 'If it moves, it needs a sound',
         order: 2,
@@ -330,7 +490,7 @@ const SEED_WORLDS = [
         videoType: null,
         questions: [
           {
-            id: 'q18',
+            id: 'q28',
             type: 'text',
             question: "A text box slides onto the screen. Do you add a sound effect?",
             options: [
@@ -342,7 +502,7 @@ const SEED_WORLDS = [
             directorNote: "Movement Rule: anything that MOVES needs a sound. Slide = whoosh. Pop-up = click."
           },
           {
-            id: 'q19',
+            id: 'q29',
             type: 'text',
             question: "The script structure is: Problem -> Agitation -> Solution. You're picking music. What do you do?",
             options: [
@@ -354,7 +514,7 @@ const SEED_WORLDS = [
             directorNote: "Music mirrors the emotional journey. Dark = 'life is hard.' Product appears = bright/upbeat = 'problem solved.'"
           },
           {
-            id: 'q20',
+            id: 'q30',
             type: 'text',
             question: "The script says 'My joints were killing me.' The visual shows someone rubbing their knee. What sound do you add?",
             options: [
@@ -383,7 +543,7 @@ const SEED_WORLDS = [
     unlockAfterWorld: 'w3',
     lessons: [
       {
-        id: 'l9',
+        id: 'l13',
         title: 'Pain Shots',
         subtitle: 'Show the problem they feel',
         order: 1,
@@ -391,7 +551,7 @@ const SEED_WORLDS = [
         videoType: null,
         questions: [
           {
-            id: 'q21',
+            id: 'q31',
             type: 'text',
             question: "You're editing for a dandruff shampoo. The script says 'Embarrassing flakes ruining your look?' What do you search for?",
             options: [
@@ -403,7 +563,7 @@ const SEED_WORLDS = [
             directorNote: "Show the PROBLEM. A gross close-up of flaky scalp makes people with dandruff think 'that's me.'"
           },
           {
-            id: 'q22',
+            id: 'q32',
             type: 'text',
             question: "You're editing for a teeth whitening kit. 'Yellow teeth holding you back?' What shot opens the ad?",
             options: [
@@ -415,7 +575,7 @@ const SEED_WORLDS = [
             directorNote: "Show the embarrassing reality first. Coffee cup adds context. Pain before solution."
           },
           {
-            id: 'q23',
+            id: 'q33',
             type: 'text',
             question: "You're editing for a posture corrector. 'Slouching all day?' What do you show?",
             options: [
@@ -427,7 +587,7 @@ const SEED_WORLDS = [
             directorNote: "Show the relatable moment they experience every day. Hunched at desk, in pain."
           },
           {
-            id: 'q24',
+            id: 'q34',
             type: 'text',
             question: "You're editing for a foot cream. 'Cracked heels you're embarrassed to show?' What's your pain shot?",
             options: [
@@ -441,7 +601,7 @@ const SEED_WORLDS = [
         ]
       },
       {
-        id: 'l10',
+        id: 'l14',
         title: 'Proof Shots',
         subtitle: "Show, don't tell",
         order: 2,
@@ -449,7 +609,7 @@ const SEED_WORLDS = [
         videoType: null,
         questions: [
           {
-            id: 'q25',
+            id: 'q35',
             type: 'text',
             question: "You're editing for a blender. 'Crushes ice in seconds.' How do you PROVE it?",
             options: [
@@ -461,7 +621,7 @@ const SEED_WORLDS = [
             directorNote: "Don't tell—SHOW. The satisfying destruction of ice cubes proves the claim better than any spec sheet."
           },
           {
-            id: 'q26',
+            id: 'q36',
             type: 'text',
             question: "You're editing for waterproof shoes. 'Completely waterproof.' How do you prove it?",
             options: [
@@ -473,7 +633,7 @@ const SEED_WORLDS = [
             directorNote: "Pour water on it. Show the water bounce off. Visual proof beats any testimonial."
           },
           {
-            id: 'q27',
+            id: 'q37',
             type: 'text',
             question: "You're editing for a vacuum. 'Picks up everything in one pass.' How do you prove it?",
             options: [
@@ -485,7 +645,7 @@ const SEED_WORLDS = [
             directorNote: "Show the problem (crumbs) disappearing in real-time. The satisfying 'suck' proves it works."
           },
           {
-            id: 'q28',
+            id: 'q38',
             type: 'text',
             question: "You're editing for a stain remover. 'Removes stains instantly.' What's your money shot?",
             options: [

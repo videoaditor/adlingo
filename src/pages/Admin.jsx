@@ -242,12 +242,15 @@ export default function Admin() {
       {/* Course Videos Tab */}
       {adminTab === 'course' && (
         <div className="max-w-3xl mx-auto p-4 space-y-4">
-          <p className="text-gray-500 text-xs">Add video URLs for each lesson. Supports Loom, YouTube, Tella, and Vimeo.</p>
+          <p className="text-gray-500 text-xs">Manage lessons, videos, and images. Supports Loom, YouTube, Tella, and Vimeo.</p>
 
           {worlds.sort((a, b) => a.order - b.order).map((world) => (
             <div key={world.id} className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
               {/* World header */}
-              <div className="flex items-center gap-3 p-4 border-b border-gray-800/50">
+              <button
+                onClick={() => setExpandedWorld(expandedWorld === world.id ? null : world.id)}
+                className="w-full flex items-center gap-3 p-4 hover:bg-gray-800/50 transition text-left"
+              >
                 <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${world.themeColor} flex items-center justify-center text-xs font-black text-white`}>
                   {world.order}
                 </div>
@@ -255,44 +258,116 @@ export default function Admin() {
                   <div className="font-bold text-sm">{world.name}</div>
                   <div className="text-xs text-gray-500">{world.lessons.length} lessons</div>
                 </div>
-              </div>
+                {expandedWorld === world.id ? <ChevronDown size={16} className="text-gray-500" /> : <ChevronRight size={16} className="text-gray-500" />}
+              </button>
 
-              {/* Lesson video list */}
-              <div className="divide-y divide-gray-800/50">
-                {world.lessons.sort((a, b) => a.order - b.order).map((lesson) => (
-                  <div key={lesson.id} className="px-4 py-3 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-white">{lesson.title}</span>
-                      {lesson.videoUrl ? (
-                        <span className="text-[9px] font-bold text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded uppercase">has video</span>
-                      ) : (
-                        <span className="text-[9px] font-bold text-gray-500 bg-gray-800 px-1.5 py-0.5 rounded uppercase">no video</span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Link size={12} className="text-gray-600 shrink-0" />
+              {expandedWorld === world.id && (
+                <div className="border-t border-gray-800/50">
+                  {/* World name/subtitle edit */}
+                  <div className="px-4 pt-3 pb-2 grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">World Name</label>
                       <input
-                        value={lesson.videoUrl || ''}
-                        onChange={(e) => updateLesson(world.id, lesson.id, 'videoUrl', e.target.value || null)}
-                        placeholder="Paste video URL (Loom, YouTube, Tella, Vimeo)..."
-                        className="flex-1 px-2.5 py-2 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                        value={world.name}
+                        onChange={(e) => updateWorld(world.id, 'name', e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
                       />
-                      {lesson.videoUrl && (
-                        <a
-                          href={lesson.videoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1.5 text-gray-500 hover:text-orange-400 transition shrink-0"
-                        >
-                          <ExternalLink size={14} />
-                        </a>
-                      )}
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">Subtitle</label>
+                      <input
+                        value={world.subtitle}
+                        onChange={(e) => updateWorld(world.id, 'subtitle', e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">Description</label>
+                      <input
+                        value={world.description}
+                        onChange={(e) => updateWorld(world.id, 'description', e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
+                      />
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  {/* Lessons */}
+                  <div className="divide-y divide-gray-800/50">
+                    {world.lessons.sort((a, b) => a.order - b.order).map((lesson) => (
+                      <div key={lesson.id} className="px-4 py-3 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 grid grid-cols-2 gap-2">
+                            <input
+                              value={lesson.title}
+                              onChange={(e) => updateLesson(world.id, lesson.id, 'title', e.target.value)}
+                              placeholder="Lesson title..."
+                              className="px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-sm font-bold text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                            />
+                            <input
+                              value={lesson.subtitle || ''}
+                              onChange={(e) => updateLesson(world.id, lesson.id, 'subtitle', e.target.value)}
+                              placeholder="Subtitle..."
+                              className="px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                            />
+                          </div>
+                          <button onClick={() => deleteLesson(world.id, lesson.id)} className="p-1.5 text-gray-600 hover:text-red-400 transition shrink-0">
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Video size={12} className="text-gray-600 shrink-0" />
+                          <input
+                            value={lesson.videoUrl || ''}
+                            onChange={(e) => updateLesson(world.id, lesson.id, 'videoUrl', e.target.value || null)}
+                            placeholder="Video URL (Loom, YouTube, Tella, Vimeo)..."
+                            className="flex-1 px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                          />
+                          {lesson.videoUrl && (
+                            <a href={lesson.videoUrl} target="_blank" rel="noopener noreferrer" className="p-1 text-gray-500 hover:text-orange-400 transition shrink-0">
+                              <ExternalLink size={14} />
+                            </a>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Image size={12} className="text-gray-600 shrink-0" />
+                          <input
+                            value={lesson.imageUrl || ''}
+                            onChange={(e) => updateLesson(world.id, lesson.id, 'imageUrl', e.target.value || null)}
+                            placeholder="Cover image URL..."
+                            className="flex-1 px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add/delete lesson + world */}
+                  <div className="px-4 py-3 flex items-center justify-between border-t border-gray-800/50">
+                    <button
+                      onClick={() => addLesson(world.id)}
+                      className="flex items-center gap-1 text-xs font-bold text-orange-400 hover:text-orange-300 transition"
+                    >
+                      <Plus size={14} /> Add Lesson
+                    </button>
+                    <button
+                      onClick={() => deleteWorld(world.id)}
+                      className="text-xs text-red-400/60 hover:text-red-400 transition"
+                    >
+                      Delete World
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
+
+          {/* Add world button */}
+          <button
+            onClick={addWorld}
+            className="w-full py-4 rounded-2xl border-2 border-dashed border-gray-700 text-gray-500 hover:border-orange-500/50 hover:text-orange-400 transition flex items-center justify-center gap-2 font-bold text-sm"
+          >
+            <Plus size={18} /> Add World
+          </button>
         </div>
       )}
 

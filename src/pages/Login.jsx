@@ -11,7 +11,10 @@ export default function Login({ onLogin, loading, error }) {
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
-    if (email.trim()) {
+    const trimmedEmail = email.trim().toLowerCase();
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(trimmedEmail)) {
       setStep('password');
     }
   };

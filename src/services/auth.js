@@ -1,9 +1,14 @@
 // Simple auth service — editors log in by email (looked up in Airtable)
 // Admin uses a password gate
 
-const ADMIN_PASSWORD = 'aditor2024';
-const APP_PASSWORD = '404Error!';
+// Passwords should be set via environment variables — never hardcode in source
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+const APP_PASSWORD = import.meta.env.VITE_APP_PASSWORD;
 const STORAGE_KEY = 'adlingo_auth';
+
+if (!ADMIN_PASSWORD || !APP_PASSWORD) {
+  console.error('VITE_ADMIN_PASSWORD and VITE_APP_PASSWORD environment variables are required');
+}
 
 export function getStoredAuth() {
   try {

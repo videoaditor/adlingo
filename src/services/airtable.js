@@ -10,7 +10,9 @@ const headers = () => ({
 // Find a player by email
 export async function findPlayerByEmail(email) {
   try {
-    const formula = encodeURIComponent(`{Email} = '${email}'`);
+    // Sanitize email to prevent Airtable formula injection
+    const sanitizedEmail = email.replace(/"/g, '\\"');
+    const formula = encodeURIComponent(`{Email} = "${sanitizedEmail}"`);
     const res = await fetch(
       `${BASE_URL}/${CONFIG.tables.players}?filterByFormula=${formula}&maxRecords=1`,
       { headers: headers() }

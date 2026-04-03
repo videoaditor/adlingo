@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { findPlayerByEmail, savePlayerProgress } from './services/airtable';
 import { getStoredAuth, storeAuth, clearAuth } from './services/auth';
-import { getAllLessonIds } from './data/courseData';
 import Header from './components/Header';
 import Login from './pages/Login';
 import WorldMap from './pages/WorldMap';
@@ -90,7 +89,10 @@ const App = () => {
     progress.scores[lessonId] = score;
 
     // Calculate XP: 10 per correct answer
-    progress.xp = Object.values(progress.scores).reduce((sum, s) => sum + (s.correct * 10), 0);
+    progress.xp = Object.values(progress.scores).reduce((sum, s) => {
+      const correct = typeof s.correct === 'number' ? s.correct : 0;
+      return sum + (correct * 10);
+    }, 0);
 
     // Update streak
     const today = new Date().toDateString();

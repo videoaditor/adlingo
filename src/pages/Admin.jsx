@@ -24,9 +24,9 @@ export default function Admin() {
   const [playerSearch, setPlayerSearch] = useState('');
 
   useEffect(() => {
-    // Auto-auth if logged in as admin email
-    const auth = getStoredAuth();
-    if (auth?.email?.endsWith('@aditor.ai')) {
+    // Check if previously authenticated as admin this session
+    const adminSession = sessionStorage.getItem('adlingo_admin_authed');
+    if (adminSession === 'true') {
       setAuthed(true);
     }
   }, []);
@@ -57,6 +57,7 @@ export default function Admin() {
     e.preventDefault();
     if (checkAdminPassword(password)) {
       setAuthed(true);
+      sessionStorage.setItem('adlingo_admin_authed', 'true');
     } else {
       setPwError(true);
     }
@@ -101,6 +102,10 @@ export default function Admin() {
   // Lesson CRUD
   const addLesson = (worldId) => {
     const world = worlds.find((w) => w.id === worldId);
+    if (!world) {
+      console.error('World not found:', worldId);
+      return;
+    }
     const id = 'l' + generateId();
     const newLesson = {
       id,
@@ -117,6 +122,10 @@ export default function Admin() {
 
   const updateLesson = (worldId, lessonId, field, value) => {
     const world = worlds.find((w) => w.id === worldId);
+    if (!world) {
+      console.error('World not found:', worldId);
+      return;
+    }
     const updated = world.lessons.map((l) =>
       l.id === lessonId ? { ...l, [field]: value } : l
     );
@@ -126,13 +135,25 @@ export default function Admin() {
   const deleteLesson = (worldId, lessonId) => {
     if (!confirm('Delete this lesson?')) return;
     const world = worlds.find((w) => w.id === worldId);
+    if (!world) {
+      console.error('World not found:', worldId);
+      return;
+    }
     updateWorld(worldId, 'lessons', world.lessons.filter((l) => l.id !== lessonId));
   };
 
   // Question CRUD
   const addQuestion = (worldId, lessonId, type = 'text') => {
     const world = worlds.find((w) => w.id === worldId);
+    if (!world) {
+      console.error('World not found:', worldId);
+      return;
+    }
     const lesson = world.lessons.find((l) => l.id === lessonId);
+    if (!lesson) {
+      console.error('Lesson not found:', lessonId);
+      return;
+    }
     const id = 'q' + generateId();
     const newQ = {
       id,
@@ -151,7 +172,15 @@ export default function Admin() {
 
   const updateQuestion = (worldId, lessonId, qId, updates) => {
     const world = worlds.find((w) => w.id === worldId);
+    if (!world) {
+      console.error('World not found:', worldId);
+      return;
+    }
     const lesson = world.lessons.find((l) => l.id === lessonId);
+    if (!lesson) {
+      console.error('Lesson not found:', lessonId);
+      return;
+    }
     const updated = lesson.questions.map((q) =>
       q.id === qId ? { ...q, ...updates } : q
     );
@@ -160,14 +189,34 @@ export default function Admin() {
 
   const deleteQuestion = (worldId, lessonId, qId) => {
     const world = worlds.find((w) => w.id === worldId);
+    if (!world) {
+      console.error('World not found:', worldId);
+      return;
+    }
     const lesson = world.lessons.find((l) => l.id === lessonId);
+    if (!lesson) {
+      console.error('Lesson not found:', lessonId);
+      return;
+    }
     updateLesson(worldId, lessonId, 'questions', lesson.questions.filter((q) => q.id !== qId));
   };
 
   const updateOption = (worldId, lessonId, qId, optIdx, field, value) => {
     const world = worlds.find((w) => w.id === worldId);
+    if (!world) {
+      console.error('World not found:', worldId);
+      return;
+    }
     const lesson = world.lessons.find((l) => l.id === lessonId);
+    if (!lesson) {
+      console.error('Lesson not found:', lessonId);
+      return;
+    }
     const q = lesson.questions.find((q) => q.id === qId);
+    if (!q) {
+      console.error('Question not found:', qId);
+      return;
+    }
     const updatedOpts = q.options.map((o, i) => {
       if (field === 'correct') {
         return { ...o, correct: i === optIdx };

@@ -1,31 +1,21 @@
 import React, { useState } from 'react';
-import { Flame, ArrowRight, Lock } from 'lucide-react';
+import { Flame, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { checkAppPassword } from '../services/auth';
 
 export default function Login({ onLogin, loading, error }) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [pwError, setPwError] = useState(false);
-  const [step, setStep] = useState('email'); // 'email' or 'password'
+  const [emailError, setEmailError] = useState(false);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
+    setEmailError(false);
     const trimmedEmail = email.trim().toLowerCase();
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailRegex.test(trimmedEmail)) {
-      setStep('password');
-    }
-  };
-
-  const handlePasswordSubmit = (e) => {
-    e.preventDefault();
-    setPwError(false);
-    if (checkAppPassword(password)) {
-      onLogin(email.trim().toLowerCase());
+      onLogin(trimmedEmail);
     } else {
-      setPwError(true);
+      setEmailError(true);
     }
   };
 
@@ -48,119 +38,72 @@ export default function Login({ onLogin, loading, error }) {
           <p className="text-gray-400 text-[13px] font-medium mt-1">Editor Training Platform</p>
         </motion.div>
 
-        {step === 'email' ? (
-          /* Step 1: Email */
-          <motion.form
-            onSubmit={handleEmailSubmit}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.15 }}
-            className="space-y-4"
-          >
-            <div>
-              <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-2 ml-1">
-                Your Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="editor@aditor.ai"
-                style={{ backgroundColor: '#252d65', borderColor: '#3a4280' }}
-                className="w-full px-4 py-4 rounded-2xl text-white text-[15px] placeholder-gray-500 focus:outline-none focus:!border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition font-medium border-2"
-                required
-                autoFocus
-              />
-            </div>
+        <motion.form
+          onSubmit={handleEmailSubmit}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.15 }}
+          className="space-y-4"
+        >
+          <div>
+            <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-2 ml-1">
+              Your Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); setEmailError(false); }}
+              placeholder="editor@aditor.ai"
+              style={{ backgroundColor: '#252d65', borderColor: emailError ? '#ef4444' : '#3a4280' }}
+              className="w-full px-4 py-4 rounded-2xl text-white text-[15px] placeholder-gray-500 focus:outline-none focus:!border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition font-medium border-2"
+              required
+              autoFocus
+            />
+          </div>
 
-            <motion.button
-              type="submit"
-              whileTap={{ scale: 0.97, y: 3 }}
-              className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black rounded-2xl uppercase tracking-wider text-[14px] border-b-[4px] border-orange-700 active:border-b-0 active:translate-y-[4px] shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2"
+          {emailError && (
+            <motion.p
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-red-400 text-[13px] font-medium bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3"
             >
-              Continue
-              <ArrowRight size={16} strokeWidth={2.5} />
-            </motion.button>
+              Please enter a valid email address
+            </motion.p>
+          )}
 
-            <p className="text-center text-gray-600 text-[11px] mt-8 font-medium">
-              Use the email registered in your Aditor profile
-            </p>
-          </motion.form>
-        ) : (
-          /* Step 2: Password */
-          <motion.form
-            onSubmit={handlePasswordSubmit}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="space-y-4"
-          >
-            <div className="flex items-center gap-2 px-1 mb-1">
-              <span className="text-gray-400 text-[13px]">{email}</span>
-              <button
-                type="button"
-                onClick={() => { setStep('email'); setPassword(''); setPwError(false); }}
-                className="text-orange-400 text-[11px] font-bold hover:text-orange-300 transition"
-              >
-                Change
-              </button>
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em] mb-2 ml-1">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => { setPassword(e.target.value); setPwError(false); }}
-                placeholder="Enter password"
-                style={{ backgroundColor: '#252d65', borderColor: pwError ? '#ef4444' : '#3a4280' }}
-                className="w-full px-4 py-4 rounded-2xl text-white text-[15px] placeholder-gray-500 focus:outline-none focus:!border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition font-medium border-2"
-                required
-                autoFocus
-              />
-            </div>
-
-            {pwError && (
-              <motion.p
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-red-400 text-[13px] font-medium bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3"
-              >
-                Wrong password
-              </motion.p>
-            )}
-
-            {error && (
-              <motion.p
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-red-400 text-[13px] font-medium bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3"
-              >
-                {error}
-              </motion.p>
-            )}
-
-            <motion.button
-              type="submit"
-              disabled={loading}
-              whileTap={{ scale: 0.97, y: 3 }}
-              className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black rounded-2xl uppercase tracking-wider text-[14px] border-b-[4px] border-orange-700 active:border-b-0 active:translate-y-[4px] shadow-lg shadow-orange-500/25 disabled:opacity-50 flex items-center justify-center gap-2"
+          {error && (
+            <motion.p
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-red-400 text-[13px] font-medium bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3"
             >
-              {loading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Looking you up...
-                </>
-              ) : (
-                <>
-                  Enter Training
-                  <Lock size={14} strokeWidth={2.5} />
-                </>
-              )}
-            </motion.button>
-          </motion.form>
-        )}
+              {error}
+            </motion.p>
+          )}
+
+          <motion.button
+            type="submit"
+            disabled={loading}
+            whileTap={{ scale: 0.97, y: 3 }}
+            className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black rounded-2xl uppercase tracking-wider text-[14px] border-b-[4px] border-orange-700 active:border-b-0 active:translate-y-[4px] shadow-lg shadow-orange-500/25 disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Looking you up...
+              </>
+            ) : (
+              <>
+                Enter Training
+                <ArrowRight size={16} strokeWidth={2.5} />
+              </>
+            )}
+          </motion.button>
+
+          <p className="text-center text-gray-600 text-[11px] mt-8 font-medium">
+            Use the email registered in your Aditor profile
+          </p>
+        </motion.form>
       </div>
     </div>
   );

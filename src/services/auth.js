@@ -3,11 +3,10 @@
 
 // Passwords should be set via environment variables — never hardcode in source
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
-const APP_PASSWORD = import.meta.env.VITE_APP_PASSWORD;
 const STORAGE_KEY = 'adlingo_auth';
 
-if (!ADMIN_PASSWORD || !APP_PASSWORD) {
-  console.error('VITE_ADMIN_PASSWORD and VITE_APP_PASSWORD environment variables are required');
+if (!ADMIN_PASSWORD) {
+  console.error('VITE_ADMIN_PASSWORD environment variable is required');
 }
 
 export function getStoredAuth() {
@@ -29,8 +28,4 @@ export function clearAuth() {
 
 export function checkAdminPassword(password) {
   return password === ADMIN_PASSWORD;
-}
-
-export function checkAppPassword(password) {
-  return password === APP_PASSWORD;
 }

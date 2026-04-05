@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Flame, Trophy, Settings, LogOut, Map, BookOpen, User, ArrowLeft, X } from 'lucide-react';
+import { Flame, Trophy, Settings, LogOut, Map, BookOpen, User, X } from 'lucide-react';
 
 export default function Header({ user, onLogout }) {
   const navigate = useNavigate();

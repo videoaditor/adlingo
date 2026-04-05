@@ -8,8 +8,12 @@ export default function QuizEngine({ questions, onComplete }) {
   const [selectedOpt, setSelectedOpt] = useState(null);
   const [correctCount, setCorrectCount] = useState(0);
 
+  if (!questions || questions.length === 0) {
+    return <div className="text-center p-8">No questions available</div>;
+  }
+
   const q = questions[qIndex];
-  const progress = ((qIndex) / questions.length) * 100;
+  const progress = questions.length > 0 ? ((qIndex) / questions.length) * 100 : 0;
   const isLastQuestion = qIndex + 1 >= questions.length;
 
   const handleCheck = () => {

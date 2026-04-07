@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle, XCircle, AlertCircle, Lightbulb } from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function QuizEngine({ questions, onComplete }) {

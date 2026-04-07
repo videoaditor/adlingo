@@ -10,7 +10,6 @@ export default function Header({ user, onLogout }) {
   const streak = progress.streak || 0;
   const [showProfile, setShowProfile] = useState(false);
 
-  const allLessons = Object.values(progress.scores || {}).length;
   const completedLessons = progress.completedLessons?.length || 0;
 
   return (
@@ -117,7 +116,7 @@ export default function Header({ user, onLogout }) {
       )}
 
       {/* Bottom tab bar — iOS style */}
-      {location.pathname !== '/admin' && !location.pathname.startsWith('/lesson') && !location.pathname.startsWith('/admin') && (
+      {!location.pathname.startsWith('/lesson') && !location.pathname.startsWith('/admin') && (
         <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0f1328]/98 backdrop-blur-xl border-t border-white/5 pb-[env(safe-area-inset-bottom)]">
           <div className="max-w-lg mx-auto flex items-center justify-around px-2 py-1.5">
             <TabItem
@@ -145,17 +144,14 @@ export default function Header({ user, onLogout }) {
   );
 }
 
-function TabItem({ icon: Icon, label, active, onClick, disabled }) {
+function TabItem({ icon: Icon, label, active, onClick }) {
   return (
     <button
       onClick={onClick}
-      disabled={disabled}
       className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-xl transition-all ${
         active
           ? 'text-orange-400'
-          : disabled
-            ? 'text-gray-700'
-            : 'text-gray-500 hover:text-gray-300'
+          : 'text-gray-500 hover:text-gray-300'
       }`}
     >
       <div className={`p-1.5 rounded-xl transition-all ${active ? 'bg-orange-500/15' : ''}`}>

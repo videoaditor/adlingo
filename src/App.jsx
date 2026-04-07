@@ -10,16 +10,15 @@ import Lesson from './pages/Lesson';
 import Admin from './pages/Admin';
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => getStoredAuth());
   const [loading, setLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState(null);
 
-  // Check stored auth on mount — also handle auto-login from Hub via URL param
+  // Check for auto-login from Hub via URL param
   useEffect(() => {
-    const stored = getStoredAuth();
-    if (stored) {
-      setUser(stored);
+    if (user) {
+      // User already loaded from stored auth
       setLoading(false);
       return;
     }
@@ -46,7 +45,7 @@ const App = () => {
     } else {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   // Login handler
   const handleLogin = useCallback(async (email) => {
@@ -107,8 +106,10 @@ const App = () => {
     storeAuth(updatedUser);
 
     // Sync to Airtable (fire and forget)
-    if (user.id) {
-      savePlayerProgress(user.id, progress).catch(console.error);
+    if (user && user.id) {
+      savePlayerProgress(user.id, progress).catch(err => {
+        console.error('Failed to sync progress:', err);
+      });
     }
   }, [user]);
 

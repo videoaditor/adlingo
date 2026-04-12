@@ -6,12 +6,16 @@ import {
   Users, RefreshCw, Search
 } from 'lucide-react';
 import { getWorlds, saveWorlds, generateId } from '../data/courseData';
-import { checkAdminPassword, getStoredAuth } from '../services/auth';
+import { checkAdminPassword } from '../services/auth';
 import { getAllPlayers } from '../services/airtable';
 
 export default function Admin() {
   const navigate = useNavigate();
-  const [authed, setAuthed] = useState(false);
+  const [authed, setAuthed] = useState(() => {
+    // Check if previously authenticated as admin this session
+    const adminSession = sessionStorage.getItem('adlingo_admin_authed');
+    return adminSession === 'true';
+  });
   const [password, setPassword] = useState('');
   const [pwError, setPwError] = useState(false);
   const [worlds, setWorlds] = useState([]);
@@ -22,14 +26,6 @@ export default function Admin() {
   const [players, setPlayers] = useState([]);
   const [playersLoading, setPlayersLoading] = useState(false);
   const [playerSearch, setPlayerSearch] = useState('');
-
-  useEffect(() => {
-    // Check if previously authenticated as admin this session
-    const adminSession = sessionStorage.getItem('adlingo_admin_authed');
-    if (adminSession === 'true') {
-      setAuthed(true);
-    }
-  }, []);
 
   useEffect(() => {
     if (authed) setWorlds(getWorlds());

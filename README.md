@@ -1,16 +1,103 @@
-# React + Vite
+# AdLingo - Editor Training Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Duolingo-style training platform for video editors built with React, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+AdLingo gamifies Direct Response Video Editing training to standardize quality and track performance. The platform features:
 
-## React Compiler
+- **World-based Curriculum**: Organized into themed worlds with progressive lessons
+- **Quiz-based Learning**: Interactive quizzes after each lesson with progress tracking
+- **Player Progress Tracking**: XP, streaks, completion rates stored in Airtable
+- **Admin Portal**: Manage courses, worlds, lessons, and monitor player progress
+- **Role-based Access**: Editor login via email, admin access via password
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Development Setup
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js (v18+)
+- npm or yarn
+- Environment variables (see `.env.example`)
+
+### Installation
+
+```bash
+npm install
+npm run dev          # Start dev server
+npm run build        # Build for production
+npm run lint         # Run ESLint
+npm run preview      # Preview production build
+```
+
+### Environment Variables
+
+Create a `.env` file based on `.env.example`:
+
+```
+VITE_AIRTABLE_API_KEY=your_api_key_here
+VITE_ADMIN_PASSWORD=your_secure_password_here
+```
+
+## Architecture
+
+### Key Directories
+
+- `src/pages/` - Main pages (Login, WorldMap, Lesson, Course, Admin)
+- `src/components/` - Reusable components (QuizEngine, VideoPlayer, Header)
+- `src/services/` - API/auth services (Airtable, Auth)
+- `src/data/` - Course data and seed content
+
+### Data Flow
+
+1. **Authentication**: Editors log in with email; email is looked up in Airtable Players table
+2. **Course Data**: Worlds, lessons, and quizzes stored in `courseData.js` (seeded to localStorage)
+3. **Progress Sync**: Quiz results synced to Airtable `AdLingo Progress` field
+4. **Admin Management**: Course structure can be edited via Admin portal (password-protected)
+
+## Key Features
+
+### World System
+
+Worlds represent curriculum sections with lessons that unlock progressively. Each world has:
+
+- Theme colors and styling
+- Unlock dependencies (e.g., World 2 unlocks after World 1 completion)
+- Multiple lessons with embedded videos and quizzes
+
+### Video Support
+
+Supports embedded videos from:
+- Tella (tella.tv, tella.video)
+- Loom (loom.com)
+- YouTube
+- Vimeo
+
+### Progress Tracking
+
+- Tracks completed lessons and quiz scores per player
+- Calculates XP (10 per correct answer), streaks, and completion percentages
+- Syncs to Airtable for admin visibility
+
+## API Integration
+
+### Airtable Service
+
+The app integrates with Airtable for:
+- Player lookup by email
+- Progress persistence
+- Rank/tier updates
+- Leaderboard data
+
+All API calls include error handling and logging via `console.error()`.
+
+## Security Notes
+
+- Admin password and Airtable API key are environment variables (never hardcoded)
+- Email input is sanitized to prevent Airtable formula injection
+- Admin session is stored in sessionStorage (scoped to session)
+
+## See Also
+
+- `PRD.md` - Product requirements and vision
+- `AssetAssignments.md` - Asset ownership and credits

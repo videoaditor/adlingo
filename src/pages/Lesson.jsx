@@ -6,7 +6,7 @@ import { getLessonById } from '../data/courseData';
 import VideoPlayer from '../components/VideoPlayer';
 import QuizEngine from '../components/QuizEngine';
 
-export default function Lesson({ user, onLessonComplete }) {
+export default function Lesson({ onLessonComplete }) {
   const { lessonId } = useParams();
   const navigate = useNavigate();
   const { lesson, world } = getLessonById(lessonId);

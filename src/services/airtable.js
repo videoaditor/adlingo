@@ -10,8 +10,14 @@ const headers = () => ({
 // Find a player by email
 export async function findPlayerByEmail(email) {
   try {
+    // Validate email parameter
+    if (!email || typeof email !== 'string') {
+      console.error('[Airtable] findPlayerByEmail: invalid email parameter');
+      return null;
+    }
+
     // Sanitize email to prevent Airtable formula injection
-    const sanitizedEmail = email.replace(/"/g, '\\"');
+    const sanitizedEmail = email.trim().replace(/"/g, '\\"');
     const formula = encodeURIComponent(`{Email} = "${sanitizedEmail}"`);
     const res = await fetch(
       `${BASE_URL}/${CONFIG.tables.players}?filterByFormula=${formula}&maxRecords=1`,
@@ -44,6 +50,16 @@ export async function findPlayerByEmail(email) {
 // Save player progress to Airtable
 export async function savePlayerProgress(recordId, progress) {
   try {
+    // Validate parameters
+    if (!recordId || typeof recordId !== 'string') {
+      console.error('[Airtable] savePlayerProgress: invalid recordId');
+      return null;
+    }
+    if (!progress || typeof progress !== 'object') {
+      console.error('[Airtable] savePlayerProgress: invalid progress object');
+      return null;
+    }
+
     const res = await fetch(`${BASE_URL}/${CONFIG.tables.players}/${recordId}`, {
       method: 'PATCH',
       headers: headers(),
@@ -67,6 +83,16 @@ export async function savePlayerProgress(recordId, progress) {
 // Update player rank
 export async function updatePlayerRank(recordId, rank) {
   try {
+    // Validate parameters
+    if (!recordId || typeof recordId !== 'string') {
+      console.error('[Airtable] updatePlayerRank: invalid recordId');
+      return null;
+    }
+    if (!rank || typeof rank !== 'string') {
+      console.error('[Airtable] updatePlayerRank: invalid rank');
+      return null;
+    }
+
     const res = await fetch(`${BASE_URL}/${CONFIG.tables.players}/${recordId}`, {
       method: 'PATCH',
       headers: headers(),

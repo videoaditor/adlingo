@@ -3,7 +3,7 @@
 
 const STORAGE_KEY = 'adlingo_course_data';
 const SEED_VERSION_KEY = 'adlingo_seed_version';
-const CURRENT_SEED_VERSION = 2; // Bump this to force seed data refresh
+const CURRENT_SEED_VERSION = 3; // Bump this to force seed data refresh
 
 const SEED_WORLDS = [
   {
@@ -460,6 +460,134 @@ const SEED_WORLDS = [
               { text: "Skip B-roll entirely and use text overlays", correct: false }
             ],
             directorNote: "More variations to test beats one 'perfect' version. The algorithm decides what works, not your taste. Ship more, test more, learn faster."
+          },
+          {
+            id: 'q32',
+            type: 'text',
+            question: "You're halfway through an edit and realize the client's script is weak. What do you do?",
+            options: [
+              { text: "Rewrite the script yourself before continuing", correct: false },
+              { text: "Finish the edit as-is — your job is editing, not writing", correct: false },
+              { text: "Flag it immediately, suggest improvements, and keep editing in parallel", correct: true },
+              { text: "Wait until the final review to bring it up", correct: false }
+            ],
+            directorNote: "Don't wait. Flag weak scripts early and suggest fixes while continuing your edit. Sitting idle waiting for approval kills your hourly rate — work in parallel."
+          }
+        ]
+      },
+      {
+        id: 'l11',
+        title: 'Timeline Efficiency',
+        subtitle: 'Eliminate wasted time in your workflow',
+        order: 2,
+        videoUrl: 'https://www.loom.com/share/317092ccaa0c477a9601e2a3f30b9549',
+        videoType: 'loom',
+        questions: [
+          {
+            id: 'q33',
+            type: 'text',
+            question: "You're starting a new ad edit. What's the first thing you do before touching the timeline?",
+            options: [
+              { text: "Start dragging clips onto the timeline immediately", correct: false },
+              { text: "Pick your music track first", correct: false },
+              { text: "Read the entire script, note enhancement ideas, and collect all assets before opening the editor", correct: true },
+              { text: "Color grade your footage first", correct: false }
+            ],
+            directorNote: "Prep before you edit. Reading the script and collecting assets up front means zero interruptions once you're in the timeline. Every pause to search for a clip breaks your flow."
+          },
+          {
+            id: 'q34',
+            type: 'text',
+            question: "You're editing and keep switching between Chrome, Finder, and Premiere to find assets. What's wrong?",
+            options: [
+              { text: "You need a faster computer", correct: false },
+              { text: "Your assets weren't organized before you started — context-switching destroys editing speed", correct: true },
+              { text: "You should use a second monitor", correct: false },
+              { text: "This is normal editing workflow", correct: false }
+            ],
+            directorNote: "Context-switching is the silent killer. Every time you leave the timeline to hunt for an asset, you lose focus and time. Organize everything in one session BEFORE editing."
+          },
+          {
+            id: 'q35',
+            type: 'text',
+            question: "You've finished a rough cut. What should you do before adding effects and polish?",
+            options: [
+              { text: "Export a draft and send it to the client immediately", correct: false },
+              { text: "Start color grading", correct: false },
+              { text: "Watch it back at 1x speed without stopping — does the story flow?", correct: true },
+              { text: "Add music and sound effects", correct: false }
+            ],
+            directorNote: "Watch your rough cut straight through before polishing. If the story doesn't flow at 1x playback, no amount of effects will save it. Fix structure first, then polish."
+          },
+          {
+            id: 'q36',
+            type: 'text',
+            question: "A client sends you 45 minutes of raw footage for a 30-second ad. What's the fastest way to get through it?",
+            options: [
+              { text: "Watch all 45 minutes at 1x speed to catch everything", correct: false },
+              { text: "Scrub through at 2-4x speed, mark selects, then only work with the best moments", correct: true },
+              { text: "Ask the client to pick their favorite clips", correct: false },
+              { text: "Use the first few clips and ignore the rest", correct: false }
+            ],
+            directorNote: "Scrub fast, mark selects, move on. You don't need to watch everything at full speed — you need to find the 30 seconds of gold buried in 45 minutes. Speed-scrubbing is a core skill."
+          }
+        ]
+      },
+      {
+        id: 'l12',
+        title: 'Shipping & Iteration',
+        subtitle: 'Done beats perfect',
+        order: 3,
+        videoUrl: 'https://www.loom.com/share/317092ccaa0c477a9601e2a3f30b9549',
+        videoType: 'loom',
+        questions: [
+          {
+            id: 'q37',
+            type: 'text',
+            question: "Your edit is at 90% quality. You could spend another hour getting it to 95%. Should you?",
+            options: [
+              { text: "Yes — always deliver your best work", correct: false },
+              { text: "No — ship at 90%, use that hour on the next video instead", correct: true },
+              { text: "Ask the client if they want the extra polish", correct: false },
+              { text: "Only if you're ahead of schedule", correct: false }
+            ],
+            directorNote: "The difference between 90% and 95% is invisible to most viewers but costs you an extra hour. Ship it, start the next one. Volume compounds faster than perfection."
+          },
+          {
+            id: 'q38',
+            type: 'text',
+            question: "You delivered 3 ad variations to a client. Version C outperforms A and B by 40%. What's your takeaway?",
+            options: [
+              { text: "You got lucky with version C", correct: false },
+              { text: "You should have only made version C to save time", correct: false },
+              { text: "Variations are how you learn what works — study WHY C won and apply that pattern to future edits", correct: true },
+              { text: "The client should have told you what they wanted upfront", correct: false }
+            ],
+            directorNote: "Winning ads teach you more than any tutorial. When a variation wins, reverse-engineer it — was it the hook? The pacing? The CTA? Apply the pattern, not just the result."
+          },
+          {
+            id: 'q39',
+            type: 'text',
+            question: "A client asks for 'one more round of revisions' on an ad that's already been revised twice. What's the efficient move?",
+            options: [
+              { text: "Do whatever they ask — the client is always right", correct: false },
+              { text: "Ask specifically what's not working and fix only those points — don't re-edit the whole thing", correct: true },
+              { text: "Refuse and tell them the edit is final", correct: false },
+              { text: "Start the edit over from scratch", correct: false }
+            ],
+            directorNote: "Revision rounds drain time when they're vague. Pin down exactly what's not working, fix those specific points, and move on. Surgical fixes beat full re-edits."
+          },
+          {
+            id: 'q40',
+            type: 'text',
+            question: "You just finished editing 5 ads this week. Before starting next week, what should you do?",
+            options: [
+              { text: "Take a break and start fresh Monday", correct: false },
+              { text: "Review which ads performed best and note what editing patterns drove results", correct: true },
+              { text: "Archive everything and move on", correct: false },
+              { text: "Ask clients for feedback on each one", correct: false }
+            ],
+            directorNote: "Build a feedback loop. Reviewing performance data and connecting it to your editing decisions is how you get faster AND better simultaneously. Without this, you're just guessing."
           }
         ]
       }
@@ -533,6 +661,180 @@ const SEED_WORLDS = [
               { text: "The product packaging and branding", correct: false }
             ],
             directorNote: "When analyzing winning ads, study the structure: how does the hook filter for the right audience? Where does trust get built? When does social proof land? Copy the framework, not the surface."
+          }
+        ]
+      },
+      {
+        id: 'l13',
+        title: 'Hook Psychology',
+        subtitle: 'The first 3 seconds decide everything',
+        order: 2,
+        videoUrl: 'https://www.loom.com/share/4e2292309a0c45f090b66bcb050513e4',
+        videoType: 'loom',
+        questions: [
+          {
+            id: 'q41',
+            type: 'text',
+            question: "What's the primary job of a hook in the first 3 seconds?",
+            options: [
+              { text: "Explain what the product does", correct: false },
+              { text: "Show the brand logo", correct: false },
+              { text: "Filter for the right audience and stop their scroll", correct: true },
+              { text: "Create a visually stunning first impression", correct: false }
+            ],
+            directorNote: "Hooks don't just grab attention — they FILTER. A good hook makes the wrong audience scroll past and the right audience stop. 'Beautiful' hooks that attract everyone waste ad spend."
+          },
+          {
+            id: 'q42',
+            type: 'text',
+            question: "You're editing a skincare ad hook. Which approach is strongest?",
+            options: [
+              { text: "Show the product bottle with the brand name", correct: false },
+              { text: "Start with a close-up of problem skin that the target audience relates to", correct: true },
+              { text: "Open with a celebrity endorsement", correct: false },
+              { text: "Begin with upbeat music and a lifestyle montage", correct: false }
+            ],
+            directorNote: "Lead with the PAIN, not the product. The target audience scrolls past product shots but stops when they see their own problem on screen. Pain = pattern interrupt."
+          },
+          {
+            id: 'q43',
+            type: 'text',
+            question: "You have 5 different hook variations. How do you decide which one to lead with?",
+            options: [
+              { text: "Pick the one that looks the most polished", correct: false },
+              { text: "Ask the client which they prefer", correct: false },
+              { text: "Test all 5 — let the data decide, not your opinion", correct: true },
+              { text: "Use the one with the most text overlay", correct: false }
+            ],
+            directorNote: "Never pick your favorite hook. Run all variations and let performance data choose the winner. Your taste and the algorithm's taste are different things."
+          },
+          {
+            id: 'q44',
+            type: 'text',
+            question: "A hook grabs attention but the viewer drops off at second 4. What's likely wrong?",
+            options: [
+              { text: "The hook was too short", correct: false },
+              { text: "The transition from hook to body is jarring — there's no bridge connecting the pattern interrupt to the story", correct: true },
+              { text: "The music was wrong", correct: false },
+              { text: "The resolution was too low", correct: false }
+            ],
+            directorNote: "The hook-to-body bridge matters. If your hook grabs them but second 4-5 loses them, the transition is broken. The hook's promise must flow seamlessly into the body's payoff."
+          }
+        ]
+      },
+      {
+        id: 'l14',
+        title: 'Pain, Trust & CTA',
+        subtitle: 'The body that makes people buy',
+        order: 3,
+        videoUrl: 'https://www.loom.com/share/4e2292309a0c45f090b66bcb050513e4',
+        videoType: 'loom',
+        questions: [
+          {
+            id: 'q45',
+            type: 'text',
+            question: "In the agitation section, you have a clip of someone frustrated and a clip of a product failing. Which do you use first?",
+            options: [
+              { text: "Product failing first — show the problem with competitors", correct: false },
+              { text: "The frustrated person first — emotion before logic, make them FEEL the pain", correct: true },
+              { text: "Neither — skip agitation and go straight to the solution", correct: false },
+              { text: "Alternate between both clips rapidly", correct: false }
+            ],
+            directorNote: "Emotion before logic. Show the human frustration first to trigger empathy, THEN show why other solutions fail. The viewer needs to feel the pain before they care about the fix."
+          },
+          {
+            id: 'q46',
+            type: 'text',
+            question: "You're editing the 'solution' section. The client wants to list 8 product features. What's the right editing call?",
+            options: [
+              { text: "Show all 8 features with text overlays for each", correct: false },
+              { text: "Pick the 2-3 features that solve the pain from the agitation section — cut the rest", correct: true },
+              { text: "Speed up the edit to fit all 8 features in", correct: false },
+              { text: "Add a scrolling list graphic", correct: false }
+            ],
+            directorNote: "Features don't sell — solutions to pain do. Pick only the features that directly answer the pain you just agitated. 8 features = noise. 2-3 targeted solutions = conversion."
+          },
+          {
+            id: 'q47',
+            type: 'text',
+            question: "Where should social proof appear in the ad structure?",
+            options: [
+              { text: "At the very beginning — lead with testimonials", correct: false },
+              { text: "Randomly scattered throughout", correct: false },
+              { text: "After the solution section — once the viewer believes the product works, social proof pushes them to act", correct: true },
+              { text: "Only in the last second before the CTA", correct: false }
+            ],
+            directorNote: "Social proof lands hardest after the solution. The viewer is thinking 'does this actually work?' — that's when you hit them with reviews, results, and real people confirming it does."
+          },
+          {
+            id: 'q48',
+            type: 'text',
+            question: "Your CTA says 'Buy Now' with a static product image. The click-through rate is low. What's a stronger approach?",
+            options: [
+              { text: "Make the text bigger", correct: false },
+              { text: "Add urgency — show the product in use, add scarcity ('only X left'), and make the CTA feel like a natural next step, not a hard sell", correct: true },
+              { text: "Remove the CTA entirely and let people find the product themselves", correct: false },
+              { text: "Add a discount code overlay", correct: false }
+            ],
+            directorNote: "Static CTAs feel like ads. Strong CTAs feel like the obvious next step — show the product solving the problem, add scarcity or urgency, and make clicking feel natural, not forced."
+          }
+        ]
+      },
+      {
+        id: 'l15',
+        title: 'Ad Teardown Practice',
+        subtitle: 'Reverse-engineer what works',
+        order: 4,
+        videoUrl: 'https://www.loom.com/share/4e2292309a0c45f090b66bcb050513e4',
+        videoType: 'loom',
+        questions: [
+          {
+            id: 'q49',
+            type: 'text',
+            question: "You're analyzing a competitor's ad. It has 2M views but low conversion. What does this tell you?",
+            options: [
+              { text: "The ad is successful — 2M views is great", correct: false },
+              { text: "The hook is strong but the body or CTA is weak — it entertains but doesn't sell", correct: true },
+              { text: "The product isn't good enough", correct: false },
+              { text: "They need to run it longer", correct: false }
+            ],
+            directorNote: "High views + low conversion = entertainment, not advertising. The hook works, but somewhere between body and CTA the selling breaks down. Find where and you've found the lesson."
+          },
+          {
+            id: 'q50',
+            type: 'text',
+            question: "You notice a winning ad uses jump cuts every 1.5 seconds in the hook but slows to 3-second cuts in the body. Why?",
+            options: [
+              { text: "The editor was inconsistent", correct: false },
+              { text: "Fast cuts create urgency and stop the scroll, slower cuts in the body let trust build — pacing is intentional", correct: true },
+              { text: "The footage quality was lower in the hook", correct: false },
+              { text: "Jump cuts are trendy right now", correct: false }
+            ],
+            directorNote: "Pacing serves psychology. Fast cuts in hooks = energy and pattern interrupt. Slower cuts in the body = space to process information and build trust. This shift is deliberate, not accidental."
+          },
+          {
+            id: 'q51',
+            type: 'text',
+            question: "A brand's top-performing ad uses a 'talking head + B-roll' format. Their second best uses 'text overlay + stock footage.' What should you take from this?",
+            options: [
+              { text: "Only use talking head + B-roll from now on", correct: false },
+              { text: "Both formats can work — test multiple formats for each brand and let data pick the winner", correct: true },
+              { text: "Stock footage is always worse than talking heads", correct: false },
+              { text: "Copy the top performer exactly for your next client", correct: false }
+            ],
+            directorNote: "Don't marry a format. Different audiences respond to different styles. The takeaway is to always test multiple formats — what wins for one brand may lose for another."
+          },
+          {
+            id: 'q52',
+            type: 'text',
+            question: "When doing an ad teardown, what's the LAST thing you should analyze?",
+            options: [
+              { text: "The hook", correct: false },
+              { text: "The music and sound design", correct: false },
+              { text: "The visual effects and color grading — surface-level aesthetics come after understanding structure and psychology", correct: true },
+              { text: "The script", correct: false }
+            ],
+            directorNote: "Analyze structure and psychology first (hook → agitation → solution → proof → CTA), then pacing, then audio, and lastly aesthetics. Most editors do this backwards — copying the look without understanding the strategy."
           }
         ]
       }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Flame, Trophy, Settings, LogOut, Map, BookOpen, User, X } from 'lucide-react';
+import { Flame, Trophy, Settings, LogOut, Map, BookOpen, User, X, Check, Loader2, AlertTriangle } from 'lucide-react';
 
-export default function Header({ user, onLogout }) {
+export default function Header({ user, onLogout, syncStatus = 'saved' }) {
   const navigate = useNavigate();
   const location = useLocation();
   const progress = user?.progress || {};
@@ -39,6 +39,16 @@ export default function Header({ user, onLogout }) {
               <Trophy size={13} strokeWidth={2.5} />
               {xp.toLocaleString()}
             </div>
+            {syncStatus === 'syncing' && (
+              <div className="flex items-center gap-1 bg-blue-500/10 text-blue-400 px-2 py-1.5 rounded-xl text-xs font-bold border border-blue-500/15" title="Saving progress...">
+                <Loader2 size={13} className="animate-spin" />
+              </div>
+            )}
+            {syncStatus === 'error' && (
+              <div className="flex items-center gap-1 bg-red-500/10 text-red-400 px-2 py-1.5 rounded-xl text-xs font-bold border border-red-500/15" title="Progress not synced — will retry">
+                <AlertTriangle size={13} />
+              </div>
+            )}
             {user?.email?.endsWith('@aditor.ai') && location.pathname !== '/admin' && (
               <button
                 onClick={() => navigate('/admin')}

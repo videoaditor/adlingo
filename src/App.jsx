@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { findPlayerByEmail, savePlayerProgress } from './services/airtable';
+import { findPlayerByEmail, savePlayerProgressWithRetry, mergeProgress, flushPendingSync } from './services/airtable';
 import { getStoredAuth, storeAuth, clearAuth } from './services/auth';
 import Header from './components/Header';
 import Login from './pages/Login';
@@ -14,28 +14,45 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState(null);
+  const [syncStatus, setSyncStatus] = useState('saved'); // 'saved' | 'syncing' | 'error'
+
+  // Merge localStorage progress with Airtable progress — never lose data
+  const mergeAndStore = useCallback(async (player) => {
+    const stored = getStoredAuth();
+    // Only merge if localStorage has progress for the same user
+    if (stored && stored.email === player.email && stored.progress) {
+      const merged = mergeProgress(stored.progress, player.progress);
+      player = { ...player, progress: merged };
+      // Sync merged result back to Airtable so both sources match
+      savePlayerProgressWithRetry(player.id, merged, setSyncStatus).catch(err => {
+        console.error('Failed to sync merged progress:', err);
+      });
+    }
+    storeAuth(player);
+    setUser(player);
+  }, []);
+
+  // Flush any pending syncs from a previous session
+  useEffect(() => {
+    flushPendingSync(setSyncStatus);
+  }, []);
 
   // Check for auto-login from Hub via URL param
   useEffect(() => {
     if (user) {
-      // User already loaded from stored auth
       setLoading(false);
       return;
     }
 
-    // Auto-login: check for ?email= param (passed from Editor Hub)
     const params = new URLSearchParams(window.location.search);
     const emailParam = params.get('email');
     if (emailParam) {
-      // Clean up the URL (remove ?email= so it doesn't linger)
       window.history.replaceState({}, '', window.location.pathname);
-      // Auto-login with the email
       (async () => {
         try {
           const player = await findPlayerByEmail(emailParam.trim().toLowerCase());
           if (player) {
-            storeAuth(player);
-            setUser(player);
+            await mergeAndStore(player);
           }
         } catch (err) {
           console.error('Auto-login failed:', err);
@@ -45,7 +62,7 @@ const App = () => {
     } else {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, mergeAndStore]);
 
   // Login handler
   const handleLogin = useCallback(async (email) => {
@@ -58,8 +75,7 @@ const App = () => {
         setLoginLoading(false);
         return;
       }
-      storeAuth(player);
-      setUser(player);
+      await mergeAndStore(player);
     } catch (err) {
       console.error('Login error:', err);
       setLoginError('Connection error. Check your internet and try again.');
@@ -105,11 +121,9 @@ const App = () => {
     setUser(updatedUser);
     storeAuth(updatedUser);
 
-    // Sync to Airtable (fire and forget)
+    // Sync to Airtable with retry
     if (user && user.id) {
-      savePlayerProgress(user.id, progress).catch(err => {
-        console.error('Failed to sync progress:', err);
-      });
+      savePlayerProgressWithRetry(user.id, progress, setSyncStatus);
     }
   }, [user]);
 
@@ -133,7 +147,7 @@ const App = () => {
             path="/"
             element={
               <>
-                <Header user={user} onLogout={handleLogout} />
+                <Header user={user} onLogout={handleLogout} syncStatus={syncStatus} />
                 <WorldMap user={user} />
               </>
             }
@@ -142,7 +156,7 @@ const App = () => {
             path="/course"
             element={
               <>
-                <Header user={user} onLogout={handleLogout} />
+                <Header user={user} onLogout={handleLogout} syncStatus={syncStatus} />
                 <Course user={user} />
               </>
             }

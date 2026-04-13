@@ -147,24 +147,124 @@ export async function getAllPlayers() {
 }
 
 function parseProgress(raw) {
-  if (!raw) {
-    return {
-      completedLessons: [],
-      scores: {},
-      xp: 0,
-      streak: 0,
-      lastActivity: null,
-    };
-  }
+  const empty = {
+    completedLessons: [],
+    scores: {},
+    xp: 0,
+    streak: 0,
+    lastActivity: null,
+  };
+  if (!raw) return empty;
   try {
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    // Deduplicate completedLessons on load
+    if (Array.isArray(parsed.completedLessons)) {
+      parsed.completedLessons = [...new Set(parsed.completedLessons)];
+    }
+    return parsed;
   } catch {
-    return {
-      completedLessons: [],
-      scores: {},
-      xp: 0,
-      streak: 0,
-      lastActivity: null,
-    };
+    return empty;
   }
+}
+
+// Merge two progress objects — never discard progress, always take the union
+export function mergeProgress(local, remote) {
+  const a = local || {};
+  const b = remote || {};
+
+  // Union of completed lessons (deduplicated)
+  const completedLessons = [...new Set([
+    ...(a.completedLessons || []),
+    ...(b.completedLessons || []),
+  ])];
+
+  // For scores, keep whichever has more correct answers per lesson
+  const allLessonIds = new Set([
+    ...Object.keys(a.scores || {}),
+    ...Object.keys(b.scores || {}),
+  ]);
+  const scores = {};
+  for (const lid of allLessonIds) {
+    const sa = (a.scores || {})[lid];
+    const sb = (b.scores || {})[lid];
+    if (sa && sb) {
+      scores[lid] = (sa.correct || 0) >= (sb.correct || 0) ? sa : sb;
+    } else {
+      scores[lid] = sa || sb;
+    }
+  }
+
+  // Recalculate XP from merged scores
+  const xp = Object.values(scores).reduce((sum, s) => {
+    return sum + ((typeof s.correct === 'number' ? s.correct : 0) * 10);
+  }, 0);
+
+  // Keep higher streak
+  const streak = Math.max(a.streak || 0, b.streak || 0);
+
+  // Keep more recent lastActivity
+  let lastActivity = null;
+  if (a.lastActivity && b.lastActivity) {
+    lastActivity = new Date(a.lastActivity) > new Date(b.lastActivity)
+      ? a.lastActivity : b.lastActivity;
+  } else {
+    lastActivity = a.lastActivity || b.lastActivity || null;
+  }
+
+  return { completedLessons, scores, xp, streak, lastActivity };
+}
+
+// Retry queue — persists pending syncs to localStorage
+const PENDING_SYNC_KEY = 'adlingo_pending_sync';
+
+function getPendingSync() {
+  try {
+    const raw = localStorage.getItem(PENDING_SYNC_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function setPendingSync(entry) {
+  if (entry) {
+    localStorage.setItem(PENDING_SYNC_KEY, JSON.stringify(entry));
+  } else {
+    localStorage.removeItem(PENDING_SYNC_KEY);
+  }
+}
+
+// Save with retry (up to 3 attempts, exponential backoff)
+export async function savePlayerProgressWithRetry(recordId, progress, onStatusChange) {
+  if (!recordId || !progress) return null;
+
+  // Clear any stale pending sync for a different record
+  setPendingSync({ recordId, progress });
+  if (onStatusChange) onStatusChange('syncing');
+
+  const delays = [1000, 2000, 4000];
+  for (let attempt = 0; attempt <= delays.length; attempt++) {
+    try {
+      const result = await savePlayerProgress(recordId, progress);
+      if (result) {
+        setPendingSync(null);
+        if (onStatusChange) onStatusChange('saved');
+        return result;
+      }
+    } catch (err) {
+      console.error(`[Airtable] sync attempt ${attempt + 1} failed:`, err.message);
+    }
+    if (attempt < delays.length) {
+      await new Promise(r => setTimeout(r, delays[attempt]));
+    }
+  }
+
+  // All retries exhausted — pending sync stays in localStorage for next load
+  if (onStatusChange) onStatusChange('error');
+  return null;
+}
+
+// Flush any pending sync from a previous session
+export async function flushPendingSync(onStatusChange) {
+  const pending = getPendingSync();
+  if (!pending) return;
+  await savePlayerProgressWithRetry(pending.recordId, pending.progress, onStatusChange);
 }

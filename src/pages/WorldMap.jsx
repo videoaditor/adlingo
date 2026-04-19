@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, CheckCircle, ChevronRight, Flame, Star, Zap } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Lock, CheckCircle, ChevronRight, Flame, Star, Zap, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { getWorlds, getAllLessonIds } from '../data/courseData';
+import { haptic } from '../services/haptics';
+import WorldClearCelebration from '../components/WorldClearCelebration';
+import CaughtUpBanner from '../components/CaughtUpBanner';
 
 // World-specific icons/emojis for visual variety
 const WORLD_ICONS = {
@@ -52,6 +55,41 @@ export default function WorldMap({ user }) {
     ? Math.round((completedLessons.length / allLessonIds.length) * 100)
     : 0;
 
+  // Detect a world that just flipped to complete this session
+  const [celebratingWorld, setCelebratingWorld] = useState(null);
+  const prevCompleteRef = useRef(null);
+  useEffect(() => {
+    const currentlyComplete = new Set(
+      worlds.filter((w) => w.lessons.length > 0 && w.lessons.every((l) => completedLessons.includes(l.id))).map((w) => w.id)
+    );
+    if (prevCompleteRef.current === null) {
+      prevCompleteRef.current = currentlyComplete;
+      return;
+    }
+    const justCleared = [...currentlyComplete].find((id) => !prevCompleteRef.current.has(id));
+    prevCompleteRef.current = currentlyComplete;
+    if (justCleared) {
+      const dismissedKey = `worldCelebrated_${justCleared}`;
+      if (!sessionStorage.getItem(dismissedKey)) {
+        sessionStorage.setItem(dismissedKey, '1');
+        const world = worlds.find((w) => w.id === justCleared);
+        if (world) setCelebratingWorld(world);
+      }
+    }
+  }, [completedLessons, worlds]);
+
+  // "Up to date" banner: show when all unlocked lessons are completed
+  const unlockedWorlds = worlds.filter(isWorldUnlocked);
+  const unlockedLessonIds = unlockedWorlds.flatMap((w) => w.lessons.map((l) => l.id));
+  const caughtUp = unlockedLessonIds.length > 0 && unlockedLessonIds.every((id) => completedLessons.includes(id));
+  const caughtUpMode = caughtUp && completedLessons.length === allLessonIds.length ? 'all-clear' : 'caught-up';
+
+  const handleLessonClick = (lesson, lUnlocked) => {
+    if (!lUnlocked) { haptic('error'); return; }
+    haptic('tap');
+    navigate(`/lesson/${lesson.id}`);
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0e1a] pb-24 hide-scrollbar">
       {/* XP Progress bar under header */}
@@ -67,12 +105,21 @@ export default function WorldMap({ user }) {
                 style={{ boxShadow: '0 0 12px rgba(251,146,60,0.4)' }}
               />
             </div>
-            <span className="text-xs font-black text-orange-400 tabular-nums min-w-[36px] text-right">
+            <span className="font-display text-xs font-bold text-orange-400 tabular-nums min-w-[36px] text-right">
               {totalProgress}%
             </span>
           </div>
         </div>
       </div>
+
+      {/* Caught-up banner */}
+      {caughtUp && (
+        <div className="px-4 pt-2">
+          <div className="max-w-lg mx-auto">
+            <CaughtUpBanner mode={caughtUpMode} />
+          </div>
+        </div>
+      )}
 
       {/* World cards */}
       <div className="px-4 pt-2">
@@ -145,7 +192,7 @@ export default function WorldMap({ user }) {
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <h3 className={`font-black text-[17px] leading-tight ${unlocked ? 'text-white' : 'text-gray-500'}`}>
+                        <h3 className={`font-display font-bold text-[19px] leading-tight tracking-tight ${unlocked ? 'text-white' : 'text-gray-500'}`}>
                           {world.name}
                         </h3>
                         <p className={`text-[11px] font-bold uppercase tracking-[0.15em] mt-0.5 ${unlocked ? world.accentColor : 'text-gray-600'}`}>
@@ -185,7 +232,7 @@ export default function WorldMap({ user }) {
                         return (
                           <motion.button
                             key={lesson.id}
-                            onClick={() => lUnlocked && navigate(`/lesson/${lesson.id}`)}
+                            onClick={() => handleLessonClick(lesson, lUnlocked)}
                             disabled={!lUnlocked}
                             whileTap={lUnlocked ? { scale: 0.97 } : {}}
                             className={`
@@ -282,6 +329,8 @@ export default function WorldMap({ user }) {
           })}
         </div>
       </div>
+
+      <WorldClearCelebration world={celebratingWorld} onDismiss={() => setCelebratingWorld(null)} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { haptic } from '../services/haptics';
 
 export default function QuizEngine({ questions, onComplete }) {
   const [qIndex, setQIndex] = useState(0);
@@ -20,10 +21,12 @@ export default function QuizEngine({ questions, onComplete }) {
     if (selectedOpt === null) return;
     const isCorrect = q.options[selectedOpt].correct;
     setStatus(isCorrect ? 'correct' : 'wrong');
+    haptic(isCorrect ? 'success' : 'error');
     if (isCorrect) setCorrectCount((c) => c + 1);
   };
 
   const handleNext = () => {
+    haptic('nav');
     if (isLastQuestion) {
       onComplete(correctCount, questions.length);
     } else {
@@ -37,19 +40,40 @@ export default function QuizEngine({ questions, onComplete }) {
 
   return (
     <div className="flex flex-col min-h-0 flex-1">
-      {/* Progress bar */}
+      {/* Pip progress — one dot per question */}
       <div className="px-4 py-3">
         <div className="max-w-lg mx-auto flex items-center gap-3">
-          <div className="flex-1 h-3 bg-[#1a1f35] rounded-full overflow-hidden border border-white/5">
-            <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-400"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.4 }}
-              style={{ boxShadow: '0 0 10px rgba(52,211,153,0.3)' }}
-            />
+          <div className="flex-1 flex items-center gap-1.5">
+            {questions.map((_, i) => {
+              const done = i < qIndex;
+              const current = i === qIndex;
+              return (
+                <motion.div
+                  key={i}
+                  layout
+                  initial={false}
+                  animate={{
+                    flex: current ? 2.2 : 1,
+                    backgroundColor: done
+                      ? 'rgba(52,211,153,0.9)'
+                      : current
+                        ? 'rgba(249,115,22,0.95)'
+                        : 'rgba(255,255,255,0.08)',
+                  }}
+                  transition={{ type: 'spring', damping: 20, stiffness: 240 }}
+                  className="h-2 rounded-full"
+                  style={{
+                    boxShadow: current
+                      ? '0 0 12px rgba(249,115,22,0.5)'
+                      : done
+                        ? '0 0 8px rgba(52,211,153,0.35)'
+                        : 'none',
+                  }}
+                />
+              );
+            })}
           </div>
-          <span className="text-gray-400 text-xs font-black tabular-nums">
+          <span className="text-gray-400 text-xs font-bold tabular-nums font-display">
             {qIndex + 1}/{questions.length}
           </span>
         </div>
@@ -57,7 +81,7 @@ export default function QuizEngine({ questions, onComplete }) {
 
       {/* Question content */}
       <div className="flex-1 overflow-y-auto px-4 pb-52 hide-scrollbar">
-        <div className="max-w-lg mx-auto">
+        <div className="max-w-lg mx-auto card-halo">
           <AnimatePresence mode="wait">
             <motion.div
               key={qIndex}
@@ -66,7 +90,7 @@ export default function QuizEngine({ questions, onComplete }) {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.25 }}
             >
-              <h2 className="text-[17px] font-black text-center mb-6 leading-relaxed text-white mt-2 px-2">
+              <h2 className="font-display text-[20px] font-bold text-center mb-6 leading-snug text-white mt-2 px-2 tracking-tight">
                 {q.question}
               </h2>
 
@@ -105,7 +129,7 @@ export default function QuizEngine({ questions, onComplete }) {
                     <motion.button
                       key={idx}
                       disabled={status !== 'idle'}
-                      onClick={() => setSelectedOpt(idx)}
+                      onClick={() => { haptic('select'); setSelectedOpt(idx); }}
                       whileTap={status === 'idle' ? { scale: 0.97, y: 2 } : {}}
                       style={optStyle}
                       className={`

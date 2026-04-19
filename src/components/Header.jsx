@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Flame, Trophy, Settings, LogOut, Map, BookOpen, User, X, Check, Loader2, AlertTriangle } from 'lucide-react';
+import AditorLogo from './AditorLogo';
+import { haptic } from '../services/haptics';
 
 export default function Header({ user, onLogout, syncStatus = 'saved' }) {
   const navigate = useNavigate();
@@ -19,9 +21,7 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
           {/* Logo / Back to Hub link */}
           <a href="https://hub.aditor.ai" className="flex items-center gap-2 hover:opacity-80 transition">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center shadow-lg shadow-orange-500/25">
-              <Flame size={18} className="text-white" strokeWidth={2.5} />
-            </div>
+            <AditorLogo size={32} />
             <span className="font-black text-[17px] tracking-tight text-white">
               AdLingo
             </span>
@@ -157,7 +157,7 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
 function TabItem({ icon: Icon, label, active, onClick }) {
   return (
     <button
-      onClick={onClick}
+      onClick={() => { if (!active) haptic('light'); onClick(); }}
       className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-xl transition-all ${
         active
           ? 'text-orange-400'

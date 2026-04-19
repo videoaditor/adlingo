@@ -742,83 +742,108 @@ export default function Admin() {
                   const totalLessons = courseWorlds.reduce((sum, w) => sum + w.lessons.length, 0);
                   const progressPercent = totalLessons > 0 ? Math.round((completed.length / totalLessons) * 100) : 0;
 
+                  const allDone = progressPercent === 100;
                   return (
-                    <div key={player.id} className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
-                      {/* Player header */}
-                      <div className="p-4">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-black text-sm shrink-0">
+                    <div
+                      key={player.id}
+                      className={`rounded-2xl overflow-hidden bg-gray-900 border transition-colors ${
+                        allDone ? 'border-emerald-500/30' : 'border-gray-800 hover:border-gray-700'
+                      }`}
+                    >
+                      <div className="p-3.5">
+                        {/* Header row: avatar · name/email · XP · % */}
+                        <div className="flex items-center gap-2.5 mb-3">
+                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white font-display font-bold text-sm shrink-0 ${
+                            allDone
+                              ? 'bg-gradient-to-br from-emerald-500 to-teal-500'
+                              : 'bg-gradient-to-br from-orange-500 to-red-500'
+                          }`}>
                             {(player.name || '?')[0].toUpperCase()}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="font-bold text-sm text-white truncate">{player.name || 'Unknown'}</div>
-                            <div className="text-xs text-gray-500 truncate">{player.email}</div>
+                            <div className="font-display font-bold text-[14px] text-white truncate tracking-tight">{player.name || 'Unknown'}</div>
+                            <div className="text-[11px] text-gray-500 truncate">{player.email}</div>
                           </div>
                           <div className="text-right shrink-0">
-                            <div className="text-xs font-bold text-yellow-400">{prog.xp || 0} XP</div>
-                            <div className="text-[10px] text-gray-500">{player.rank}</div>
+                            <div className="font-display text-[13px] font-bold tabular-nums text-yellow-400">{prog.xp || 0}<span className="text-[9px] text-yellow-400/60 ml-0.5">XP</span></div>
+                            <div className={`font-display text-[11px] font-bold tabular-nums ${allDone ? 'text-emerald-400' : 'text-gray-400'}`}>{progressPercent}%</div>
                           </div>
                         </div>
 
-                        {/* Overall progress bar */}
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
-                            <div
-                              className="h-full rounded-full bg-gradient-to-r from-orange-500 to-amber-400 transition-all"
-                              style={{ width: `${progressPercent}%` }}
-                            />
-                          </div>
-                          <span className="text-[11px] font-bold text-gray-400 tabular-nums">
-                            {completed.length}/{totalLessons}
-                          </span>
-                        </div>
-
-                        {/* World-by-world breakdown */}
-                        <div className="space-y-2">
+                        {/* Per-world rows — one line each */}
+                        <div className="space-y-1">
                           {courseWorlds.map((world) => {
                             const worldLessons = world.lessons.sort((a, b) => a.order - b.order);
+                            const total = worldLessons.length;
                             const worldDone = worldLessons.filter((l) => completed.includes(l.id)).length;
-                            const worldComplete = worldDone === worldLessons.length && worldLessons.length > 0;
+                            const worldComplete = total > 0 && worldDone === total;
+                            const percent = total > 0 ? Math.round((worldDone / total) * 100) : 0;
 
                             return (
-                              <div key={world.id}>
-                                <div className="flex items-center gap-2 mb-1">
-                                  <div className={`w-1.5 h-3 rounded-full bg-gradient-to-b ${world.themeColor}`} />
-                                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">{world.name}</span>
-                                  {worldComplete && <CheckCircle size={10} className="text-emerald-400" />}
-                                  <span className="text-[10px] text-gray-600 ml-auto">{worldDone}/{worldLessons.length}</span>
+                              <div
+                                key={world.id}
+                                className={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[12px] ${
+                                  worldComplete
+                                    ? 'bg-emerald-500/10 border border-emerald-500/20'
+                                    : worldDone > 0
+                                      ? 'bg-orange-500/5 border border-orange-500/15'
+                                      : 'bg-gray-800/40 border border-gray-800/60'
+                                }`}
+                              >
+                                {/* Status dot */}
+                                <div className="w-2 h-2 rounded-full shrink-0" style={{
+                                  background: worldComplete
+                                    ? '#10B981'
+                                    : worldDone > 0
+                                      ? '#F97316'
+                                      : '#374151',
+                                  boxShadow: worldComplete
+                                    ? '0 0 6px rgba(16,185,129,0.5)'
+                                    : worldDone > 0
+                                      ? '0 0 6px rgba(249,115,22,0.4)'
+                                      : 'none',
+                                }} />
+
+                                {/* World name */}
+                                <div className={`flex-1 font-medium truncate ${
+                                  worldComplete ? 'text-emerald-200' : worldDone > 0 ? 'text-orange-200' : 'text-gray-500'
+                                }`}>
+                                  {world.name}
                                 </div>
-                                <div className="flex gap-1 ml-3.5">
-                                  {worldLessons.map((lesson) => {
-                                    const done = completed.includes(lesson.id);
-                                    const score = scores[lesson.id];
-                                    return (
-                                      <div
-                                        key={lesson.id}
-                                        title={`${lesson.title}${score ? ` — ${score.correct}/${score.total}` : ''}`}
-                                        className={`group relative h-6 flex-1 rounded-md flex items-center justify-center text-[9px] font-bold transition-all cursor-default ${
-                                          done
-                                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                                            : 'bg-gray-800 text-gray-600 border border-gray-700/50'
-                                        }`}
-                                      >
-                                        {score ? `${score.correct}/${score.total}` : '—'}
-                                      </div>
-                                    );
-                                  })}
+
+                                {/* Inline mini progress bar */}
+                                <div className="w-14 h-1.5 bg-black/30 rounded-full overflow-hidden shrink-0">
+                                  <div
+                                    className={`h-full rounded-full transition-all ${
+                                      worldComplete ? 'bg-emerald-400' : worldDone > 0 ? 'bg-orange-400' : 'bg-gray-700'
+                                    }`}
+                                    style={{ width: `${percent}%` }}
+                                  />
                                 </div>
+
+                                {/* Count */}
+                                <div className={`font-display font-bold tabular-nums text-[11px] shrink-0 w-10 text-right ${
+                                  worldComplete ? 'text-emerald-400' : worldDone > 0 ? 'text-orange-400' : 'text-gray-600'
+                                }`}>
+                                  {worldDone}/{total}
+                                </div>
+
+                                {worldComplete && <CheckCircle size={12} className="text-emerald-400 shrink-0" />}
                               </div>
                             );
                           })}
                         </div>
 
-                        {/* Meta info */}
-                        {prog.streak > 0 && (
-                          <div className="mt-3 flex items-center gap-3 text-[10px] text-gray-500">
-                            <span>Streak: <span className="text-orange-400 font-bold">{prog.streak}d</span></span>
-                            {prog.lastActivity && <span>Last active: {prog.lastActivity}</span>}
+                        {/* Footer — totals */}
+                        <div className="mt-2.5 pt-2.5 border-t border-gray-800/70 flex items-center justify-between text-[10px]">
+                          <div className="text-gray-500">
+                            <span className="font-display font-bold text-gray-300 tabular-nums">{completed.length}</span>
+                            <span className="text-gray-600">/{totalLessons} lessons</span>
                           </div>
-                        )}
+                          <div className="text-gray-600">
+                            {prog.lastActivity ? `Last: ${prog.lastActivity}` : 'Never started'}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );

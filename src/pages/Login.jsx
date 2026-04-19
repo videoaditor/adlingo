@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Flame, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import AditorLogo from '../components/AditorLogo';
 
 export default function Login({ onLogin, loading, error }) {
   const [email, setEmail] = useState('');
@@ -29,10 +30,14 @@ export default function Login({ onLogin, loading, error }) {
           transition={{ type: 'spring', damping: 15 }}
           className="text-center mb-10"
         >
-          <div className="w-20 h-20 rounded-[22px] bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center mx-auto mb-5 border-b-[4px] border-red-700 shadow-2xl shadow-orange-500/40">
-            <Flame size={38} className="text-white" strokeWidth={2.5} />
-          </div>
-          <h1 className="text-3xl font-black tracking-tight text-white">
+          <motion.div
+            className="mx-auto mb-5 flex items-center justify-center"
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <AditorLogo size={84} />
+          </motion.div>
+          <h1 className="font-display text-4xl font-bold tracking-tight text-white">
             AdLingo
           </h1>
           <p className="text-gray-400 text-[13px] font-medium mt-1">Editor Training Platform</p>

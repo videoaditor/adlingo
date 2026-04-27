@@ -17,7 +17,7 @@ export default function Lesson({ onLessonComplete }) {
 
   if (!lesson || !world) {
     return (
-      <div className="min-h-screen bg-[#0a0e1a] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[#0B0B0D] text-white flex items-center justify-center">
         <p className="text-gray-500">Lesson not found</p>
       </div>
     );
@@ -33,14 +33,14 @@ export default function Lesson({ onLessonComplete }) {
   // Video phase
   if (phase === 'video') {
     return (
-      <div className="min-h-screen bg-[#0a0e1a] text-white flex flex-col">
+      <div className="min-h-screen bg-[#0B0B0D] text-white flex flex-col">
         <div className="px-4 py-3 flex items-center gap-3 border-b border-white/5">
           <button onClick={() => navigate('/')} className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition border border-white/5">
             <ArrowLeft size={18} className="text-gray-400" />
           </button>
           <div className="flex-1 min-w-0">
-            <div className={`text-[10px] font-bold uppercase tracking-[0.15em] ${world.accentColor}`}>{world.name}</div>
-            <div className="text-[14px] font-bold text-white truncate">{lesson.title}</div>
+            <div className={`meta-label ${world.accentColor}`}>{world.name}</div>
+            <div className="text-[14px] font-semibold text-white truncate tracking-tight">{lesson.title}</div>
           </div>
         </div>
 
@@ -54,7 +54,7 @@ export default function Lesson({ onLessonComplete }) {
               <motion.button
                 onClick={() => setPhase('quiz')}
                 whileTap={{ scale: 0.97, y: 3 }}
-                className="w-full max-w-xs py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black rounded-2xl uppercase tracking-wider text-[14px] border-b-[4px] border-orange-700 active:border-b-0 active:translate-y-[4px] shadow-lg shadow-orange-500/25"
+                className="w-full max-w-xs py-4 bg-gradient-to-br from-[#FF6B35] to-[#C44D1E] text-white font-black rounded-2xl uppercase tracking-wider text-[14px] border-b-[4px] border-[#8A2F0F] active:border-b-0 active:translate-y-[4px] shadow-brand-glow"
               >
                 Start Quiz
               </motion.button>
@@ -68,14 +68,14 @@ export default function Lesson({ onLessonComplete }) {
   // Quiz phase
   if (phase === 'quiz') {
     return (
-      <div className="min-h-screen bg-[#0a0e1a] text-white flex flex-col">
+      <div className="min-h-screen bg-[#0B0B0D] text-white flex flex-col">
         <div className="px-4 py-3 flex items-center gap-3 border-b border-white/5">
           <button onClick={() => navigate('/')} className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition border border-white/5">
             <ArrowLeft size={18} className="text-gray-400" />
           </button>
           <div className="flex-1 min-w-0">
-            <div className={`text-[10px] font-bold uppercase tracking-[0.15em] ${world.accentColor}`}>{world.name}</div>
-            <div className="text-[14px] font-bold text-white truncate">{lesson.title}</div>
+            <div className={`meta-label ${world.accentColor}`}>{world.name}</div>
+            <div className="text-[14px] font-semibold text-white truncate tracking-tight">{lesson.title}</div>
           </div>
         </div>
         <QuizEngine questions={lesson.questions} onComplete={handleQuizComplete} />
@@ -89,19 +89,20 @@ export default function Lesson({ onLessonComplete }) {
     const passed = percent >= 60;
     const xpEarned = result.correct * 10;
 
-    return <LessonResult passed={passed} result={result} xpEarned={xpEarned} lesson={lesson} navigate={navigate} onRetry={() => { setPhase('quiz'); setResult(null); }} />;
+    return <LessonResult passed={passed} result={result} xpEarned={xpEarned} lesson={lesson} lessonId={lessonId} navigate={navigate} onRetry={() => { setPhase('quiz'); setResult(null); }} />;
   }
 
   return null;
 }
 
-function LessonResult({ passed, result, xpEarned, lesson, navigate, onRetry }) {
+function LessonResult({ passed, result, xpEarned, lesson, lessonId, navigate, onRetry }) {
+  const hasVideo = Boolean(lesson.videoUrl);
   useEffect(() => {
     haptic(passed ? 'celebrate' : 'error');
   }, [passed]);
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0B0B0D] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {passed && (
         <div className="absolute inset-0 flex items-start justify-center pt-20 pointer-events-none">
           <ConfettiBurst count={40} spread={320} duration={1.8} />
@@ -133,8 +134,12 @@ function LessonResult({ passed, result, xpEarned, lesson, navigate, onRetry }) {
           )}
         </motion.div>
 
-        <h2 className="font-display text-3xl font-bold tracking-tight mb-1">
-          {passed ? 'Lesson Complete' : 'Keep Practicing'}
+        <h2 className="font-display text-[34px] leading-[1.05] tracking-tight mb-1">
+          {passed ? (
+            <>Lesson <em className="font-display-italic text-orange-400">complete</em></>
+          ) : (
+            <>Keep <em className="font-display-italic text-orange-400">practicing</em></>
+          )}
         </h2>
         <p className="text-gray-500 text-[13px] font-medium mb-6">
           {lesson.title}
@@ -148,7 +153,7 @@ function LessonResult({ passed, result, xpEarned, lesson, navigate, onRetry }) {
             initial={{ scale: 0.6, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: 'spring', damping: 12, delay: 0.3 }}
-            className={`font-display text-7xl font-bold tracking-tight ${passed ? 'text-emerald-400' : 'text-red-400'}`}
+            className={`font-display text-[88px] leading-none tracking-tight ${passed ? 'text-emerald-400' : 'text-red-400'}`}
           >
             {result.correct}/{result.total}
           </motion.div>
@@ -171,7 +176,7 @@ function LessonResult({ passed, result, xpEarned, lesson, navigate, onRetry }) {
           <motion.button
             onClick={() => { haptic('nav'); navigate('/'); }}
             whileTap={{ scale: 0.97, y: 3 }}
-            className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black rounded-2xl uppercase tracking-wider text-[14px] border-b-[4px] border-orange-700 active:border-b-0 active:translate-y-[4px] shadow-lg shadow-orange-500/25"
+            className="w-full py-4 bg-gradient-to-br from-[#FF6B35] to-[#C44D1E] text-white font-black rounded-2xl uppercase tracking-wider text-[14px] border-b-[4px] border-[#8A2F0F] active:border-b-0 active:translate-y-[4px] shadow-brand-glow"
           >
             Continue
           </motion.button>
@@ -179,9 +184,18 @@ function LessonResult({ passed, result, xpEarned, lesson, navigate, onRetry }) {
             <motion.button
               onClick={() => { haptic('tap'); onRetry(); }}
               whileTap={{ scale: 0.97 }}
-              className="w-full py-4 bg-[#141833] text-gray-300 font-bold rounded-2xl text-[14px] border-2 border-white/[0.06] flex items-center justify-center gap-2"
+              className="w-full py-4 bg-[#17171B] text-gray-300 font-bold rounded-2xl text-[14px] border-2 border-white/[0.06] flex items-center justify-center gap-2"
             >
-              <RotateCcw size={16} /> Retry Lesson
+              <RotateCcw size={16} /> Retry lesson
+            </motion.button>
+          )}
+          {passed && hasVideo && (
+            <motion.button
+              onClick={() => { haptic('light'); navigate(`/course?lesson=${lessonId}`); }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full py-3 bg-transparent text-gray-400 hover:text-gray-200 text-[13px] font-semibold flex items-center justify-center gap-2 transition-colors"
+            >
+              <span className="meta-label">Re-watch lesson</span>
             </motion.button>
           )}
         </div>

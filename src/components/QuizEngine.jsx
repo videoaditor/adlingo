@@ -73,8 +73,8 @@ export default function QuizEngine({ questions, onComplete }) {
               );
             })}
           </div>
-          <span className="text-gray-400 text-xs font-bold tabular-nums font-display">
-            {qIndex + 1}/{questions.length}
+          <span className="text-gray-400 text-[11px] font-mono font-semibold tabular-nums">
+            {qIndex + 1} / {questions.length}
           </span>
         </div>
       </div>
@@ -90,7 +90,7 @@ export default function QuizEngine({ questions, onComplete }) {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.25 }}
             >
-              <h2 className="font-display text-[20px] font-bold text-center mb-6 leading-snug text-white mt-2 px-2 tracking-tight">
+              <h2 className="text-[22px] font-bold text-center mb-6 leading-[1.25] text-white mt-2 px-2 tracking-tight">
                 {q.question}
               </h2>
 
@@ -103,7 +103,7 @@ export default function QuizEngine({ questions, onComplete }) {
                   const showCorrect = status !== 'idle' && isCorrectOpt;
                   const showWrong = status === 'wrong' && isSelected;
 
-                  let optStyle = { backgroundColor: '#2a3370', borderColor: '#4a52a0', boxShadow: '0 3px 0 0 #1e2555' };
+                  let optStyle = { backgroundColor: '#2B2B30', borderColor: '#3A3A42', boxShadow: '0 3px 0 0 #222228' };
                   let textColor = 'text-white';
                   let letterBg = 'bg-white/20';
                   let letterColor = 'text-gray-100';
@@ -173,10 +173,10 @@ export default function QuizEngine({ questions, onComplete }) {
       <div
         className={`fixed bottom-0 left-0 right-0 border-t-2 transition-all duration-300 ${
           status === 'correct'
-            ? 'bg-[#0a1f15] border-emerald-500/30'
+            ? 'bg-[#0F1A12] border-emerald-500/30'
             : status === 'wrong'
-              ? 'bg-[#1f0a0a] border-red-500/30'
-              : 'bg-[#0f1328]/98 border-white/5'
+              ? 'bg-[#1A0E0E] border-red-500/30'
+              : 'bg-[#111114]/98 border-white/5'
         } backdrop-blur-xl`}
       >
         <div className="max-w-lg mx-auto p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
@@ -217,7 +217,7 @@ export default function QuizEngine({ questions, onComplete }) {
               ${status === 'idle'
                 ? selectedOpt !== null
                   ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-700 shadow-lg shadow-orange-500/25'
-                  : 'bg-[#2a3370] text-gray-300 border-[#222860] cursor-not-allowed'
+                  : 'bg-[#2B2B30] text-gray-300 border-[#222860] cursor-not-allowed'
                 : 'bg-white text-gray-900 border-gray-300 shadow-lg'}
             `}
           >

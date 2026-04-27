@@ -235,21 +235,22 @@ export default function Admin() {
   // Password gate
   if (!authed) {
     return (
-      <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-6">
-        <form onSubmit={handleLogin} className="max-w-sm w-full">
-          <h1 className="text-2xl font-black mb-6 text-center">Admin Portal</h1>
+      <div className="min-h-screen bg-[#0B0B0D] text-white flex items-center justify-center p-6">
+        <form onSubmit={handleLogin} className="max-w-sm w-full bg-[#111114] border border-white/[0.06] rounded-2xl p-6">
+          <div className="meta-label text-gray-500 mb-2">Restricted · Admin only</div>
+          <h1 className="text-2xl font-bold mb-5 tracking-tight">Admin portal</h1>
           <input
             type="password"
             value={password}
             onChange={(e) => { setPassword(e.target.value); setPwError(false); }}
             placeholder="Enter admin password"
-            className={`w-full px-4 py-3 bg-gray-900 border rounded-xl text-white placeholder-gray-600 focus:outline-none mb-3 ${pwError ? 'border-red-500' : 'border-gray-700 focus:border-orange-500'}`}
+            className={`w-full px-4 py-3 bg-[#1C1C20] border rounded-xl text-white placeholder-gray-600 focus:outline-none mb-3 transition ${pwError ? 'border-red-500' : 'border-white/[0.08] focus:border-[#FF6B35]'}`}
             autoFocus
           />
           {pwError && <p className="text-red-400 text-sm mb-3">Wrong password</p>}
           <button
             type="submit"
-            className="w-full py-3 bg-orange-500 text-white font-black rounded-xl uppercase tracking-wider text-sm"
+            className="w-full py-3 bg-gradient-to-br from-[#FF6B35] to-[#C44D1E] text-white font-bold rounded-xl uppercase tracking-wider text-sm border-b-[3px] border-[#8A2F0F] active:border-b-0 active:translate-y-[3px] shadow-brand-glow transition-all"
           >
             Enter
           </button>
@@ -259,62 +260,37 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen bg-[#0B0B0D] text-white">
       {/* Top bar */}
-      <div className="sticky top-0 z-50 bg-gray-950/95 backdrop-blur-xl border-b border-gray-800/50 px-4 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-50 bg-[#0B0B0D]/95 backdrop-blur-xl border-b border-white/[0.06] px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={() => navigate('/')} className="p-2 rounded-lg hover:bg-gray-800 transition">
+          <button onClick={() => navigate('/')} className="p-2 rounded-lg hover:bg-white/[0.05] transition">
             <ArrowLeft size={20} className="text-gray-400" />
           </button>
-          <h1 className="font-black text-lg">Admin Portal</h1>
+          <div>
+            <div className="meta-label text-gray-500 leading-none">Aditor · Vol 01</div>
+            <h1 className="font-semibold text-[16px] tracking-tight leading-tight">Admin portal</h1>
+          </div>
         </div>
         <button
           onClick={handleSave}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all ${
-            saved ? 'bg-emerald-500 text-white' : 'bg-orange-500 hover:bg-orange-400 text-white'
+            saved
+              ? 'bg-emerald-500 text-white'
+              : 'bg-gradient-to-br from-[#FF6B35] to-[#C44D1E] text-white border-b-[3px] border-[#8A2F0F] active:border-b-0 active:translate-y-[3px] shadow-brand-glow'
           }`}
         >
           {saved ? <CheckCircle size={16} /> : <Save size={16} />}
-          {saved ? 'Saved!' : 'Save All'}
+          {saved ? 'Saved' : 'Save all'}
         </button>
       </div>
 
       {/* Tab toggle */}
       <div className="max-w-3xl mx-auto px-4 pt-4">
-        <div className="flex gap-1 bg-gray-900 rounded-xl p-1 border border-gray-800">
-          <button
-            onClick={() => setAdminTab('course')}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all ${
-              adminTab === 'course'
-                ? 'bg-orange-500 text-white shadow-lg'
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            <BookOpen size={15} />
-            Course Videos
-          </button>
-          <button
-            onClick={() => setAdminTab('tests')}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all ${
-              adminTab === 'tests'
-                ? 'bg-orange-500 text-white shadow-lg'
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            <Map size={15} />
-            Test Questions
-          </button>
-          <button
-            onClick={() => setAdminTab('progress')}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all ${
-              adminTab === 'progress'
-                ? 'bg-orange-500 text-white shadow-lg'
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            <Users size={15} />
-            Progress
-          </button>
+        <div className="flex gap-1 bg-[#111114] rounded-xl p-1 border border-white/[0.06]">
+          <TabButton active={adminTab === 'course'} onClick={() => setAdminTab('course')} icon={BookOpen} label="Course videos" />
+          <TabButton active={adminTab === 'tests'} onClick={() => setAdminTab('tests')} icon={Map} label="Test questions" />
+          <TabButton active={adminTab === 'progress'} onClick={() => setAdminTab('progress')} icon={Users} label="Progress" />
         </div>
       </div>
 
@@ -324,11 +300,11 @@ export default function Admin() {
           <p className="text-gray-500 text-xs">Manage lessons, videos, and images. Supports Loom, YouTube, Tella, and Vimeo.</p>
 
           {worlds.sort((a, b) => a.order - b.order).map((world) => (
-            <div key={world.id} className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+            <div key={world.id} className="bg-[#111114] rounded-2xl border border-white/[0.06] overflow-hidden">
               {/* World header */}
               <button
                 onClick={() => setExpandedWorld(expandedWorld === world.id ? null : world.id)}
-                className="w-full flex items-center gap-3 p-4 hover:bg-gray-800/50 transition text-left"
+                className="w-full flex items-center gap-3 p-4 hover:bg-white/[0.04] transition text-left"
               >
                 <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${world.themeColor} flex items-center justify-center text-xs font-black text-white`}>
                   {world.order}
@@ -341,7 +317,7 @@ export default function Admin() {
               </button>
 
               {expandedWorld === world.id && (
-                <div className="border-t border-gray-800/50">
+                <div className="border-t border-white/[0.05]">
                   {/* World settings */}
                   <div className="px-4 pt-3 pb-2 space-y-2">
                     <div>
@@ -349,7 +325,7 @@ export default function Admin() {
                       <input
                         value={world.name}
                         onChange={(e) => updateWorld(world.id, 'name', e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
+                        className="w-full px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white focus:outline-none focus:border-[#FF6B35]"
                       />
                     </div>
                     <div>
@@ -357,7 +333,7 @@ export default function Admin() {
                       <input
                         value={world.description}
                         onChange={(e) => updateWorld(world.id, 'description', e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
+                        className="w-full px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white focus:outline-none focus:border-[#FF6B35]"
                       />
                     </div>
                     <div>
@@ -366,7 +342,7 @@ export default function Admin() {
                         value={world.imageUrl || ''}
                         onChange={(e) => updateWorld(world.id, 'imageUrl', e.target.value || null)}
                         placeholder="https://..."
-                        className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                        className="w-full px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35]"
                       />
                     </div>
                   </div>
@@ -380,7 +356,7 @@ export default function Admin() {
                             value={lesson.title}
                             onChange={(e) => updateLesson(world.id, lesson.id, 'title', e.target.value)}
                             placeholder="Lesson title..."
-                            className="flex-1 px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-sm font-bold text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                            className="flex-1 px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-sm font-bold text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35]"
                           />
                           <button onClick={() => deleteLesson(world.id, lesson.id)} className="p-1.5 text-gray-600 hover:text-red-400 transition shrink-0">
                             <Trash2 size={14} />
@@ -392,10 +368,10 @@ export default function Admin() {
                             value={lesson.videoUrl || ''}
                             onChange={(e) => updateLesson(world.id, lesson.id, 'videoUrl', e.target.value || null)}
                             placeholder="Video URL (Loom, YouTube, Tella, Vimeo)..."
-                            className="flex-1 px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                            className="flex-1 px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35]"
                           />
                           {lesson.videoUrl && (
-                            <a href={lesson.videoUrl} target="_blank" rel="noopener noreferrer" className="p-1 text-gray-500 hover:text-orange-400 transition shrink-0">
+                            <a href={lesson.videoUrl} target="_blank" rel="noopener noreferrer" className="p-1 text-gray-500 hover:text-[#FF6B35] transition shrink-0">
                               <ExternalLink size={14} />
                             </a>
                           )}
@@ -405,18 +381,18 @@ export default function Admin() {
                   </div>
 
                   {/* Add/delete lesson + world */}
-                  <div className="px-4 py-3 flex items-center justify-between border-t border-gray-800/50">
+                  <div className="px-4 py-3 border-t border-white/[0.05]">
                     <button
                       onClick={() => addLesson(world.id)}
-                      className="flex items-center gap-1 text-xs font-bold text-orange-400 hover:text-orange-300 transition"
+                      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/[0.1] bg-white/[0.02] text-[12px] font-semibold text-gray-300 hover:border-[#FF6B35]/50 hover:text-white hover:bg-[#FF6B35]/5 transition"
                     >
-                      <Plus size={14} /> Add Lesson
+                      <Plus size={14} /> Add lesson
                     </button>
                     <button
                       onClick={() => deleteWorld(world.id)}
-                      className="text-xs text-red-400/60 hover:text-red-400 transition"
+                      className="meta-label mt-3 text-red-400/60 hover:text-red-400 transition"
                     >
-                      Delete World
+                      Delete world
                     </button>
                   </div>
                 </div>
@@ -427,9 +403,9 @@ export default function Admin() {
           {/* Add world button */}
           <button
             onClick={addWorld}
-            className="w-full py-4 rounded-2xl border-2 border-dashed border-gray-700 text-gray-500 hover:border-orange-500/50 hover:text-orange-400 transition flex items-center justify-center gap-2 font-bold text-sm"
+            className="w-full py-4 rounded-2xl border-2 border-dashed border-white/[0.08] text-gray-500 hover:border-[#FF6B35]/60 hover:text-[#FF6B35] transition flex items-center justify-center gap-2 font-semibold text-sm tracking-tight"
           >
-            <Plus size={18} /> Add World
+            <Plus size={18} /> Add world
           </button>
         </div>
       )}
@@ -439,11 +415,11 @@ export default function Admin() {
       <div className="max-w-3xl mx-auto p-4 space-y-4">
         {/* Worlds */}
         {worlds.sort((a, b) => a.order - b.order).map((world) => (
-          <div key={world.id} className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+          <div key={world.id} className="bg-[#111114] rounded-2xl border border-white/[0.06] overflow-hidden">
             {/* World header */}
             <button
               onClick={() => setExpandedWorld(expandedWorld === world.id ? null : world.id)}
-              className="w-full flex items-center gap-3 p-4 hover:bg-gray-800/50 transition text-left"
+              className="w-full flex items-center gap-3 p-4 hover:bg-white/[0.04] transition text-left"
             >
               <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${world.themeColor} flex items-center justify-center text-xs font-black text-white`}>
                 {world.order}
@@ -457,7 +433,7 @@ export default function Admin() {
 
             {/* World expanded content */}
             {expandedWorld === world.id && (
-              <div className="px-4 pb-4 space-y-4 border-t border-gray-800">
+              <div className="px-4 pb-4 space-y-4 border-t border-white/[0.06]">
                 {/* World settings */}
                 <div className="grid grid-cols-2 gap-3 mt-4">
                   <div>
@@ -465,7 +441,7 @@ export default function Admin() {
                     <input
                       value={world.name}
                       onChange={(e) => updateWorld(world.id, 'name', e.target.value)}
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500"
+                      className="w-full px-3 py-2 bg-[#17171B] border border-white/[0.08] rounded-lg text-sm text-white focus:outline-none focus:border-[#FF6B35]"
                     />
                   </div>
                   <div>
@@ -473,7 +449,7 @@ export default function Admin() {
                     <input
                       value={world.subtitle}
                       onChange={(e) => updateWorld(world.id, 'subtitle', e.target.value)}
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500"
+                      className="w-full px-3 py-2 bg-[#17171B] border border-white/[0.08] rounded-lg text-sm text-white focus:outline-none focus:border-[#FF6B35]"
                     />
                   </div>
                   <div className="col-span-2">
@@ -481,7 +457,7 @@ export default function Admin() {
                     <input
                       value={world.description}
                       onChange={(e) => updateWorld(world.id, 'description', e.target.value)}
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white focus:outline-none focus:border-orange-500"
+                      className="w-full px-3 py-2 bg-[#17171B] border border-white/[0.08] rounded-lg text-sm text-white focus:outline-none focus:border-[#FF6B35]"
                     />
                   </div>
                   <div className="col-span-2">
@@ -490,7 +466,7 @@ export default function Admin() {
                       value={world.imageUrl || ''}
                       onChange={(e) => updateWorld(world.id, 'imageUrl', e.target.value || null)}
                       placeholder="https://..."
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                      className="w-full px-3 py-2 bg-[#17171B] border border-white/[0.08] rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35]"
                     />
                   </div>
                   <div className="col-span-2">
@@ -508,7 +484,7 @@ export default function Admin() {
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition ${
                             world.themeColor === t.themeColor
                               ? 'border-white bg-white/10 text-white'
-                              : 'border-gray-700 text-gray-400 hover:border-gray-500'
+                              : 'border-white/[0.08] text-gray-400 hover:border-gray-500'
                           }`}
                         >
                           <span className={`inline-block w-2 h-2 rounded-full bg-gradient-to-r ${t.themeColor} mr-1.5`} />
@@ -533,7 +509,7 @@ export default function Admin() {
 
                   <div className="space-y-2">
                     {world.lessons.sort((a, b) => a.order - b.order).map((lesson) => (
-                      <div key={lesson.id} className="bg-gray-800/50 rounded-xl border border-gray-700/50 overflow-hidden">
+                      <div key={lesson.id} className="bg-white/[0.04] rounded-xl border border-white/[0.06] overflow-hidden">
                         {/* Lesson header */}
                         <div className="flex items-center gap-2 p-3">
                           <button
@@ -552,14 +528,14 @@ export default function Admin() {
 
                         {/* Lesson expanded */}
                         {expandedLesson === lesson.id && (
-                          <div className="px-3 pb-3 space-y-3 border-t border-gray-700/50">
+                          <div className="px-3 pb-3 space-y-3 border-t border-white/[0.06]">
                             <div className="grid grid-cols-2 gap-2 mt-3">
                               <div>
                                 <label className="text-[10px] font-bold text-gray-500 mb-1 block">Title</label>
                                 <input
                                   value={lesson.title}
                                   onChange={(e) => updateLesson(world.id, lesson.id, 'title', e.target.value)}
-                                  className="w-full px-2.5 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
+                                  className="w-full px-2.5 py-1.5 bg-[#111114] border border-white/[0.08] rounded-lg text-xs text-white focus:outline-none focus:border-[#FF6B35]"
                                 />
                               </div>
                               <div>
@@ -567,7 +543,7 @@ export default function Admin() {
                                 <input
                                   value={lesson.subtitle || ''}
                                   onChange={(e) => updateLesson(world.id, lesson.id, 'subtitle', e.target.value)}
-                                  className="w-full px-2.5 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
+                                  className="w-full px-2.5 py-1.5 bg-[#111114] border border-white/[0.08] rounded-lg text-xs text-white focus:outline-none focus:border-[#FF6B35]"
                                 />
                               </div>
                               <div className="col-span-2">
@@ -576,34 +552,33 @@ export default function Admin() {
                                   value={lesson.videoUrl || ''}
                                   onChange={(e) => updateLesson(world.id, lesson.id, 'videoUrl', e.target.value || null)}
                                   placeholder="https://www.loom.com/share/..."
-                                  className="w-full px-2.5 py-1.5 bg-gray-900 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                                  className="w-full px-2.5 py-1.5 bg-[#111114] border border-white/[0.08] rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35]"
                                 />
                               </div>
                             </div>
 
                             {/* Questions */}
                             <div>
-                              <div className="flex items-center justify-between mb-2">
-                                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Questions</h4>
-                                <div className="flex gap-1">
-                                  <button
-                                    onClick={() => addQuestion(world.id, lesson.id, 'text')}
-                                    className="flex items-center gap-1 text-[10px] font-bold text-orange-400 hover:text-orange-300 bg-orange-400/10 px-2 py-1 rounded-lg transition"
-                                  >
-                                    <FileText size={10} /> Text Q
-                                  </button>
-                                  <button
-                                    onClick={() => addQuestion(world.id, lesson.id, 'image')}
-                                    className="flex items-center gap-1 text-[10px] font-bold text-cyan-400 hover:text-cyan-300 bg-cyan-400/10 px-2 py-1 rounded-lg transition"
-                                  >
-                                    <Image size={10} /> Image Q
-                                  </button>
+                              <div className="flex items-center justify-between mb-3">
+                                <div className="flex items-baseline gap-2">
+                                  <span className="meta-label text-gray-500">Questions</span>
+                                  <span className="font-mono text-[11px] tabular-nums text-gray-400 font-semibold">
+                                    {lesson.questions.length.toString().padStart(2, '0')}
+                                  </span>
                                 </div>
                               </div>
 
+                              {/* Empty state */}
+                              {lesson.questions.length === 0 && (
+                                <div className="text-center py-6 px-4 rounded-xl border border-dashed border-white/[0.08] mb-3">
+                                  <FileText size={20} className="text-gray-700 mx-auto mb-2" />
+                                  <p className="text-[12px] text-gray-500 mb-3">No questions yet — add your first.</p>
+                                </div>
+                              )}
+
                               <div className="space-y-3">
                                 {lesson.questions.map((q, qIdx) => (
-                                  <div key={q.id} className="bg-gray-900 rounded-xl p-3 border border-gray-700/30">
+                                  <div key={q.id} className="bg-[#111114] rounded-xl p-3 border border-white/[0.05]">
                                     <div className="flex items-start justify-between mb-2">
                                       <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${q.type === 'image' ? 'text-cyan-400 bg-cyan-400/10' : 'text-orange-400 bg-orange-400/10'}`}>
                                         {q.type === 'image' ? 'Image Q' : 'Text Q'} #{qIdx + 1}
@@ -618,7 +593,7 @@ export default function Admin() {
                                       onChange={(e) => updateQuestion(world.id, lesson.id, q.id, { question: e.target.value })}
                                       placeholder="Enter question..."
                                       rows={2}
-                                      className="w-full px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500 resize-none mb-2"
+                                      className="w-full px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35] resize-none mb-2"
                                     />
 
                                     {/* Options */}
@@ -628,7 +603,7 @@ export default function Admin() {
                                           <button
                                             onClick={() => updateOption(world.id, lesson.id, q.id, optIdx, 'correct', true)}
                                             className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 mt-1 transition ${
-                                              opt.correct ? 'border-emerald-500 bg-emerald-500/20' : 'border-gray-600 hover:border-gray-400'
+                                              opt.correct ? 'border-emerald-500 bg-emerald-500/20' : 'border-white/[0.12] hover:border-gray-400'
                                             }`}
                                           >
                                             {opt.correct && <CheckCircle size={10} className="text-emerald-400" />}
@@ -638,14 +613,14 @@ export default function Admin() {
                                               value={opt.text}
                                               onChange={(e) => updateOption(world.id, lesson.id, q.id, optIdx, 'text', e.target.value)}
                                               placeholder={`Option ${String.fromCharCode(65 + optIdx)}...`}
-                                              className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+                                              className="w-full px-2 py-1 bg-[#17171B] border border-white/[0.08] rounded text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35]"
                                             />
                                             {q.type === 'image' && (
                                               <input
                                                 value={opt.imageUrl || ''}
                                                 onChange={(e) => updateOption(world.id, lesson.id, q.id, optIdx, 'imageUrl', e.target.value)}
                                                 placeholder="Image URL..."
-                                                className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-white placeholder-gray-600 focus:outline-none focus:border-cyan-500"
+                                                className="w-full px-2 py-1 bg-[#17171B] border border-white/[0.08] rounded text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#8FB9E6]"
                                               />
                                             )}
                                           </div>
@@ -659,10 +634,30 @@ export default function Admin() {
                                       onChange={(e) => updateQuestion(world.id, lesson.id, q.id, { directorNote: e.target.value })}
                                       placeholder="Director's Note (shown after answering)..."
                                       rows={2}
-                                      className="w-full mt-2 px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-orange-500 resize-none"
+                                      className="w-full mt-2 px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35] resize-none"
                                     />
                                   </div>
                                 ))}
+                              </div>
+
+                              {/* Prominent add question row — split by type */}
+                              <div className="mt-3 grid grid-cols-2 gap-2">
+                                <button
+                                  onClick={() => addQuestion(world.id, lesson.id, 'text')}
+                                  className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/[0.1] bg-white/[0.02] text-[12px] font-semibold text-gray-300 hover:border-[#FF6B35]/50 hover:text-white hover:bg-[#FF6B35]/5 transition"
+                                >
+                                  <Plus size={13} />
+                                  <FileText size={12} />
+                                  Text question
+                                </button>
+                                <button
+                                  onClick={() => addQuestion(world.id, lesson.id, 'image')}
+                                  className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/[0.1] bg-white/[0.02] text-[12px] font-semibold text-gray-300 hover:border-[#8FB9E6]/50 hover:text-white hover:bg-[#8FB9E6]/5 transition"
+                                >
+                                  <Plus size={13} />
+                                  <Image size={12} />
+                                  Image question
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -686,7 +681,7 @@ export default function Admin() {
         {/* Add world button */}
         <button
           onClick={addWorld}
-          className="w-full py-4 rounded-2xl border-2 border-dashed border-gray-700 text-gray-500 hover:border-orange-500/50 hover:text-orange-400 transition flex items-center justify-center gap-2 font-bold text-sm"
+          className="w-full py-4 rounded-2xl border-2 border-dashed border-white/[0.08] text-gray-500 hover:border-[#FF6B35]/60 hover:text-[#FF6B35] transition flex items-center justify-center gap-2 font-bold text-sm"
         >
           <Plus size={18} /> Add World
         </button>
@@ -715,7 +710,7 @@ export default function Admin() {
               value={playerSearch}
               onChange={(e) => setPlayerSearch(e.target.value)}
               placeholder="Search by name or email..."
-              className="w-full pl-9 pr-3 py-2.5 bg-gray-900 border border-gray-800 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:border-orange-500"
+              className="w-full pl-9 pr-3 py-2.5 bg-[#111114] border border-white/[0.06] rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35]"
             />
           </div>
 
@@ -746,27 +741,27 @@ export default function Admin() {
                   return (
                     <div
                       key={player.id}
-                      className={`rounded-2xl overflow-hidden bg-gray-900 border transition-colors ${
-                        allDone ? 'border-emerald-500/30' : 'border-gray-800 hover:border-gray-700'
+                      className={`rounded-2xl overflow-hidden bg-[#111114] border transition-colors ${
+                        allDone ? 'border-emerald-500/30' : 'border-white/[0.06] hover:border-white/[0.08]'
                       }`}
                     >
                       <div className="p-3.5">
                         {/* Header row: avatar · name/email · XP · % */}
                         <div className="flex items-center gap-2.5 mb-3">
-                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white font-display font-bold text-sm shrink-0 ${
+                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0 ${
                             allDone
                               ? 'bg-gradient-to-br from-emerald-500 to-teal-500'
-                              : 'bg-gradient-to-br from-orange-500 to-red-500'
+                              : 'bg-gradient-to-br from-[#FF6B35] to-[#C44D1E]'
                           }`}>
                             {(player.name || '?')[0].toUpperCase()}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="font-display font-bold text-[14px] text-white truncate tracking-tight">{player.name || 'Unknown'}</div>
+                            <div className="font-semibold text-[14px] text-white truncate tracking-tight">{player.name || 'Unknown'}</div>
                             <div className="text-[11px] text-gray-500 truncate">{player.email}</div>
                           </div>
                           <div className="text-right shrink-0">
-                            <div className="font-display text-[13px] font-bold tabular-nums text-yellow-400">{prog.xp || 0}<span className="text-[9px] text-yellow-400/60 ml-0.5">XP</span></div>
-                            <div className={`font-display text-[11px] font-bold tabular-nums ${allDone ? 'text-emerald-400' : 'text-gray-400'}`}>{progressPercent}%</div>
+                            <div className="font-mono text-[12px] font-semibold tabular-nums text-yellow-400">{prog.xp || 0}<span className="text-[9px] text-yellow-400/60 ml-0.5"> XP</span></div>
+                            <div className={`font-mono text-[11px] font-semibold tabular-nums ${allDone ? 'text-emerald-400' : 'text-gray-400'}`}>{progressPercent}%</div>
                           </div>
                         </div>
 
@@ -787,7 +782,7 @@ export default function Admin() {
                                     ? 'bg-emerald-500/10 border border-emerald-500/20'
                                     : worldDone > 0
                                       ? 'bg-orange-500/5 border border-orange-500/15'
-                                      : 'bg-gray-800/40 border border-gray-800/60'
+                                      : 'bg-white/[0.03] border border-white/[0.06]'
                                 }`}
                               >
                                 {/* Status dot */}
@@ -822,7 +817,7 @@ export default function Admin() {
                                 </div>
 
                                 {/* Count */}
-                                <div className={`font-display font-bold tabular-nums text-[11px] shrink-0 w-10 text-right ${
+                                <div className={`font-mono font-semibold tabular-nums text-[11px] shrink-0 w-10 text-right ${
                                   worldComplete ? 'text-emerald-400' : worldDone > 0 ? 'text-orange-400' : 'text-gray-600'
                                 }`}>
                                   {worldDone}/{total}
@@ -835,9 +830,9 @@ export default function Admin() {
                         </div>
 
                         {/* Footer — totals */}
-                        <div className="mt-2.5 pt-2.5 border-t border-gray-800/70 flex items-center justify-between text-[10px]">
+                        <div className="mt-2.5 pt-2.5 border-t border-white/[0.06] flex items-center justify-between text-[10px]">
                           <div className="text-gray-500">
-                            <span className="font-display font-bold text-gray-300 tabular-nums">{completed.length}</span>
+                            <span className="font-mono font-semibold text-gray-300 tabular-nums">{completed.length}</span>
                             <span className="text-gray-600">/{totalLessons} lessons</span>
                           </div>
                           <div className="text-gray-600">
@@ -853,5 +848,21 @@ export default function Admin() {
         </div>
       )}
     </div>
+  );
+}
+
+function TabButton({ active, onClick, icon: Icon, label }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] font-semibold tracking-tight transition-all ${
+        active
+          ? 'bg-gradient-to-br from-[#FF6B35] to-[#C44D1E] text-white shadow-brand-glow'
+          : 'text-gray-400 hover:text-white'
+      }`}
+    >
+      <Icon size={14} />
+      {label}
+    </button>
   );
 }

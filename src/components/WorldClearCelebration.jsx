@@ -37,7 +37,7 @@ export default function WorldClearCelebration({ world, onDismiss }) {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: -20, opacity: 0 }}
               transition={{ type: 'spring', damping: 14, stiffness: 200 }}
-              className="relative bg-gradient-to-br from-[#1a1f35] to-[#0f1328] rounded-3xl px-7 py-6 border-2 border-yellow-400/30 shadow-2xl shadow-yellow-500/20 text-center max-w-xs"
+              className="relative bg-gradient-to-br from-[#1C1C20] to-[#111114] rounded-3xl px-7 py-6 border-2 border-yellow-400/30 shadow-2xl shadow-yellow-500/20 text-center max-w-xs"
             >
               <motion.div
                 initial={{ rotate: -180, scale: 0 }}

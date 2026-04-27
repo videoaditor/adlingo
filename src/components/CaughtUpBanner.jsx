@@ -31,7 +31,7 @@ export default function CaughtUpBanner({ mode = 'caught-up' }) {
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <div className={`font-display text-[14px] font-bold leading-tight tracking-tight ${tone.title}`}>
+          <div className={`text-[14px] font-bold leading-tight tracking-tight ${tone.title}`}>
             {isAllClear ? "You've cleared every lesson" : "You're all caught up"}
           </div>
           <div className={`text-[11px] font-medium mt-0.5 ${tone.sub}`}>

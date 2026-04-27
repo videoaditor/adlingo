@@ -1,8 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-display: 'Instrument Serif', 'Iowan Old Style', 'Cambria', Georgia, serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+
+  /* Aditor brand palette */
+  --color-brand: #FF6B35;
+  --color-brand-soft: #E8824A;
+  --color-brand-deep: #C44D1E;
+
+  /* True-dark surfaces */
+  --color-sunken: #08080A;
+  --color-canvas: #0B0B0D;
+  --color-raised: #111114;
+  --color-elevated: #17171B;
+
+  /* Neutral ink */
+  --color-ink-1: #F5F5F2;
+  --color-ink-2: #A8A8A4;
+  --color-ink-3: #6B6B68;
+  --color-ink-4: #2E2E30;
 
   --color-accent-indigo: #6366F1;
 
@@ -38,18 +56,30 @@
 }
 
 body {
-  background-color: #0a0e1a;
+  background-color: #0B0B0D;
+  color: #F5F5F2;
   overscroll-behavior: none;
   font-family: var(--font-sans);
-  /* Subtle noise texture to kill flatness */
+  /* Subtle noise texture — kills flatness while staying calm */
   background-image:
-    radial-gradient(circle at 20% -10%, rgba(249,115,22,0.08), transparent 55%),
-    radial-gradient(circle at 110% 110%, rgba(99,102,241,0.06), transparent 50%),
+    radial-gradient(circle at 15% -10%, rgba(255,107,53,0.09), transparent 55%),
+    radial-gradient(circle at 110% 110%, rgba(99,102,241,0.05), transparent 50%),
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-attachment: fixed;
 }
 
-.font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
+/* Display — Instrument Serif, quietly editorial */
+.font-display { font-family: var(--font-display); letter-spacing: -0.025em; font-weight: 400; }
+.font-display-italic { font-family: var(--font-display); font-style: italic; letter-spacing: -0.015em; font-weight: 400; }
+
+/* Editorial meta — mono, small, tracked */
+.meta-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
 
 /* Chunky 3D button base */
 .btn-3d {
@@ -70,6 +100,14 @@ body {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+/* Brand glow — Aditor signature warm halo under CTAs */
+.shadow-brand-glow {
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,0.15) inset,
+    0 8px 22px -6px rgba(255,107,53,0.55),
+    0 2px 6px -2px rgba(196,77,30,0.5);
 }
 
 /* Soft layered depth — modern card */

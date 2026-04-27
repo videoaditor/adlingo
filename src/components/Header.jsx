@@ -17,7 +17,7 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
   return (
     <>
       {/* Top bar — iOS style */}
-      <header className="sticky top-0 z-50 bg-[#0f1328]/95 backdrop-blur-xl border-b border-white/5">
+      <header className="sticky top-0 z-50 bg-[#111114]/95 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
           {/* Logo / Back to Hub link */}
           <a href="https://hub.aditor.ai" className="flex items-center gap-2 hover:opacity-80 transition">
@@ -64,7 +64,7 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
       {/* Profile Modal */}
       {showProfile && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-end">
-          <div className="w-full bg-[#0f1328] rounded-t-3xl px-4 py-4 border-t border-white/5">
+          <div className="w-full bg-[#111114] rounded-t-3xl px-4 py-4 border-t border-white/5">
             <div className="max-w-lg mx-auto">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-[17px] font-black text-white">Profile</h3>
@@ -127,7 +127,7 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
 
       {/* Bottom tab bar — iOS style */}
       {!location.pathname.startsWith('/lesson') && !location.pathname.startsWith('/admin') && (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#0f1328]/98 backdrop-blur-xl border-t border-white/5 pb-[env(safe-area-inset-bottom)]">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#111114]/98 backdrop-blur-xl border-t border-white/5 pb-[env(safe-area-inset-bottom)]">
           <div className="max-w-lg mx-auto flex items-center justify-around px-2 py-1.5">
             <TabItem
               icon={BookOpen}

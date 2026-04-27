@@ -21,8 +21,8 @@ export default function Login({ onLogin, loading, error }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white flex flex-col items-center justify-center p-6">
-      <div className="max-w-sm w-full bg-[#111630] rounded-3xl p-6 border border-white/10 shadow-2xl">
+    <div className="min-h-screen bg-[#0B0B0D] text-white flex flex-col items-center justify-center p-6">
+      <div className="max-w-sm w-full bg-[#17171B] rounded-3xl p-6 border border-white/10 shadow-2xl">
         {/* Logo */}
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
@@ -37,8 +37,8 @@ export default function Login({ onLogin, loading, error }) {
           >
             <AditorLogo size={84} />
           </motion.div>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-white">
-            AdLingo
+          <h1 className="font-display text-[44px] leading-none tracking-tight text-white">
+            Ad<em className="font-display-italic text-orange-400">Lingo</em>
           </h1>
           <p className="text-gray-400 text-[13px] font-medium mt-1">Editor Training Platform</p>
         </motion.div>
@@ -59,8 +59,8 @@ export default function Login({ onLogin, loading, error }) {
               value={email}
               onChange={(e) => { setEmail(e.target.value); setEmailError(false); }}
               placeholder="editor@aditor.ai"
-              style={{ backgroundColor: '#252d65', borderColor: emailError ? '#ef4444' : '#3a4280' }}
-              className="w-full px-4 py-4 rounded-2xl text-white text-[15px] placeholder-gray-500 focus:outline-none focus:!border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition font-medium border-2"
+              style={{ backgroundColor: '#1C1C20', borderColor: emailError ? '#ef4444' : '#2E2E30' }}
+              className="w-full px-4 py-4 rounded-2xl text-white text-[15px] placeholder-gray-500 focus:outline-none focus:!border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/25 transition font-medium border-2"
               required
               autoFocus
             />
@@ -90,7 +90,7 @@ export default function Login({ onLogin, loading, error }) {
             type="submit"
             disabled={loading}
             whileTap={{ scale: 0.97, y: 3 }}
-            className="w-full py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black rounded-2xl uppercase tracking-wider text-[14px] border-b-[4px] border-orange-700 active:border-b-0 active:translate-y-[4px] shadow-lg shadow-orange-500/25 disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-4 bg-gradient-to-br from-[#FF6B35] to-[#C44D1E] text-white font-black rounded-2xl uppercase tracking-wider text-[14px] border-b-[4px] border-[#8A2F0F] active:border-b-0 active:translate-y-[4px] shadow-brand-glow disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

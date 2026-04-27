@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, CheckCircle, ChevronRight, Flame, Star, Zap, Sparkles } from 'lucide-react';
+import { Lock, CheckCircle, ChevronRight, Flame, Star, Zap, Sparkles, Play, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getWorlds, getAllLessonIds } from '../data/courseData';
 import { haptic } from '../services/haptics';
@@ -91,12 +91,12 @@ export default function WorldMap({ user }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] pb-24 hide-scrollbar">
+    <div className="min-h-screen bg-[#0B0B0D] pb-24 hide-scrollbar">
       {/* XP Progress bar under header */}
       <div className="px-4 pt-3 pb-1">
         <div className="max-w-lg mx-auto">
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-3 bg-[#1a1f35] rounded-full overflow-hidden border border-white/5">
+            <div className="flex-1 h-3 bg-[#1C1C20] rounded-full overflow-hidden border border-white/5">
               <motion.div
                 className="h-full rounded-full bg-gradient-to-r from-orange-500 via-amber-400 to-yellow-400"
                 initial={{ width: 0 }}
@@ -105,7 +105,7 @@ export default function WorldMap({ user }) {
                 style={{ boxShadow: '0 0 12px rgba(251,146,60,0.4)' }}
               />
             </div>
-            <span className="font-display text-xs font-bold text-orange-400 tabular-nums min-w-[36px] text-right">
+            <span className="text-[11px] font-mono font-semibold text-orange-400 tabular-nums min-w-[36px] text-right">
               {totalProgress}%
             </span>
           </div>
@@ -146,9 +146,9 @@ export default function WorldMap({ user }) {
                       : 'border border-white/[0.04] opacity-45'}
                   `}
                   style={unlocked ? {
-                    background: 'linear-gradient(145deg, rgba(15,19,40,0.95), rgba(10,14,26,0.98))',
+                    background: 'linear-gradient(145deg, rgba(23,23,27,0.95), rgba(17,17,20,0.98))',
                   } : {
-                    background: 'rgba(15,19,40,0.5)',
+                    background: 'rgba(17,17,20,0.5)',
                   }}
                 >
                   {/* World banner */}
@@ -165,7 +165,7 @@ export default function WorldMap({ user }) {
                     {world.imageUrl && unlocked && (
                       <div className="absolute inset-0">
                         <img src={world.imageUrl} alt="" className="w-full h-full object-cover opacity-25" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0e1a]/60 via-[#0a0e1a]/80 to-[#0a0e1a]" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0D]/60 via-[#0B0B0D]/80 to-[#0B0B0D]" />
                       </div>
                     )}
 
@@ -179,7 +179,7 @@ export default function WorldMap({ user }) {
                             ? isComplete
                               ? 'bg-gradient-to-br from-yellow-400 to-amber-500 border-yellow-600 shadow-lg shadow-yellow-500/30'
                               : `bg-gradient-to-br ${world.themeColor} border-black/30 shadow-lg`
-                            : 'bg-[#1a1f35] border-[#12162a] text-gray-600'}
+                            : 'bg-[#1C1C20] border-[#111114] text-gray-600'}
                         `}
                       >
                         {!unlocked ? (
@@ -192,7 +192,10 @@ export default function WorldMap({ user }) {
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <h3 className={`font-display font-bold text-[19px] leading-tight tracking-tight ${unlocked ? 'text-white' : 'text-gray-500'}`}>
+                        <div className={`meta-label mb-0.5 ${unlocked ? 'text-gray-500' : 'text-gray-700'}`}>
+                          World · {String(world.order).padStart(2, '0')}
+                        </div>
+                        <h3 className={`text-[19px] font-bold leading-tight tracking-tight ${unlocked ? 'text-white' : 'text-gray-500'}`}>
                           {world.name}
                         </h3>
                         <p className={`text-[11px] font-bold uppercase tracking-[0.15em] mt-0.5 ${unlocked ? world.accentColor : 'text-gray-600'}`}>
@@ -230,85 +233,97 @@ export default function WorldMap({ user }) {
                         const lScore = scores[lesson.id];
 
                         return (
-                          <motion.button
-                            key={lesson.id}
-                            onClick={() => handleLessonClick(lesson, lUnlocked)}
-                            disabled={!lUnlocked}
-                            whileTap={lUnlocked ? { scale: 0.97 } : {}}
-                            className={`
-                              w-full flex items-center gap-3 p-3 rounded-2xl transition-all text-left
-                              ${isCurrent
-                                ? 'bg-gradient-to-r from-orange-500/15 to-amber-500/10 border-2 border-orange-500/40 shadow-lg shadow-orange-500/10'
-                                : lComplete
-                                  ? 'bg-emerald-500/10 border border-emerald-500/20'
-                                  : lUnlocked
-                                    ? 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/10'
-                                    : 'bg-transparent border border-white/[0.03] cursor-not-allowed'}
-                            `}
-                          >
-                            {/* Lesson circle */}
-                            <div
+                          <div key={lesson.id} className="relative">
+                            <motion.button
+                              onClick={() => handleLessonClick(lesson, lUnlocked)}
+                              disabled={!lUnlocked}
+                              whileTap={lUnlocked ? { scale: 0.97 } : {}}
                               className={`
-                                w-11 h-11 rounded-xl flex items-center justify-center shrink-0
-                                border-b-[3px] font-black text-sm
-                                ${lComplete
-                                  ? 'bg-emerald-500 border-emerald-700 text-white shadow-md shadow-emerald-500/25'
-                                  : isCurrent
-                                    ? 'bg-gradient-to-br from-orange-400 to-red-500 border-orange-700 text-white shadow-md shadow-orange-500/30 animate-pulse-glow'
+                                w-full flex items-center gap-3 p-3 rounded-2xl transition-all text-left
+                                ${isCurrent
+                                  ? 'bg-gradient-to-r from-orange-500/15 to-amber-500/10 border-2 border-orange-500/40 shadow-lg shadow-orange-500/10'
+                                  : lComplete
+                                    ? `bg-gradient-to-r ${world.themeColor} bg-opacity-10 border border-white/[0.08]`
                                     : lUnlocked
-                                      ? 'bg-[#222850] border-[#1a2040] text-gray-300'
-                                      : 'bg-[#161b35] border-[#111530] text-gray-600'}
+                                      ? 'bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.05] hover:border-white/10'
+                                      : 'bg-transparent border border-white/[0.03] cursor-not-allowed'}
                               `}
+                              style={lComplete && !isCurrent ? {
+                                background: `linear-gradient(90deg, rgba(255,107,53,0.08), rgba(196,77,30,0.04))`,
+                                borderColor: 'rgba(255,255,255,0.08)',
+                              } : undefined}
                             >
-                              {lComplete ? (
-                                <CheckCircle size={18} strokeWidth={2.5} />
-                              ) : !lUnlocked ? (
-                                <Lock size={15} />
-                              ) : (
-                                <span className="text-base">{lIdx + 1}</span>
-                              )}
-                            </div>
-
-                            <div className="flex-1 min-w-0">
-                              <div className={`text-[14px] font-bold ${
-                                lComplete ? 'text-emerald-300'
-                                : isCurrent ? 'text-white'
-                                : lUnlocked ? 'text-white/80'
-                                : 'text-gray-500'
-                              }`}>
-                                {lesson.title}
+                              {/* Lesson circle */}
+                              <div
+                                className={`
+                                  w-11 h-11 rounded-xl flex items-center justify-center shrink-0
+                                  border-b-[3px] font-black text-sm transition-all
+                                  ${lComplete
+                                    ? `bg-gradient-to-br ${world.themeColor} text-white shadow-md`
+                                    : isCurrent
+                                      ? 'bg-gradient-to-br from-[#FF6B35] to-[#C44D1E] border-[#8A2F0F] text-white shadow-md shadow-orange-500/30 animate-pulse-glow'
+                                      : lUnlocked
+                                        ? 'bg-[#24242A] border-[#1F1F23] text-gray-300'
+                                        : 'bg-[#18181C] border-[#17171B] text-gray-600'}
+                                `}
+                                style={lComplete ? { borderBottomColor: 'rgba(0,0,0,0.35)' } : undefined}
+                              >
+                                {lComplete ? (
+                                  <Check size={18} strokeWidth={3} />
+                                ) : !lUnlocked ? (
+                                  <Lock size={15} />
+                                ) : (
+                                  <span className="text-base">{lIdx + 1}</span>
+                                )}
                               </div>
-                              {lesson.subtitle && (
-                                <div className={`text-[11px] mt-0.5 ${
-                                  lComplete ? 'text-emerald-400/70'
-                                  : isCurrent ? 'text-orange-300/80'
-                                  : lUnlocked ? 'text-gray-400'
-                                  : 'text-gray-600'
-                                }`}>
-                                  {lesson.subtitle}
-                                </div>
-                              )}
-                            </div>
 
-                            {/* Right side indicators */}
-                            <div className="flex items-center gap-1.5 shrink-0">
-                              {lScore && (
-                                <span className="text-[11px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-lg">
-                                  {lScore.correct}/{lScore.total}
-                                </span>
-                              )}
-                              {lesson.videoUrl && lUnlocked && !lComplete && (
-                                <span className="text-[9px] font-bold text-orange-400 bg-orange-400/10 px-1.5 py-0.5 rounded-md uppercase">
-                                  Video
-                                </span>
-                              )}
+                              <div className="flex-1 min-w-0 pr-14">
+                                <div className={`text-[14px] font-bold ${
+                                  lComplete ? 'text-[#F5F5F2]'
+                                  : isCurrent ? 'text-white'
+                                  : lUnlocked ? 'text-white/85'
+                                  : 'text-gray-500'
+                                }`}>
+                                  {lesson.title}
+                                </div>
+                                <div className={`flex items-center gap-2 mt-0.5`}>
+                                  {lScore && (
+                                    <span className={`meta-label tabular-nums ${lComplete ? world.accentColor : 'text-gray-500'}`}>
+                                      {lScore.correct}/{lScore.total}
+                                    </span>
+                                  )}
+                                  {lesson.subtitle && !lScore && (
+                                    <div className={`text-[11px] ${
+                                      lComplete ? 'text-gray-400'
+                                      : isCurrent ? 'text-orange-300/80'
+                                      : lUnlocked ? 'text-gray-400'
+                                      : 'text-gray-600'
+                                    }`}>
+                                      {lesson.subtitle}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
                               {isCurrent && (
-                                <div className="w-7 h-7 rounded-lg bg-orange-500 flex items-center justify-center shadow-md shadow-orange-500/30">
+                                <div className="w-7 h-7 rounded-lg bg-[#FF6B35] flex items-center justify-center shadow-md shadow-orange-500/30 shrink-0">
                                   <ChevronRight size={14} className="text-white" strokeWidth={3} />
                                 </div>
                               )}
-                            </div>
-                          </motion.button>
+                            </motion.button>
+
+                            {/* Secondary "Watch" link — positioned absolutely so it doesn't trigger the test */}
+                            {lesson.videoUrl && lUnlocked && !isCurrent && (
+                              <button
+                                onClick={(e) => { e.stopPropagation(); haptic('light'); navigate(`/course?lesson=${lesson.id}`); }}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 px-2 py-1 rounded-lg bg-black/30 border border-white/[0.08] hover:bg-black/50 hover:border-white/15 transition text-gray-300"
+                                title="Watch lesson video"
+                              >
+                                <Play size={10} fill="currentColor" />
+                                <span className="meta-label text-gray-400">Watch</span>
+                              </button>
+                            )}
+                          </div>
                         );
                       })}
                     </div>

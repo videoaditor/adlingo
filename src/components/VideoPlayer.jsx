@@ -35,9 +35,36 @@ function getEmbedUrl(url) {
   return url;
 }
 
-export default function VideoPlayer({ url, title }) {
-  const embedUrl = getEmbedUrl(url);
+export default function VideoPlayer({ url, title, videoType }) {
+  if (!url) {
+    return (
+      <div className="w-full aspect-video bg-gray-800/50 rounded-2xl flex items-center justify-center border border-gray-700/50">
+        <p className="text-gray-500 text-sm">No video for this lesson</p>
+      </div>
+    );
+  }
 
+  const isFile =
+    videoType === 'file' ||
+    /\.(mp4|webm|mov)(\?|$)/i.test(url) ||
+    url.startsWith('/');
+
+  if (isFile) {
+    return (
+      <div className="w-full aspect-video rounded-2xl overflow-hidden border border-gray-700/50 bg-black">
+        <video
+          src={url}
+          title={title || 'Lesson Video'}
+          className="w-full h-full"
+          controls
+          preload="metadata"
+          playsInline
+        />
+      </div>
+    );
+  }
+
+  const embedUrl = getEmbedUrl(url);
   if (!embedUrl) {
     return (
       <div className="w-full aspect-video bg-gray-800/50 rounded-2xl flex items-center justify-center border border-gray-700/50">

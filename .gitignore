@@ -32,3 +32,6 @@ Thumbs.db
 
 # Git worktrees (isolated workspaces)
 .worktrees/
+
+# Disciplines: large generated B-Roll / Podcast MP4s (rebuild with scripts/disciplines/build-videos.sh)
+public/disciplines/*.mp4

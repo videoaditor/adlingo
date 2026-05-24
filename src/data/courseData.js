@@ -3,7 +3,11 @@
 
 const STORAGE_KEY = 'adlingo_course_data';
 const SEED_VERSION_KEY = 'adlingo_seed_version';
-const CURRENT_SEED_VERSION = 3; // Bump this to force seed data refresh
+const CURRENT_SEED_VERSION = 4; // Bump this to force seed data refresh
+
+const DISCIPLINES_STORAGE_KEY = 'adlingo_disciplines_data';
+const DISCIPLINES_SEED_VERSION_KEY = 'adlingo_disciplines_seed_version';
+const CURRENT_DISCIPLINES_SEED_VERSION = 1;
 
 const SEED_WORLDS = [
   {
@@ -842,6 +846,104 @@ const SEED_WORLDS = [
   }
 ];
 
+const SEED_DISCIPLINES = [
+  {
+    id: 'd1',
+    name: 'Asset Workflow',
+    subtitle: 'Sourcing brand assets and adapting prompts in Magnific',
+    coach: 'Saskia',
+    order: 1,
+    videoUrl: '/disciplines/b-roll.mp4',
+    videoType: 'file',
+    extraLinks: [
+      { label: 'Workflow (Magnific)', url: 'https://www.magnific.com/app/spaces/a1d6ac4c-5932-404a-a2ca-c08594dbb16f/' }
+    ],
+    questions: [
+      {
+        id: 'q-d1-1',
+        type: 'text',
+        question: "You're starting an asset gathering pass for a new ad and the brand didn't send any product images. What do you do first?",
+        options: [
+          { text: "Generate product shots in Magnific from the brand name", correct: false },
+          { text: "Go to the brand's website and download product images, reviews, and anything else the editor might need later", correct: true },
+          { text: "Ask the client to send a full asset pack and wait", correct: false },
+          { text: "Skip product images and jump straight into the Magnific workflow", correct: false }
+        ],
+        directorNote: "Go to the site and grab everything in one pass — product images, reviews, anything the editor might need. Gather it all up front so you're not breaking flow later to hunt down a screenshot."
+      },
+      {
+        id: 'q-d1-2',
+        type: 'text',
+        question: "You're working with a visually complex product (detailed packaging, specific bedside scene, multiple SKU details). What's the right move before kicking off the Magnific workflow?",
+        options: [
+          { text: "Skip the product reference sheet — Magnific can infer details from a single product image", correct: false },
+          { text: "Build a product reference sheet with the logo, product, and the technical/packaging details the AI needs to capture it correctly", correct: true },
+          { text: "Use a style reference instead of a product reference", correct: false },
+          { text: "Write everything you need into the prompt and skip references entirely", correct: false }
+        ],
+        directorNote: "For simple products like medical capsules the AI already knows the shape — but for complex packaging you build a product reference sheet so the AI captures details like how the box looks on the bed. Reference sheets fill the gaps prompts can't."
+      },
+      {
+        id: 'q-d1-3',
+        type: 'text',
+        question: "You copied the workflow's default product info and prompt text, but they describe the old brand. How do you adapt them to your new product?",
+        options: [
+          { text: "Manually rewrite both blocks from scratch based on what you know about the product", correct: false },
+          { text: "Paste the product info and prompt into ChatGPT along with the new product's website, and have it rewrite both to match", correct: true },
+          { text: "Leave the text as-is — Magnific will swap the brand details automatically once you tag the product", correct: false },
+          { text: "Only adapt the product info; the prompt is generic and doesn't need changes", correct: false }
+        ],
+        directorNote: "Hand the existing product info and prompt to ChatGPT, give it the new product's website URL, and ask it to adapt both. ChatGPT pulls the brand context from the site so the rewrite actually matches the product instead of being a generic swap."
+      },
+      {
+        id: 'q-d1-4',
+        type: 'text',
+        question: "You've pasted the new ChatGPT-adapted prompt into the Magnific workflow. What still needs to happen before you can run it?",
+        options: [
+          { text: "Tag the prompt node with the product info and main character references, then connect everything in the graph", correct: true },
+          { text: "Nothing — pasting the prompt is the last step; hit run", correct: false },
+          { text: "Add a style reference node, since every workflow requires one", correct: false },
+          { text: "Re-tag the video prompt as well; image and video prompts share the same tags", correct: false }
+        ],
+        directorNote: "Pasting the prompt isn't enough — you have to tag it with the product info and main character refs and wire the graph so everything's connected. Then repeat the same paste-and-connect loop for the video prompt before kicking off the run."
+      }
+    ]
+  },
+  {
+    id: 'd2',
+    name: 'Podcast',
+    subtitle: 'Coming soon — pending video',
+    coach: 'Nico',
+    order: 2,
+    videoUrl: null,
+    videoType: null,
+    extraLinks: [
+      { label: 'Source folder (Drive)', url: 'https://drive.google.com/drive/folders/1tABXr5dyjj1eB-8_FwEdTPqu5DJNaS0M' }
+    ],
+    questions: []
+  },
+  {
+    id: 'd3',
+    name: 'TBD',
+    subtitle: 'Coming soon',
+    order: 3,
+    videoUrl: null,
+    videoType: null,
+    extraLinks: [],
+    questions: []
+  },
+  {
+    id: 'd4',
+    name: 'TBD',
+    subtitle: 'Coming soon',
+    order: 4,
+    videoUrl: null,
+    videoType: null,
+    extraLinks: [],
+    questions: []
+  }
+];
+
 export function getWorlds() {
   const storedVersion = parseInt(localStorage.getItem(SEED_VERSION_KEY) || '0', 10);
   if (storedVersion < CURRENT_SEED_VERSION) {
@@ -874,17 +976,77 @@ export function getWorldById(worldId) {
 export function getLessonById(lessonId) {
   for (const world of getWorlds()) {
     const lesson = world.lessons.find((l) => l.id === lessonId);
-    if (lesson) return { lesson, world };
+    if (lesson) return { lesson, world, discipline: null };
   }
-  return { lesson: null, world: null };
+  const discipline = getDisciplines().find((d) => d.id === lessonId);
+  if (discipline) {
+    // A discipline IS its own single lesson — expose it with a synthetic lesson shape
+    // so existing consumers (Lesson.jsx) can read .title / .videoUrl / .questions.
+    return {
+      lesson: {
+        id: discipline.id,
+        title: discipline.name,
+        subtitle: discipline.subtitle,
+        order: discipline.order,
+        videoUrl: discipline.videoUrl,
+        videoType: discipline.videoType,
+        questions: discipline.questions
+      },
+      world: null,
+      discipline
+    };
+  }
+  return { lesson: null, world: null, discipline: null };
 }
 
 export function getAllLessonIds() {
-  return getWorlds()
+  const worldIds = getWorlds()
     .sort((a, b) => a.order - b.order)
     .flatMap((w) => w.lessons.sort((a, b) => a.order - b.order).map((l) => l.id));
+  const disciplineIds = getDisciplines()
+    .filter((d) => d.videoUrl) // exclude placeholders so they don't drag the progress bar down
+    .sort((a, b) => a.order - b.order)
+    .map((d) => d.id);
+  return [...worldIds, ...disciplineIds];
 }
 
 export function generateId() {
   return Math.random().toString(36).substring(2, 10);
+}
+
+export function getDisciplines() {
+  const storedVersion = parseInt(
+    localStorage.getItem(DISCIPLINES_SEED_VERSION_KEY) || '0',
+    10
+  );
+  if (storedVersion < CURRENT_DISCIPLINES_SEED_VERSION) {
+    localStorage.setItem(DISCIPLINES_STORAGE_KEY, JSON.stringify(SEED_DISCIPLINES));
+    localStorage.setItem(
+      DISCIPLINES_SEED_VERSION_KEY,
+      String(CURRENT_DISCIPLINES_SEED_VERSION)
+    );
+    return SEED_DISCIPLINES;
+  }
+  const stored = localStorage.getItem(DISCIPLINES_STORAGE_KEY);
+  if (stored) {
+    try {
+      return JSON.parse(stored);
+    } catch {
+      return SEED_DISCIPLINES;
+    }
+  }
+  localStorage.setItem(DISCIPLINES_STORAGE_KEY, JSON.stringify(SEED_DISCIPLINES));
+  localStorage.setItem(
+    DISCIPLINES_SEED_VERSION_KEY,
+    String(CURRENT_DISCIPLINES_SEED_VERSION)
+  );
+  return SEED_DISCIPLINES;
+}
+
+export function saveDisciplines(disciplines) {
+  localStorage.setItem(DISCIPLINES_STORAGE_KEY, JSON.stringify(disciplines));
+}
+
+export function getDisciplineById(id) {
+  return getDisciplines().find((d) => d.id === id) || null;
 }

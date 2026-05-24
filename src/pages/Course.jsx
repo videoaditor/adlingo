@@ -316,7 +316,7 @@ export default function Course({ user }) {
                 discipline={activeLesson?.discipline || null}
                 lesson={selectedLesson}
                 completedLessons={completedLessons}
-                onTakeTest={() => { haptic('nav'); navigate(`/lesson/${selectedLesson.id}`); }}
+                onTakeTest={() => { haptic('nav'); navigate(`/lesson/${selectedLesson.id}?phase=quiz`); }}
                 size="desktop"
               />
             </div>
@@ -351,7 +351,7 @@ export default function Course({ user }) {
                   discipline={activeLesson?.discipline || null}
                   lesson={selectedLesson}
                   completedLessons={completedLessons}
-                  onTakeTest={() => { haptic('nav'); navigate(`/lesson/${selectedLesson.id}`); }}
+                  onTakeTest={() => { haptic('nav'); navigate(`/lesson/${selectedLesson.id}?phase=quiz`); }}
                   size="mobile"
                 />
               </div>

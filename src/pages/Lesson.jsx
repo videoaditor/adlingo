@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Trophy, Star, RotateCcw } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getLessonById } from '../data/courseData';
@@ -8,11 +8,21 @@ import QuizEngine from '../components/QuizEngine';
 import ConfettiBurst from '../components/ConfettiBurst';
 import { haptic } from '../services/haptics';
 
-export default function Lesson({ onLessonComplete }) {
+export default function Lesson({ onLessonComplete, user }) {
   const { lessonId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { lesson, world, discipline } = getLessonById(lessonId);
-  const [phase, setPhase] = useState('quiz');
+  // Default to video when the lesson has one and the user hasn't completed it yet,
+  // unless ?phase=quiz is explicitly passed (e.g. from Course "Take the test" CTA
+  // where the user already watched).
+  const completedLessons = user?.progress?.completedLessons || [];
+  const phaseParam = searchParams.get('phase');
+  const initialPhase =
+    phaseParam === 'quiz' || !lesson?.videoUrl || completedLessons.includes(lessonId)
+      ? 'quiz'
+      : 'video';
+  const [phase, setPhase] = useState(initialPhase);
   const [result, setResult] = useState(null);
 
   if (!lesson || (!world && !discipline)) {

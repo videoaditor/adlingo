@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, CheckCircle, ChevronRight, Flame, Star, Zap, Sparkles, Play, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getWorlds, getAllLessonIds } from '../data/courseData';
+import { getWorlds, getDisciplines, getAllLessonIds } from '../data/courseData';
 import { haptic } from '../services/haptics';
 import WorldClearCelebration from '../components/WorldClearCelebration';
 import CaughtUpBanner from '../components/CaughtUpBanner';
@@ -15,6 +15,7 @@ const WORLD_ICONS = {
 export default function WorldMap({ user }) {
   const navigate = useNavigate();
   const worlds = getWorlds().sort((a, b) => a.order - b.order);
+  const disciplines = getDisciplines().sort((a, b) => a.order - b.order);
   const allLessonIds = getAllLessonIds();
   const completedLessons = user?.progress?.completedLessons || [];
   const scores = user?.progress?.scores || {};
@@ -342,6 +343,157 @@ export default function WorldMap({ user }) {
               </motion.div>
             );
           })}
+
+          {/* ═══ Disciplines — situational skills, gold theme ═══ */}
+          {disciplines.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: worlds.length * 0.1 }}
+            >
+              <div
+                className="rounded-3xl overflow-hidden border-2 border-yellow-500/25"
+                style={{ background: 'linear-gradient(145deg, rgba(35,30,15,0.95), rgba(20,17,10,0.98))' }}
+              >
+                {/* Banner */}
+                <div className="relative overflow-hidden p-4 pb-3">
+                  <div
+                    className="absolute inset-0 opacity-20 bg-gradient-to-br from-yellow-500 to-amber-500"
+                    style={{ filter: 'blur(30px)' }}
+                  />
+                  <div className="relative flex items-center gap-3">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 border-b-[3px] bg-gradient-to-br from-yellow-500 to-amber-600 border-amber-800 shadow-lg shadow-yellow-500/20">
+                      <Sparkles size={22} className="text-yellow-950" strokeWidth={2.5} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="meta-label mb-0.5 text-yellow-600/80">Disciplines</div>
+                      <h3 className="text-[19px] font-bold leading-tight tracking-tight text-yellow-50">
+                        Types of Ads
+                      </h3>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.15em] mt-0.5 text-yellow-400">
+                        Situational · Always unlocked
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Progress: completed vs playable (placeholders excluded) */}
+                  <div className="relative mt-3 flex items-center gap-2">
+                    {(() => {
+                      const playable = disciplines.filter((d) => d.videoUrl);
+                      const done = playable.filter((d) => completedLessons.includes(d.id)).length;
+                      const total = playable.length;
+                      const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+                      return (
+                        <>
+                          <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                            <div
+                              className="h-full rounded-full bg-gradient-to-r from-yellow-500 to-amber-500 transition-all duration-700"
+                              style={{
+                                width: `${percent}%`,
+                                boxShadow: percent > 0 ? '0 0 8px rgba(234,179,8,0.4)' : 'none',
+                              }}
+                            />
+                          </div>
+                          <span className="text-[11px] font-black tabular-nums text-yellow-400">
+                            {done}/{total}
+                          </span>
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+
+                {/* Discipline rows */}
+                <div className="px-3 pb-3 space-y-2">
+                  {disciplines.map((discipline, dIdx) => {
+                    const isComplete = completedLessons.includes(discipline.id);
+                    const isPlayable = !!discipline.videoUrl;
+                    const dScore = scores[discipline.id];
+                    return (
+                      <div key={discipline.id} className="relative">
+                        <motion.button
+                          onClick={() => {
+                            if (!isPlayable) { haptic('error'); return; }
+                            haptic('tap');
+                            navigate(`/lesson/${discipline.id}`);
+                          }}
+                          disabled={!isPlayable}
+                          whileTap={isPlayable ? { scale: 0.97 } : {}}
+                          className={`
+                            w-full flex items-center gap-3 p-3 rounded-2xl transition-all text-left
+                            ${isComplete
+                              ? 'bg-gradient-to-r from-yellow-500/15 to-amber-500/10 border border-yellow-500/25'
+                              : isPlayable
+                                ? 'bg-white/[0.03] border border-yellow-500/15 hover:bg-yellow-500/[0.05] hover:border-yellow-500/30'
+                                : 'bg-transparent border border-white/[0.03] cursor-not-allowed'}
+                          `}
+                        >
+                          {/* Icon */}
+                          <div
+                            className={`
+                              w-11 h-11 rounded-xl flex items-center justify-center shrink-0
+                              border-b-[3px] font-black text-sm transition-all
+                              ${isComplete
+                                ? 'bg-gradient-to-br from-yellow-500 to-amber-600 border-amber-800 text-yellow-950 shadow-md'
+                                : isPlayable
+                                  ? 'bg-[#24242A] border-[#1F1F23] text-yellow-200'
+                                  : 'bg-[#18181C] border-[#17171B] text-gray-600'}
+                            `}
+                          >
+                            {isComplete ? (
+                              <Check size={18} strokeWidth={3} />
+                            ) : !isPlayable ? (
+                              <Lock size={15} />
+                            ) : (
+                              <span className="text-base">{dIdx + 1}</span>
+                            )}
+                          </div>
+
+                          <div className="flex-1 min-w-0 pr-14">
+                            <div className={`text-[14px] font-bold ${
+                              isComplete ? 'text-[#F5F5F2]'
+                              : isPlayable ? 'text-white/85'
+                              : 'text-gray-500'
+                            }`}>
+                              {discipline.name}
+                            </div>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              {dScore && (
+                                <span className="meta-label tabular-nums text-yellow-400">
+                                  {dScore.correct}/{dScore.total}
+                                </span>
+                              )}
+                              {!dScore && discipline.subtitle && (
+                                <div className={`text-[11px] ${
+                                  isComplete ? 'text-gray-400'
+                                  : isPlayable ? 'text-yellow-200/60'
+                                  : 'text-gray-600'
+                                }`}>
+                                  {discipline.coach ? `with ${discipline.coach} · ${discipline.subtitle}` : discipline.subtitle}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </motion.button>
+
+                        {/* Secondary "Watch" link to Course page for playable disciplines */}
+                        {isPlayable && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); haptic('light'); navigate(`/course?lesson=${discipline.id}`); }}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 px-2 py-1 rounded-lg bg-black/30 border border-yellow-500/20 hover:bg-black/50 hover:border-yellow-400/40 transition text-yellow-200"
+                            title="Watch discipline video"
+                          >
+                            <Play size={10} fill="currentColor" />
+                            <span className="meta-label text-yellow-300/80">Watch</span>
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
 

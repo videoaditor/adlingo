@@ -11,17 +11,20 @@ import { haptic } from '../services/haptics';
 export default function Lesson({ onLessonComplete }) {
   const { lessonId } = useParams();
   const navigate = useNavigate();
-  const { lesson, world } = getLessonById(lessonId);
+  const { lesson, world, discipline } = getLessonById(lessonId);
   const [phase, setPhase] = useState('quiz');
   const [result, setResult] = useState(null);
 
-  if (!lesson || !world) {
+  if (!lesson || (!world && !discipline)) {
     return (
       <div className="min-h-screen bg-[#0B0B0D] text-white flex items-center justify-center">
         <p className="text-gray-500">Lesson not found</p>
       </div>
     );
   }
+
+  const headerLabel = world ? world.name : discipline.name;
+  const headerColorClass = world ? world.accentColor : 'text-yellow-400';
 
   const handleQuizComplete = (correct, total) => {
     const score = { correct, total };
@@ -39,7 +42,7 @@ export default function Lesson({ onLessonComplete }) {
             <ArrowLeft size={18} className="text-gray-400" />
           </button>
           <div className="flex-1 min-w-0">
-            <div className={`meta-label ${world.accentColor}`}>{world.name}</div>
+            <div className={`meta-label ${headerColorClass}`}>{headerLabel}</div>
             <div className="text-[14px] font-semibold text-white truncate tracking-tight">{lesson.title}</div>
           </div>
         </div>
@@ -74,7 +77,7 @@ export default function Lesson({ onLessonComplete }) {
             <ArrowLeft size={18} className="text-gray-400" />
           </button>
           <div className="flex-1 min-w-0">
-            <div className={`meta-label ${world.accentColor}`}>{world.name}</div>
+            <div className={`meta-label ${headerColorClass}`}>{headerLabel}</div>
             <div className="text-[14px] font-semibold text-white truncate tracking-tight">{lesson.title}</div>
           </div>
         </div>

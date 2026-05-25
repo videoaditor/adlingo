@@ -6,16 +6,12 @@ import {
   Users, RefreshCw, Search
 } from 'lucide-react';
 import { getWorlds, saveWorlds, generateId } from '../data/courseData';
-import { checkAdminPassword } from '../services/auth';
+import { checkAdminPassword, hasAdminToken, clearAdminToken } from '../services/auth';
 import { getAllPlayers } from '../services/airtable';
 
 export default function Admin() {
   const navigate = useNavigate();
-  const [authed, setAuthed] = useState(() => {
-    // Check if previously authenticated as admin this session
-    const adminSession = sessionStorage.getItem('adlingo_admin_authed');
-    return adminSession === 'true';
-  });
+  const [authed, setAuthed] = useState(hasAdminToken);
   const [password, setPassword] = useState('');
   const [pwError, setPwError] = useState(false);
   const [worlds, setWorlds] = useState([]);
@@ -25,6 +21,7 @@ export default function Admin() {
   const [adminTab, setAdminTab] = useState('course'); // 'course', 'tests', or 'progress'
   const [players, setPlayers] = useState([]);
   const [playersLoading, setPlayersLoading] = useState(false);
+  const [playersError, setPlayersError] = useState(null);
   const [playerSearch, setPlayerSearch] = useState('');
 
   useEffect(() => {
@@ -34,11 +31,22 @@ export default function Admin() {
   // Load players when Progress tab is selected
   const loadPlayers = async () => {
     setPlayersLoading(true);
+    setPlayersError(null);
     try {
       const data = await getAllPlayers();
       setPlayers(data);
     } catch (err) {
       console.error('Failed to load players:', err);
+      if (err.status === 401) {
+        clearAdminToken();
+        setAuthed(false);
+        return;
+      }
+      if (err.status === 429) {
+        setPlayersError('Rate limit hit — wait ~30s and refresh.');
+      } else {
+        setPlayersError(`Couldn't load players (${err.status || err.message || 'network error'}).`);
+      }
     }
     setPlayersLoading(false);
   };
@@ -49,11 +57,11 @@ export default function Admin() {
     }
   }, [authed, adminTab]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (checkAdminPassword(password)) {
+    setPwError(false);
+    if (await checkAdminPassword(password)) {
       setAuthed(true);
-      sessionStorage.setItem('adlingo_admin_authed', 'true');
     } else {
       setPwError(true);
     }
@@ -718,6 +726,8 @@ export default function Admin() {
             <div className="flex items-center justify-center py-16">
               <div className="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
             </div>
+          ) : playersError ? (
+            <div className="text-center py-16 text-red-400 text-sm">{playersError}</div>
           ) : players.length === 0 ? (
             <div className="text-center py-16 text-gray-600 text-sm">No players found in Airtable.</div>
           ) : (

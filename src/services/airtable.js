@@ -1,170 +1,83 @@
-import CONFIG from '../config/airtable.js';
+// Client-side Airtable interface — talks to our /api proxy, not Airtable directly.
+// The PAT is held server-side; the client never sees it. Same export names as before
+// so callers (App.jsx, Admin.jsx) don't need to change.
 
-const BASE_URL = `https://api.airtable.com/v0/${CONFIG.baseId}`;
+const TOKEN_KEY = 'adlingo_admin_token';
+function adminToken() {
+  return sessionStorage.getItem(TOKEN_KEY) || '';
+}
 
-const headers = () => ({
-  Authorization: `Bearer ${CONFIG.apiKey}`,
-  'Content-Type': 'application/json',
-});
-
-// Find a player by email
 export async function findPlayerByEmail(email) {
+  if (!email || typeof email !== 'string') return null;
   try {
-    // Validate email parameter
-    if (!email || typeof email !== 'string') {
-      console.error('[Airtable] findPlayerByEmail: invalid email parameter');
-      return null;
-    }
-
-    // Sanitize email to prevent Airtable formula injection
-    const sanitizedEmail = email.trim().replace(/"/g, '\\"');
-    const formula = encodeURIComponent(`{Email} = "${sanitizedEmail}"`);
-    const res = await fetch(
-      `${BASE_URL}/${CONFIG.tables.players}?filterByFormula=${formula}&maxRecords=1`,
-      { headers: headers() }
-    );
+    const res = await fetch(`/api/me?email=${encodeURIComponent(email.trim().toLowerCase())}`);
     if (!res.ok) {
-      console.error(`[Airtable] findPlayerByEmail failed: ${res.status} ${res.statusText}`);
+      console.error(`[api] findPlayerByEmail failed: ${res.status}`);
       return null;
     }
     const data = await res.json();
-    if (data.records && data.records.length > 0) {
-      const record = data.records[0];
-      return {
-        id: record.id,
-        name: record.fields.Name || '',
-        email: record.fields.Email || '',
-        rank: record.fields.Rank || 'Unranked',
-        trustScore: record.fields['Trust Score'] || 0,
-        gold: record.fields.Gold || 0,
-        progress: parseProgress(record.fields['AdLingo Progress']),
-      };
-    }
-    return null;
+    return data.player || null;
   } catch (err) {
-    console.error('[Airtable] findPlayerByEmail error:', err.message);
+    console.error('[api] findPlayerByEmail error:', err.message);
     return null;
   }
 }
 
-// Save player progress to Airtable
 export async function savePlayerProgress(recordId, progress) {
+  if (!recordId || typeof recordId !== 'string') return null;
+  if (!progress || typeof progress !== 'object') return null;
   try {
-    // Validate parameters
-    if (!recordId || typeof recordId !== 'string') {
-      console.error('[Airtable] savePlayerProgress: invalid recordId');
-      return null;
-    }
-    if (!progress || typeof progress !== 'object') {
-      console.error('[Airtable] savePlayerProgress: invalid progress object');
-      return null;
-    }
-
-    const res = await fetch(`${BASE_URL}/${CONFIG.tables.players}/${recordId}`, {
-      method: 'PATCH',
-      headers: headers(),
-      body: JSON.stringify({
-        fields: {
-          'AdLingo Progress': JSON.stringify(progress),
-        },
-      }),
+    const res = await fetch('/api/progress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ recordId, progress }),
     });
     if (!res.ok) {
-      console.error(`[Airtable] savePlayerProgress failed: ${res.status} ${res.statusText}`);
+      console.error(`[api] savePlayerProgress failed: ${res.status}`);
       return null;
     }
     return res.json();
   } catch (err) {
-    console.error('[Airtable] savePlayerProgress error:', err.message);
+    console.error('[api] savePlayerProgress error:', err.message);
     return null;
   }
 }
 
-// Update player rank
 export async function updatePlayerRank(recordId, rank) {
+  if (!recordId || typeof recordId !== 'string') return null;
+  if (!rank || typeof rank !== 'string') return null;
   try {
-    // Validate parameters
-    if (!recordId || typeof recordId !== 'string') {
-      console.error('[Airtable] updatePlayerRank: invalid recordId');
-      return null;
-    }
-    if (!rank || typeof rank !== 'string') {
-      console.error('[Airtable] updatePlayerRank: invalid rank');
-      return null;
-    }
-
-    const res = await fetch(`${BASE_URL}/${CONFIG.tables.players}/${recordId}`, {
+    const res = await fetch('/api/admin/rank', {
       method: 'PATCH',
-      headers: headers(),
-      body: JSON.stringify({
-        fields: { Rank: rank },
-      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken()}`,
+      },
+      body: JSON.stringify({ recordId, rank }),
     });
     if (!res.ok) {
-      console.error(`[Airtable] updatePlayerRank failed: ${res.status} ${res.statusText}`);
+      console.error(`[api] updatePlayerRank failed: ${res.status}`);
       return null;
     }
     return res.json();
   } catch (err) {
-    console.error('[Airtable] updatePlayerRank error:', err.message);
+    console.error('[api] updatePlayerRank error:', err.message);
     return null;
   }
 }
 
-// Get all players (for admin leaderboard)
+// Throws on terminal failure so the admin UI can distinguish auth vs rate-limit vs empty.
 export async function getAllPlayers() {
-  try {
-    const records = [];
-    let offset = null;
-
-    do {
-      const url = offset
-        ? `${BASE_URL}/${CONFIG.tables.players}?offset=${offset}`
-        : `${BASE_URL}/${CONFIG.tables.players}`;
-      const res = await fetch(url, { headers: headers() });
-      if (!res.ok) {
-        console.error(`[Airtable] getAllPlayers failed: ${res.status} ${res.statusText}`);
-        return [];
-      }
-      const data = await res.json();
-      if (data.records) records.push(...data.records);
-      offset = data.offset || null;
-    } while (offset);
-
-    return records.map((r) => ({
-      id: r.id,
-      name: r.fields.Name || '',
-      email: r.fields.Email || '',
-      rank: r.fields.Rank || 'Unranked',
-      trustScore: r.fields['Trust Score'] || 0,
-      gold: r.fields.Gold || 0,
-      progress: parseProgress(r.fields['AdLingo Progress']),
-    }));
-  } catch (err) {
-    console.error('[Airtable] getAllPlayers error:', err.message);
-    return [];
+  const res = await fetch('/api/admin/players', {
+    headers: { Authorization: `Bearer ${adminToken()}` },
+  });
+  if (!res.ok) {
+    const err = new Error(`API ${res.status}`);
+    err.status = res.status;
+    throw err;
   }
-}
-
-function parseProgress(raw) {
-  const empty = {
-    completedLessons: [],
-    scores: {},
-    xp: 0,
-    streak: 0,
-    lastActivity: null,
-  };
-  if (!raw) return empty;
-  try {
-    const parsed = JSON.parse(raw);
-    // Deduplicate completedLessons on load
-    if (Array.isArray(parsed.completedLessons)) {
-      parsed.completedLessons = [...new Set(parsed.completedLessons)];
-    }
-    return parsed;
-  } catch {
-    return empty;
-  }
+  const data = await res.json();
+  return data.players || [];
 }
 
 // Merge two progress objects — never discard progress, always take the union
@@ -172,13 +85,11 @@ export function mergeProgress(local, remote) {
   const a = local || {};
   const b = remote || {};
 
-  // Union of completed lessons (deduplicated)
   const completedLessons = [...new Set([
     ...(a.completedLessons || []),
     ...(b.completedLessons || []),
   ])];
 
-  // For scores, keep whichever has more correct answers per lesson
   const allLessonIds = new Set([
     ...Object.keys(a.scores || {}),
     ...Object.keys(b.scores || {}),
@@ -194,15 +105,12 @@ export function mergeProgress(local, remote) {
     }
   }
 
-  // Recalculate XP from merged scores
   const xp = Object.values(scores).reduce((sum, s) => {
     return sum + ((typeof s.correct === 'number' ? s.correct : 0) * 10);
   }, 0);
 
-  // Keep higher streak
   const streak = Math.max(a.streak || 0, b.streak || 0);
 
-  // Keep more recent lastActivity
   let lastActivity = null;
   if (a.lastActivity && b.lastActivity) {
     lastActivity = new Date(a.lastActivity) > new Date(b.lastActivity)
@@ -214,7 +122,8 @@ export function mergeProgress(local, remote) {
   return { completedLessons, scores, xp, streak, lastActivity };
 }
 
-// Retry queue — persists pending syncs to localStorage
+// Retry queue — persists pending syncs to localStorage for offline resilience.
+// The server already coalesces and back-offs; this layer handles network failures.
 const PENDING_SYNC_KEY = 'adlingo_pending_sync';
 
 function getPendingSync() {
@@ -232,11 +141,9 @@ function setPendingSync(entry) {
   }
 }
 
-// Save with retry (up to 3 attempts, exponential backoff)
 export async function savePlayerProgressWithRetry(recordId, progress, onStatusChange) {
   if (!recordId || !progress) return null;
 
-  // Clear any stale pending sync for a different record
   setPendingSync({ recordId, progress });
   if (onStatusChange) onStatusChange('syncing');
 
@@ -250,19 +157,17 @@ export async function savePlayerProgressWithRetry(recordId, progress, onStatusCh
         return result;
       }
     } catch (err) {
-      console.error(`[Airtable] sync attempt ${attempt + 1} failed:`, err.message);
+      console.error(`[api] sync attempt ${attempt + 1} failed:`, err.message);
     }
     if (attempt < delays.length) {
       await new Promise(r => setTimeout(r, delays[attempt]));
     }
   }
 
-  // All retries exhausted — pending sync stays in localStorage for next load
   if (onStatusChange) onStatusChange('error');
   return null;
 }
 
-// Flush any pending sync from a previous session
 export async function flushPendingSync(onStatusChange) {
   const pending = getPendingSync();
   if (!pending) return;

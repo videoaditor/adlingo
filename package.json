@@ -3,14 +3,20 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "vite",
+    "server": "node --env-file=.env --watch server/index.js",
     "build": "vite build",
+    "start": "node server/index.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "express": "^4.22.1",
     "firebase": "^12.6.0",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.554.0",

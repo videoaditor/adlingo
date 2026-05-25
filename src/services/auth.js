@@ -1,13 +1,9 @@
-// Simple auth service — editors log in by email (looked up in Airtable)
-// Admin uses a password gate
+// Auth — editor login is by email (looked up server-side). Admin login posts the
+// password to the server, which returns a short-lived bearer token stored in
+// sessionStorage and sent on admin endpoints.
 
-// Passwords should be set via environment variables — never hardcode in source
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 const STORAGE_KEY = 'adlingo_auth';
-
-if (!ADMIN_PASSWORD) {
-  console.error('VITE_ADMIN_PASSWORD environment variable is required');
-}
+const ADMIN_TOKEN_KEY = 'adlingo_admin_token';
 
 export function getStoredAuth() {
   try {
@@ -26,6 +22,30 @@ export function clearAuth() {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-export function checkAdminPassword(password) {
-  return password === ADMIN_PASSWORD;
+export async function checkAdminPassword(password) {
+  if (!password) return false;
+  try {
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    if (data.token) {
+      sessionStorage.setItem(ADMIN_TOKEN_KEY, data.token);
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+export function clearAdminToken() {
+  sessionStorage.removeItem(ADMIN_TOKEN_KEY);
+}
+
+export function hasAdminToken() {
+  return !!sessionStorage.getItem(ADMIN_TOKEN_KEY);
 }

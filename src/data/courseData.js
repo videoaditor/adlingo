@@ -7,7 +7,7 @@ const CURRENT_SEED_VERSION = 4; // Bump this to force seed data refresh
 
 const DISCIPLINES_STORAGE_KEY = 'adlingo_disciplines_data';
 const DISCIPLINES_SEED_VERSION_KEY = 'adlingo_disciplines_seed_version';
-const CURRENT_DISCIPLINES_SEED_VERSION = 1;
+const CURRENT_DISCIPLINES_SEED_VERSION = 2;
 
 const SEED_WORLDS = [
   {
@@ -853,8 +853,8 @@ const SEED_DISCIPLINES = [
     subtitle: 'Sourcing brand assets and adapting prompts in Magnific',
     coach: 'Saskia',
     order: 1,
-    videoUrl: '/disciplines/b-roll.mp4',
-    videoType: 'file',
+    videoUrl: 'https://www.tella.tv/video/asset-workflow-saskia-hbzt',
+    videoType: 'tella',
     extraLinks: [
       { label: 'Workflow (Magnific)', url: 'https://www.magnific.com/app/spaces/a1d6ac4c-5932-404a-a2ca-c08594dbb16f/' }
     ],
@@ -912,11 +912,11 @@ const SEED_DISCIPLINES = [
   {
     id: 'd2',
     name: 'Podcast',
-    subtitle: 'Coming soon — pending video',
+    subtitle: 'Editing podcast content',
     coach: 'Nico',
     order: 2,
-    videoUrl: null,
-    videoType: null,
+    videoUrl: 'https://www.tella.tv/video/podcast-tutorial-6tqg',
+    videoType: 'tella',
     extraLinks: [
       { label: 'Source folder (Drive)', url: 'https://drive.google.com/drive/folders/1tABXr5dyjj1eB-8_FwEdTPqu5DJNaS0M' }
     ],

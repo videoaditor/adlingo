@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=20.6"
   },
   "scripts": {
     "dev": "vite",
     "server": "node --env-file=.env --watch server/index.js",
+    "dev:all": "concurrently --kill-others-on-fail -n vite,api -c cyan,magenta \"npm:dev\" \"npm:server\"",
     "build": "vite build",
-    "start": "node server/index.js",
+    "start": "node --env-file=.env server/index.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -33,6 +34,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.22",
+    "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",

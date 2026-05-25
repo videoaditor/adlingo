@@ -7,7 +7,7 @@ const CURRENT_SEED_VERSION = 4; // Bump this to force seed data refresh
 
 const DISCIPLINES_STORAGE_KEY = 'adlingo_disciplines_data';
 const DISCIPLINES_SEED_VERSION_KEY = 'adlingo_disciplines_seed_version';
-const CURRENT_DISCIPLINES_SEED_VERSION = 2;
+const CURRENT_DISCIPLINES_SEED_VERSION = 3;
 
 const SEED_WORLDS = [
   {
@@ -912,7 +912,7 @@ const SEED_DISCIPLINES = [
   {
     id: 'd2',
     name: 'Podcast',
-    subtitle: 'Editing podcast content',
+    subtitle: 'Building podcast-style ads with VEO 3.1 avatars',
     coach: 'Nico',
     order: 2,
     videoUrl: 'https://www.tella.tv/video/podcast-tutorial-6tqg',
@@ -920,7 +920,56 @@ const SEED_DISCIPLINES = [
     extraLinks: [
       { label: 'Source folder (Drive)', url: 'https://drive.google.com/drive/folders/1tABXr5dyjj1eB-8_FwEdTPqu5DJNaS0M' }
     ],
-    questions: []
+    questions: [
+      {
+        id: 'q-d2-1',
+        type: 'text',
+        question: "You're writing the voice prompt in Gemini for a podcast avatar. The card mentions the host should sound confident. How specific should you get about the avatar's physical movements?",
+        options: [
+          { text: "Describe exactly when he raises his hand, points, and leans forward so VEO follows it", correct: false },
+          { text: "Keep the prompt focused on tonality and accent — don't lock down hand movements or you'll cap how natural he can be", correct: true },
+          { text: "Skip tonality entirely — VEO will pick a voice automatically based on the avatar's face", correct: false },
+          { text: "Write the prompt in past tense so VEO interprets the gestures as already happening", correct: false }
+        ],
+        directorNote: "Voice prompts are for tonality and accent — not choreography. If you over-specify the movements, the avatar gets boxed in and can't do natural gestures like pointing at the product when he mentions it."
+      },
+      {
+        id: 'q-d2-2',
+        type: 'text',
+        question: "You test the customer-provided avatar with a hook and notice it looks a lot like a famous person. VEO starts throwing errors on 1 of 4 generations. What's the move?",
+        options: [
+          { text: "Keep retrying — eventually VEO will push through and give you all four clips", correct: false },
+          { text: "Lower the priority to 'low' and batch more generations to absorb the error rate", correct: false },
+          { text: "Adjust or swap the avatar and talk to the customer about it — fighting through a celebrity look-alike will burn the whole shoot", correct: true },
+          { text: "Strip the voice prompt down to one word so VEO has less to interpret", correct: false }
+        ],
+        directorNote: "When the avatar reads as a famous person, VEO's safety filters will error out generation after generation. Change the avatar right away and loop in the customer — pushing through is not going to be fun."
+      },
+      {
+        id: 'q-d2-3',
+        type: 'text',
+        question: "You're picking the main start frame for your avatar. Why does it matter whether both of his hands are visible in the frame?",
+        options: [
+          { text: "Both hands visible is just for composition — it has no effect on what VEO generates", correct: false },
+          { text: "If only one hand or no hands are in the frame, VEO will randomly add a watch on his wrist or a ring on his finger", correct: true },
+          { text: "Hands out of frame force VEO to render in vertical instead of horizontal", correct: false },
+          { text: "Two hands in the frame doubles the generation time, so you want only one visible for speed", correct: false }
+        ],
+        directorNote: "Pick a start frame where both hands are visible with a natural gesture. When hands are partially or fully out of frame, VEO improvises and slaps on a watch or ring — and you'll be re-rolling clips to get rid of it."
+      },
+      {
+        id: 'q-d2-4',
+        type: 'text',
+        question: "You're adding B-roll to the podcast cut. The customer wants the ad to still feel like a podcast, not a typical performance ad. How do you place the B-roll?",
+        options: [
+          { text: "Full-screen takeovers on every B-roll cut so the visuals hit hard", correct: false },
+          { text: "Keep B-roll as a split-screen or small inset over the talking head — never let it cover the whole frame", correct: true },
+          { text: "Drop the talking head entirely once the body starts and run pure B-roll under the voice", correct: false },
+          { text: "Match the B-roll length to the hook so each cut takes over the screen for exactly 8 seconds", correct: false }
+        ],
+        directorNote: "If B-roll covers the whole screen, the ad stops feeling like a podcast and starts feeling like a TikTok performance ad. Keep it as split-screen or small picture-in-picture so the host stays on camera and the podcast vibe holds."
+      }
+    ]
   },
   {
     id: 'd3',

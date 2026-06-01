@@ -22,6 +22,10 @@ const headers = () => ({
   'Content-Type': 'application/json',
 });
 
+// Shared so other services (e.g. contentStore) reuse the same token + base URL.
+export const AIRTABLE_BASE_URL = BASE_URL;
+export const airtableHeaders = headers;
+
 function parseProgress(raw) {
   const empty = { completedLessons: [], scores: {}, xp: 0, streak: 0, lastActivity: null };
   if (!raw) return empty;

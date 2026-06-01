@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { findPlayerByEmail, savePlayerProgressWithRetry, mergeProgress, flushPendingSync } from './services/airtable';
 import { getStoredAuth, storeAuth, clearAuth } from './services/auth';
+import { bootstrapContent } from './services/contentStore';
 import Header from './components/Header';
 import Login from './pages/Login';
 import WorldMap from './pages/WorldMap';
@@ -15,6 +16,7 @@ const App = () => {
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const [syncStatus, setSyncStatus] = useState('saved'); // 'saved' | 'syncing' | 'error'
+  const [contentReady, setContentReady] = useState(false);
 
   // Merge localStorage progress with Airtable progress — never lose data
   const mergeAndStore = useCallback(async (player) => {
@@ -35,6 +37,13 @@ const App = () => {
   // Flush any pending syncs from a previous session
   useEffect(() => {
     flushPendingSync(setSyncStatus);
+  }, []);
+
+  // Hydrate course content from Airtable (source of truth) before rendering.
+  useEffect(() => {
+    bootstrapContent()
+      .catch((err) => console.error('Content bootstrap failed:', err))
+      .finally(() => setContentReady(true));
   }, []);
 
   // Check for auto-login from Hub via URL param
@@ -127,7 +136,7 @@ const App = () => {
     }
   }, [user]);
 
-  if (loading) {
+  if (loading || !contentReady) {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />

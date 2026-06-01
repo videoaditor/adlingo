@@ -1,9 +1,20 @@
-// Auth — editor login is by email (looked up server-side). Admin login posts the
-// password to the server, which returns a short-lived bearer token stored in
-// sessionStorage and sent on admin endpoints.
+// Client-side auth — STATIC-SITE BUILD, no backend.
+//
+// Editors log in by email (looked up directly in Airtable). Admin login compares
+// the entered password against a build-time env var.
+//
+// ⚠️ The admin password is read from VITE_ADMIN_PASSWORD and is present in the
+// shipped JS bundle on a static site — it is a soft gate, not real security.
+// Don't reuse it elsewhere. Real protection would require a backend (see
+// server/index.js, used only for local `dev:all`).
+//
+// Same export names as the proxy version so callers (App.jsx, Admin.jsx) don't change.
 
 const STORAGE_KEY = 'adlingo_auth';
-const ADMIN_TOKEN_KEY = 'adlingo_admin_token';
+const ADMIN_FLAG_KEY = 'adlingo_admin_token';
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || '';
+
+if (!ADMIN_PASSWORD) console.error('[auth] VITE_ADMIN_PASSWORD missing at build time');
 
 export function getStoredAuth() {
   try {
@@ -22,30 +33,19 @@ export function clearAuth() {
   localStorage.removeItem(STORAGE_KEY);
 }
 
+// async to preserve the existing `await checkAdminPassword(...)` call sites.
+// On success, set a sessionStorage flag so the admin stays "in" across reloads
+// within the tab (hasAdminToken reads it).
 export async function checkAdminPassword(password) {
-  if (!password) return false;
-  try {
-    const res = await fetch('/api/admin/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    });
-    if (!res.ok) return false;
-    const data = await res.json();
-    if (data.token) {
-      sessionStorage.setItem(ADMIN_TOKEN_KEY, data.token);
-      return true;
-    }
-    return false;
-  } catch {
-    return false;
-  }
+  const ok = !!password && password === ADMIN_PASSWORD;
+  if (ok) sessionStorage.setItem(ADMIN_FLAG_KEY, '1');
+  return ok;
 }
 
 export function clearAdminToken() {
-  sessionStorage.removeItem(ADMIN_TOKEN_KEY);
+  sessionStorage.removeItem(ADMIN_FLAG_KEY);
 }
 
 export function hasAdminToken() {
-  return !!sessionStorage.getItem(ADMIN_TOKEN_KEY);
+  return !!sessionStorage.getItem(ADMIN_FLAG_KEY);
 }

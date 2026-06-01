@@ -1096,6 +1096,28 @@ export function saveDisciplines(disciplines) {
   localStorage.setItem(DISCIPLINES_STORAGE_KEY, JSON.stringify(disciplines));
 }
 
+// Write both content caches at once (used when hydrating from Airtable).
+// Bumps the seed-version markers so the synchronous getters serve this content
+// instead of re-seeding over it.
+export function applyContent({ worlds, disciplines } = {}) {
+  if (Array.isArray(worlds)) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(worlds));
+    localStorage.setItem(SEED_VERSION_KEY, String(CURRENT_SEED_VERSION));
+  }
+  if (Array.isArray(disciplines)) {
+    localStorage.setItem(DISCIPLINES_STORAGE_KEY, JSON.stringify(disciplines));
+    localStorage.setItem(
+      DISCIPLINES_SEED_VERSION_KEY,
+      String(CURRENT_DISCIPLINES_SEED_VERSION)
+    );
+  }
+}
+
+// Read the current content (falls back to seed via the existing getters).
+export function getLocalContent() {
+  return { worlds: getWorlds(), disciplines: getDisciplines() };
+}
+
 export function getDisciplineById(id) {
   return getDisciplines().find((d) => d.id === id) || null;
 }

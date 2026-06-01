@@ -110,3 +110,37 @@ export async function saveLiveContent(content, adminEmail = 'admin') {
     return false;
   }
 }
+
+// Hydrate the cache at app start. Order of preference:
+//   1. Valid remote content -> apply to cache.
+//   2. No remote record at all -> seed Airtable from local content (one-time).
+//   3. Remote record exists but is invalid -> use local, NEVER overwrite it.
+//   4. Airtable unreachable -> use local cache/seed, touch nothing.
+export async function bootstrapContent() {
+  const remote = await fetchLiveContent();
+  if (remote) {
+    applyContent(remote);
+    return remote;
+  }
+  try {
+    const rec = await fetchLiveRecord();
+    if (rec && rec.fields['Content JSON']) {
+      // Present but failed validation — do not clobber it.
+      return getLocalContent();
+    }
+    // Truly absent/empty — safe to seed from local content (edits or seed).
+    const local = getLocalContent();
+    await saveLiveContent(local, 'seed-migration');
+    return local;
+  } catch {
+    // Unreachable — fall back to local, leave Airtable untouched.
+    return getLocalContent();
+  }
+}
+
+// Admin save path: update the cache instantly, then push to Airtable truth.
+// Returns true only if the Airtable write succeeded.
+export async function persistContent(content, adminEmail = 'admin') {
+  applyContent(content);
+  return await saveLiveContent(content, adminEmail);
+}

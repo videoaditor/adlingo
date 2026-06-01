@@ -97,3 +97,83 @@ describe('saveLiveContent', () => {
     expect(global.fetch).not.toHaveBeenCalled();
   });
 });
+
+import { bootstrapContent, persistContent } from './contentStore';
+
+describe('bootstrapContent', () => {
+  it('applies remote content to the cache when present', async () => {
+    const blob = {
+      worlds: [{ id: 'wR', name: 'Remote', order: 1, lessons: [] }],
+      disciplines: [{ id: 'dR', name: 'Remote D', order: 1, videoUrl: 'x', questions: [] }],
+    };
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true, status: 200,
+      json: async () => ({ records: [{ id: 'rec1', fields: { 'Content JSON': JSON.stringify(blob) } }] }),
+    });
+
+    const result = await bootstrapContent();
+    expect(result).toEqual(blob);
+    // Cache was written
+    expect(JSON.parse(localStorage.getItem('adlingo_course_data'))).toEqual(blob.worlds);
+  });
+
+  it('seeds Airtable from local content when no record exists', async () => {
+    const posted = [];
+    global.fetch = vi.fn((url, opts = {}) => {
+      if (!opts.method || opts.method === 'GET') {
+        return Promise.resolve({ ok: true, status: 200, json: async () => ({ records: [] }) });
+      }
+      posted.push({ url, body: opts.body });
+      return Promise.resolve({ ok: true, status: 200, json: async () => ({}) });
+    });
+
+    const result = await bootstrapContent();
+    // Local content (seed) was returned and pushed to Airtable
+    expect(Array.isArray(result.worlds)).toBe(true);
+    expect(result.worlds.length).toBeGreaterThan(0);
+    expect(posted.some((p) => p.url.includes('AdLingo%20Content'))).toBe(true);
+  });
+
+  it('does NOT overwrite a present-but-invalid remote record', async () => {
+    const writes = [];
+    global.fetch = vi.fn((url, opts = {}) => {
+      if (!opts.method || opts.method === 'GET') {
+        return Promise.resolve({
+          ok: true, status: 200,
+          json: async () => ({ records: [{ id: 'rec1', fields: { 'Content JSON': '{bad json' } }] }),
+        });
+      }
+      writes.push(opts.method);
+      return Promise.resolve({ ok: true, status: 200, json: async () => ({}) });
+    });
+
+    const result = await bootstrapContent();
+    expect(Array.isArray(result.worlds)).toBe(true); // falls back to local
+    expect(writes).toHaveLength(0); // never wrote to Airtable
+  });
+
+  it('falls back to local content when Airtable is unreachable', async () => {
+    global.fetch = vi.fn().mockRejectedValue(new Error('offline'));
+    const result = await bootstrapContent();
+    expect(Array.isArray(result.worlds)).toBe(true);
+  });
+});
+
+describe('persistContent', () => {
+  it('writes the cache immediately and pushes to Airtable', async () => {
+    global.fetch = vi.fn((url, opts = {}) => {
+      if (!opts.method || opts.method === 'GET') {
+        return Promise.resolve({ ok: true, status: 200, json: async () => ({ records: [] }) });
+      }
+      return Promise.resolve({ ok: true, status: 200, json: async () => ({}) });
+    });
+
+    const content = {
+      worlds: [{ id: 'wP', name: 'P', order: 1, lessons: [] }],
+      disciplines: [{ id: 'dP', name: 'PD', order: 1, videoUrl: 'x', questions: [] }],
+    };
+    const ok = await persistContent(content, 'alan@aditor.ai');
+    expect(ok).toBe(true);
+    expect(JSON.parse(localStorage.getItem('adlingo_course_data'))).toEqual(content.worlds);
+  });
+});

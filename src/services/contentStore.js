@@ -50,3 +50,63 @@ export async function fetchLiveContent() {
     return null;
   }
 }
+
+// Persist content to Airtable. Appends the prior blob to the backups table
+// first (history is never lost), then upserts the live record. Backup failure
+// is logged but does not block the primary save — content truth takes priority.
+export async function saveLiveContent(content, adminEmail = 'admin') {
+  if (
+    !content ||
+    !Array.isArray(content.worlds) ||
+    !Array.isArray(content.disciplines)
+  ) {
+    return false;
+  }
+  const now = new Date().toISOString();
+  try {
+    const existing = await fetchLiveRecord();
+
+    if (existing && existing.fields['Content JSON']) {
+      await fetch(tableUrl(BACKUPS_TABLE), {
+        method: 'POST',
+        headers: airtableHeaders(),
+        body: JSON.stringify({
+          fields: {
+            'Snapshot JSON': existing.fields['Content JSON'],
+            'Saved At': now,
+            'Saved By': adminEmail,
+          },
+        }),
+      }).catch((err) =>
+        console.error('[content] backup append failed (continuing):', err.message)
+      );
+    }
+
+    const fields = {
+      Key: CONTENT_KEY,
+      'Content JSON': JSON.stringify(content),
+      'Updated At': now,
+      'Updated By': adminEmail,
+    };
+    const res = existing
+      ? await fetch(tableUrl(CONTENT_TABLE, `/${existing.id}`), {
+          method: 'PATCH',
+          headers: airtableHeaders(),
+          body: JSON.stringify({ fields }),
+        })
+      : await fetch(tableUrl(CONTENT_TABLE), {
+          method: 'POST',
+          headers: airtableHeaders(),
+          body: JSON.stringify({ fields }),
+        });
+
+    if (!res.ok) {
+      console.error(`[content] saveLiveContent failed: ${res.status}`);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error('[content] saveLiveContent error:', err.message);
+    return false;
+  }
+}

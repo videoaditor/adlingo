@@ -42,7 +42,7 @@ function shapePlayer(record) {
     name: record.fields.Name || '',
     email: record.fields.Email || '',
     rank: record.fields.Rank || 'Unranked',
-    trustScore: record.fields['Trust Score'] || 0,
+    trustScore: record.fields['Trust Battery'] || 0,
     gold: record.fields.Gold || 0,
     progress: parseProgress(record.fields[PROGRESS_FIELD]),
   };

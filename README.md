@@ -43,14 +43,30 @@ npm run dev:all        # Vite (5173) + Express proxy (3001), both with hot reloa
 
 ### Environment variables
 
-Create `.env` based on `.env.example`:
+Production runs as a **static site** (no backend) that calls Airtable directly
+from the browser, so the variables must be `VITE_`-prefixed (Vite only exposes
+`VITE_*` to the client, and **inlines them at build time**). Create `.env` from
+`.env.example`:
 
 ```
-AIRTABLE_API_KEY=...        # Personal Access Token, data read+write
-ADMIN_PASSWORD=...          # admin portal password (server-side check)
+VITE_AIRTABLE_API_KEY=...   # Personal Access Token, data read+write on this base
+VITE_ADMIN_PASSWORD=...     # admin portal password (soft gate — in the client bundle)
 ```
 
-**Server-side only.** Neither variable is bundled into the client — they're consumed by `server/index.js`. The proxy holds the Airtable PAT and exposes a thin `/api` surface to the browser.
+⚠️ **Static deploy gotcha:** because Vite inlines these at build time, the host's
+**build environment** (Render Static Site → Environment) must have
+`VITE_AIRTABLE_API_KEY` and `VITE_ADMIN_PASSWORD` set, then **rebuild**. If they
+are missing/misnamed at build, the bundle ships an empty key and the admin panel
+can't load data. The non-`VITE_` names are used only by the legacy `server/index.js`
+proxy for local `dev:all`.
+
+### Deploying (static site)
+
+- **Host:** `adlingo.onrender.com` (Render Static Site, serves `dist/`).
+- **Build env:** set `VITE_AIRTABLE_API_KEY` + `VITE_ADMIN_PASSWORD` (above), then build.
+- **SPA routing:** add a rewrite rule `Source: /*  →  Destination: /index.html (Rewrite)`
+  so deep links like `/admin` serve `index.html` instead of 404'ing. The admin
+  portal is reachable directly at `/admin` (its own password gate — no editor login needed).
 
 ## Architecture
 

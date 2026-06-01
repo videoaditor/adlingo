@@ -179,6 +179,17 @@ can write (content, not just progress). Before any non-team rollout: stand up th
 planned Express backend, move the token server-side, switch the client to `/api/*`, and
 scope the PAT to base `appP65kN7D9LjbXb0` only. Out of scope for this spec but recorded.
 
+## Design Consequence: the hardcoded seed becomes a floor, not a feed
+
+Once the one-time migration has seeded the `AdLingo Content` record, **Airtable wins over
+the hardcoded seed on every load** (`bootstrapContent` applies valid remote content before
+anything else). This means bumping `CURRENT_SEED_VERSION` / `CURRENT_DISCIPLINES_SEED_VERSION`
+in `courseData.js` — the old mechanism for pushing new hardcoded content — **no longer
+propagates to seeded devices.** This is intended: after rollout, content changes happen in
+the admin portal (→ Airtable), not by editing seed arrays. The seed arrays remain only as the
+never-blank fallback when Airtable is unreachable AND the local cache is empty. To change
+content post-rollout, edit it in the admin portal; do not bump the seed version.
+
 ## Out of Scope
 
 - Editing content directly in the Airtable grid (relational Worlds/Lessons/Questions

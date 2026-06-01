@@ -36,7 +36,8 @@ npm run dev:all        # Vite (5173) + Express proxy (3001), both with hot reloa
 | `npm run dev` | Vite only (frontend on :5173). `/api/*` calls will 502 until the proxy is up. |
 | `npm run server` | Proxy only (Express on :3001, `--watch` for hot reload). |
 | `npm run build` | Production build to `dist/`. |
-| `npm run start` | Production proxy run — serves `dist/` plus `/api/*`. Run `npm run build` first. |
+| `npm run start` | Production run (Render etc.) — serves `dist/` plus `/api/*`, reads env vars from the environment (no `.env` file). Run `npm run build` first. |
+| `npm run start:local` | Same as `start` but loads secrets from a local `.env` (for testing the prod build on your machine). |
 | `npm run lint` | ESLint across frontend + `server/`. |
 | `npm run preview` | Vite preview of the build (frontend only — pair with `npm run server` for API). |
 

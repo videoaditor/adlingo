@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Plus, Trash2, GripVertical, Save, ChevronDown, ChevronRight,
   Video, Image, FileText, CheckCircle, X, BookOpen, Map, Link, ExternalLink,
-  Users, RefreshCw, Search
+  Users, RefreshCw, Search, Award
 } from 'lucide-react';
-import { getWorlds, saveWorlds, generateId } from '../data/courseData';
+import { getWorlds, getDisciplines, generateId } from '../data/courseData';
+import { persistContent } from '../services/contentStore';
+import QuestionEditor from '../components/QuestionEditor';
 import { checkAdminPassword, hasAdminToken, clearAdminToken } from '../services/auth';
 import { getAllPlayers } from '../services/airtable';
 
@@ -15,6 +17,9 @@ export default function Admin() {
   const [password, setPassword] = useState('');
   const [pwError, setPwError] = useState(false);
   const [worlds, setWorlds] = useState([]);
+  const [disciplines, setDisciplines] = useState([]);
+  const [expandedDiscipline, setExpandedDiscipline] = useState(null);
+  const [saving, setSaving] = useState(false);
   const [expandedWorld, setExpandedWorld] = useState(null);
   const [expandedLesson, setExpandedLesson] = useState(null);
   const [saved, setSaved] = useState(false);
@@ -25,7 +30,10 @@ export default function Admin() {
   const [playerSearch, setPlayerSearch] = useState('');
 
   useEffect(() => {
-    if (authed) setWorlds(getWorlds());
+    if (authed) {
+      setWorlds(getWorlds());
+      setDisciplines(getDisciplines());
+    }
   }, [authed]);
 
   // Load players when Progress tab is selected
@@ -67,10 +75,19 @@ export default function Admin() {
     }
   };
 
-  const handleSave = () => {
-    saveWorlds(worlds);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  const handleSave = async () => {
+    setSaving(true);
+    const ok = await persistContent({ worlds, disciplines }, 'admin');
+    setSaving(false);
+    if (ok) {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } else {
+      alert(
+        'Saved on this device, but syncing to Airtable failed. ' +
+        'Your changes are kept locally — check your connection and click Save again.'
+      );
+    }
   };
 
   // World CRUD
@@ -230,6 +247,34 @@ export default function Admin() {
     updateQuestion(worldId, lessonId, qId, { options: updatedOpts });
   };
 
+  // Discipline CRUD (a discipline is a single lesson-like unit with questions)
+  const addDiscipline = () => {
+    const id = 'd' + generateId();
+    setDisciplines([
+      ...disciplines,
+      {
+        id,
+        name: 'New Discipline',
+        subtitle: '',
+        coach: '',
+        order: disciplines.length + 1,
+        videoUrl: null,
+        videoType: null,
+        extraLinks: [],
+        questions: [],
+      },
+    ]);
+    setExpandedDiscipline(id);
+  };
+
+  const updateDiscipline = (id, field, value) =>
+    setDisciplines(disciplines.map((d) => (d.id === id ? { ...d, [field]: value } : d)));
+
+  const deleteDiscipline = (id) => {
+    if (!confirm('Delete this discipline?')) return;
+    setDisciplines(disciplines.filter((d) => d.id !== id));
+  };
+
   // Theme presets
   const THEMES = [
     { label: 'Orange', themeColor: 'from-orange-600 to-amber-500', bgColor: 'bg-gradient-to-br from-orange-900/40 to-amber-900/20', borderColor: 'border-orange-500/30', accentColor: 'text-orange-400' },
@@ -282,6 +327,7 @@ export default function Admin() {
         </div>
         <button
           onClick={handleSave}
+          disabled={saving}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm transition-all ${
             saved
               ? 'bg-emerald-500 text-white'
@@ -289,7 +335,7 @@ export default function Admin() {
           }`}
         >
           {saved ? <CheckCircle size={16} /> : <Save size={16} />}
-          {saved ? 'Saved' : 'Save all'}
+          {saving ? 'Saving…' : saved ? 'Saved' : 'Save all'}
         </button>
       </div>
 
@@ -299,6 +345,7 @@ export default function Admin() {
           <TabButton active={adminTab === 'course'} onClick={() => setAdminTab('course')} icon={BookOpen} label="Course videos" />
           <TabButton active={adminTab === 'tests'} onClick={() => setAdminTab('tests')} icon={Map} label="Test questions" />
           <TabButton active={adminTab === 'progress'} onClick={() => setAdminTab('progress')} icon={Users} label="Progress" />
+          <TabButton active={adminTab === 'disciplines'} onClick={() => setAdminTab('disciplines')} icon={Award} label="Disciplines" />
         </div>
       </div>
 
@@ -694,6 +741,102 @@ export default function Admin() {
           <Plus size={18} /> Add World
         </button>
       </div>
+      )}
+
+      {/* Disciplines Tab — situational skills, edited like single lessons */}
+      {adminTab === 'disciplines' && (
+        <div className="max-w-3xl mx-auto p-4 space-y-4">
+          <p className="text-gray-500 text-xs">Manage disciplines (situational skills). Each discipline is one video plus its quiz questions.</p>
+
+          {disciplines.sort((a, b) => a.order - b.order).map((d) => (
+            <div key={d.id} className="bg-[#111114] rounded-2xl border border-white/[0.06] overflow-hidden">
+              <button
+                onClick={() => setExpandedDiscipline(expandedDiscipline === d.id ? null : d.id)}
+                className="w-full flex items-center gap-3 p-4 hover:bg-white/[0.04] transition text-left"
+              >
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center text-xs font-black text-white">
+                  {d.order}
+                </div>
+                <div className="flex-1">
+                  <div className="font-bold text-sm">{d.name}</div>
+                  <div className="text-xs text-gray-500">{(d.questions || []).length} questions{d.coach ? ` · ${d.coach}` : ''}</div>
+                </div>
+                {expandedDiscipline === d.id ? <ChevronDown size={16} className="text-gray-500" /> : <ChevronRight size={16} className="text-gray-500" />}
+              </button>
+
+              {expandedDiscipline === d.id && (
+                <div className="px-4 pb-4 space-y-3 border-t border-white/[0.06]">
+                  <div className="grid grid-cols-2 gap-3 mt-4">
+                    <div>
+                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">Name</label>
+                      <input
+                        value={d.name}
+                        onChange={(e) => updateDiscipline(d.id, 'name', e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white focus:outline-none focus:border-[#FF6B35]"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">Coach</label>
+                      <input
+                        value={d.coach || ''}
+                        onChange={(e) => updateDiscipline(d.id, 'coach', e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white focus:outline-none focus:border-[#FF6B35]"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">Subtitle</label>
+                      <input
+                        value={d.subtitle || ''}
+                        onChange={(e) => updateDiscipline(d.id, 'subtitle', e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white focus:outline-none focus:border-[#FF6B35]"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">Video URL (Loom, Tella, YouTube, Vimeo)</label>
+                      <input
+                        value={d.videoUrl || ''}
+                        onChange={(e) => updateDiscipline(d.id, 'videoUrl', e.target.value || null)}
+                        placeholder="https://www.tella.tv/video/..."
+                        className="w-full px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35]"
+                      />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="text-[10px] font-bold text-gray-500 mb-1 block">Video Type (tella, loom, youtube, vimeo)</label>
+                      <input
+                        value={d.videoType || ''}
+                        onChange={(e) => updateDiscipline(d.id, 'videoType', e.target.value || null)}
+                        placeholder="tella"
+                        className="w-full px-2.5 py-1.5 bg-[#17171B] border border-white/[0.08] rounded-lg text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#FF6B35]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Questions</h3>
+                    <QuestionEditor
+                      questions={d.questions || []}
+                      onChange={(qs) => updateDiscipline(d.id, 'questions', qs)}
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => deleteDiscipline(d.id)}
+                    className="text-xs text-red-400/60 hover:text-red-400 transition"
+                  >
+                    Delete discipline
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+
+          <button
+            onClick={addDiscipline}
+            className="w-full py-4 rounded-2xl border-2 border-dashed border-white/[0.08] text-gray-500 hover:border-yellow-500/60 hover:text-yellow-400 transition flex items-center justify-center gap-2 font-bold text-sm"
+          >
+            <Plus size={18} /> Add discipline
+          </button>
+        </div>
       )}
 
       {/* Progress Tab — Player progress from Airtable */}

@@ -4,6 +4,15 @@ import { Flame, Trophy, Settings, LogOut, Map, BookOpen, User, X, Check, Loader2
 import AditorLogo from './AditorLogo';
 import { haptic } from '../services/haptics';
 
+// Non-@aditor.ai emails that should still see the admin portal shortcut.
+const ADMIN_EMAILS = ['hallo@morenotless.de'];
+
+function isAdminUser(email) {
+  if (!email) return false;
+  const normalized = email.toLowerCase();
+  return normalized.endsWith('@aditor.ai') || ADMIN_EMAILS.includes(normalized);
+}
+
 export default function Header({ user, onLogout, syncStatus = 'saved' }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -49,7 +58,7 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
                 <AlertTriangle size={13} />
               </div>
             )}
-            {user?.email?.endsWith('@aditor.ai') && location.pathname !== '/admin' && (
+            {isAdminUser(user?.email) && location.pathname !== '/admin' && (
               <button
                 onClick={() => navigate('/admin')}
                 className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition border border-white/5"

@@ -7,7 +7,7 @@ const CURRENT_SEED_VERSION = 4; // Bump this to force seed data refresh
 
 const DISCIPLINES_STORAGE_KEY = 'adlingo_disciplines_data';
 const DISCIPLINES_SEED_VERSION_KEY = 'adlingo_disciplines_seed_version';
-const CURRENT_DISCIPLINES_SEED_VERSION = 3;
+const CURRENT_DISCIPLINES_SEED_VERSION = 4;
 
 const SEED_WORLDS = [
   {
@@ -973,13 +973,63 @@ const SEED_DISCIPLINES = [
   },
   {
     id: 'd3',
-    name: 'TBD',
-    subtitle: 'Coming soon',
+    name: 'Pixar-Style Ads',
+    subtitle: 'Pixar-Style Ad Workflow for Fast Production',
+    coach: 'Tim',
     order: 3,
-    videoUrl: null,
-    videoType: null,
+    videoUrl: 'https://www.loom.com/share/1a6667e48a0e418a957516017b84c8d7',
+    videoType: 'loom',
     extraLinks: [],
-    questions: []
+    questions: [
+      {
+        id: 'q-d3-1',
+        type: 'text',
+        question: "You just got the script for a new Pixar-style ad. Before you open any generation tool, what's the fastest first move in this workflow?",
+        options: [
+          { text: "Paste the whole script into the prep skill — it strips the clutter and generates your image prompts, per-character reference prompts, and voice prompts in one pass", correct: true },
+          { text: "Open Nano Banana and start writing scene prompts from scratch, one scene at a time", correct: false },
+          { text: "Cut the script down by hand, then manually write every character and voice prompt before touching a tool", correct: false },
+          { text: "Generate the full voiceover in ElevenLabs first, then reverse-engineer the visuals to match", correct: false }
+        ],
+        directorNote: "Drop the entire script into the prep skill first. It removes the script clutter and hands you the image prompts (for Nano Banana / Kling), a reference prompt for every character, and the voice prompts — all at once. That single step is what makes the rest of the build fast; writing those by hand is the slow path."
+      },
+      {
+        id: 'q-d3-2',
+        type: 'text',
+        question: "Your script has several recurring characters across a lot of scenes. What keeps each one looking the same shot to shot — and on-style?",
+        options: [
+          { text: "Generate one base reference image per character in Nano Banana, then add that reference into the prompt for every scene they appear in", correct: true },
+          { text: "Re-describe each character in full detail in every scene prompt and hope the model stays consistent", correct: false },
+          { text: "Generate all the scenes in a single mega-prompt so the model only sets each look once", correct: false },
+          { text: "Vary the character design a little each scene so the ad doesn't look repetitive", correct: false }
+        ],
+        directorNote: "Build your base characters once as reference images, then pull the right reference into each scene's prompt and always grab the correct one for whoever's actually in the shot — that's what locks the look across all their scenes. And if you're writing prompts yourself instead of using the skill, always add 'Pixar style character' to every image prompt; the skill does this automatically."
+      },
+      {
+        id: 'q-d3-3',
+        type: 'text',
+        question: "The script has multiple speaking characters — a main character and her husband. What's the efficient way to give each one the right voice in ElevenLabs?",
+        options: [
+          { text: "Use the voice-cloning assistant and have Claude write a voice prompt per character and mark which lines each one speaks, then assign the matching voice to each part", correct: true },
+          { text: "Hand-audition the full ElevenLabs library until you stumble on one voice that can do everyone", correct: false },
+          { text: "Use a single narrator voice for every character to keep it simple", correct: false },
+          { text: "Record the voices yourself and skip cloning entirely", correct: false }
+        ],
+        directorNote: "For multi-character scripts, lean on the voice-cloning assistant and let Claude generate a voice prompt for each character and tag who speaks which lines — then assign the right voice part by part. Generate the whole thing first, listen through, and only regenerate the sentences that sound off. Far faster than hunting for one perfect voice by hand."
+      },
+      {
+        id: 'q-d3-4',
+        type: 'text',
+        question: "Your assets are ready — b-roll animated in Kling, the talking-head, and the ElevenLabs audio. Instead of assembling by hand in Premiere, how do you save time?",
+        options: [
+          { text: "Hand the audio (or talking-head) to Codex / Claude Code and ask it to cut the pauses and breaths into a fast-paced ad cut — without cutting words — and output an XML for Premiere plus a script-matched SRT", correct: true },
+          { text: "Manually razor every pause and breath on the Premiere timeline before adding any b-roll", correct: false },
+          { text: "Export straight from ElevenLabs and post it as-is — fast-pacing isn't worth the effort", correct: false },
+          { text: "Drop the raw audio into Premiere and let auto-transcribe handle the cutting for you", correct: false }
+        ],
+        directorNote: "Give the audio to Codex / Claude Code and have it cut the pauses and breaths into a fast-paced ad cut — tell it explicitly not to cut words, to mind the framerate, and to render 9:16 — then output an XML you drag into Premiere (it also opens in DaVinci or CapCut) plus a clean SRT reworked against the script for captions. You drop in pre-cut, fix the few rough spots, add the SRT, and lay in your b-roll. Huge time save versus a blank timeline."
+      }
+    ]
   },
   {
     id: 'd4',

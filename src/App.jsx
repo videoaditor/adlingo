@@ -135,37 +135,39 @@ const App = () => {
     );
   }
 
-  if (!user) {
-    return <Login onLogin={handleLogin} loading={loginLoading} error={loginError} />;
-  }
+  // Editor routes require an editor login. The admin portal is reachable
+  // directly at /admin — it has its own password gate, so admins don't need an
+  // editor account and don't have to log in as an editor first.
+  const loginScreen = <Login onLogin={handleLogin} loading={loginLoading} error={loginError} />;
+  const requireUser = (el) => (user ? el : loginScreen);
 
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-950 text-white">
         <Routes>
+          <Route path="/admin" element={<Admin />} />
           <Route
             path="/"
-            element={
+            element={requireUser(
               <>
                 <Header user={user} onLogout={handleLogout} syncStatus={syncStatus} />
                 <WorldMap user={user} />
               </>
-            }
+            )}
           />
           <Route
             path="/course"
-            element={
+            element={requireUser(
               <>
                 <Header user={user} onLogout={handleLogout} syncStatus={syncStatus} />
                 <Course user={user} />
               </>
-            }
+            )}
           />
           <Route
             path="/lesson/:lessonId"
-            element={<Lesson user={user} onLessonComplete={handleLessonComplete} />}
+            element={requireUser(<Lesson user={user} onLessonComplete={handleLessonComplete} />)}
           />
-          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

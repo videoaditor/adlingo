@@ -1132,10 +1132,22 @@ export function getLessonById(lessonId) {
   return { lesson: null, world: null, discipline: null };
 }
 
+// A world lesson "counts" toward progress only if it has real content. Mirror the
+// discipline `.filter(d => d.videoUrl)` rule so future "coming soon" placeholders
+// (no videoUrl AND no questions) don't peg users below 100%. Exported for tests.
+export function lessonHasContent(l) {
+  return Boolean(l.videoUrl) || (Array.isArray(l.questions) && l.questions.length > 0);
+}
+
 export function getAllLessonIds() {
   const worldIds = getWorlds()
     .sort((a, b) => a.order - b.order)
-    .flatMap((w) => w.lessons.sort((a, b) => a.order - b.order).map((l) => l.id));
+    .flatMap((w) =>
+      w.lessons
+        .filter(lessonHasContent) // exclude placeholders so they don't drag the progress bar down
+        .sort((a, b) => a.order - b.order)
+        .map((l) => l.id)
+    );
   const disciplineIds = getDisciplines()
     .filter((d) => d.videoUrl) // exclude placeholders so they don't drag the progress bar down
     .sort((a, b) => a.order - b.order)

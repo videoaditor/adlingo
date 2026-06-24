@@ -3,7 +3,7 @@
 
 const STORAGE_KEY = 'adlingo_course_data';
 const SEED_VERSION_KEY = 'adlingo_seed_version';
-const CURRENT_SEED_VERSION = 4; // Bump this to force seed data refresh
+const CURRENT_SEED_VERSION = 5; // Bump this to force seed data refresh
 
 const DISCIPLINES_STORAGE_KEY = 'adlingo_disciplines_data';
 const DISCIPLINES_SEED_VERSION_KEY = 'adlingo_disciplines_seed_version';
@@ -21,6 +21,8 @@ const SEED_WORLDS = [
     order: 1,
     imageUrl: null,
     description: 'The first 3 seconds decide everything. Learn to stop the scroll.',
+    audience: 'universal',
+    countsTowardStage: true,
     unlockAfterWorld: null,
     lessons: [
       {
@@ -186,6 +188,8 @@ const SEED_WORLDS = [
     order: 2,
     imageUrl: null,
     description: 'Master AI tools for voices, talking heads, video generation, and images.',
+    audience: 'universal',
+    countsTowardStage: true,
     unlockAfterWorld: 'w1',
     lessons: [
       {
@@ -419,6 +423,8 @@ const SEED_WORLDS = [
     order: 3,
     imageUrl: null,
     description: 'The editing mindset — work smarter, ship faster.',
+    audience: 'universal',
+    countsTowardStage: true,
     unlockAfterWorld: 'w2',
     lessons: [
       {
@@ -608,6 +614,8 @@ const SEED_WORLDS = [
     order: 4,
     imageUrl: null,
     description: 'Hooks, trust-building, pain points, and analyzing winning ads.',
+    audience: 'universal',
+    countsTowardStage: true,
     unlockAfterWorld: 'w3',
     lessons: [
       {
@@ -1066,6 +1074,32 @@ export function getWorlds() {
 
 export function saveWorlds(worlds) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(worlds));
+}
+
+// Raw seed export (additive) — lets tests/tools read the canonical world set
+// without touching localStorage. Production accessors are unchanged.
+export { SEED_WORLDS };
+
+// Pure curriculum filter. For 'universal', drop worlds tagged audience:'internal'
+// AND re-link the unlock chain so no surviving world's `unlockAfterWorld` points
+// at a dropped world (a dangling unlockAfterWorld reads as "unlocked" today, which
+// would wrongly unlock everything for external viewers). Each surviving world is
+// re-linked to the nearest preceding *surviving* world by order, or null if none.
+// For 'internal', return the worlds unchanged. Defaults to the live world set so
+// it matches the module's existing accessor style.
+export function getCurriculumForAudience(audience, { worlds = getWorlds() } = {}) {
+  if (audience === 'internal') return worlds;
+
+  const surviving = worlds
+    .filter((w) => w.audience !== 'internal')
+    .sort((a, b) => a.order - b.order);
+
+  // Walk the survivors in order: first has no predecessor (null), each later one
+  // re-links to the immediately preceding survivor — the nearest surviving predecessor.
+  return surviving.map((w, i) => ({
+    ...w,
+    unlockAfterWorld: i === 0 ? null : surviving[i - 1].id,
+  }));
 }
 
 export function getWorldById(worldId) {

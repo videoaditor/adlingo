@@ -2,31 +2,42 @@ import { describe, it, expect } from 'vitest'
 import { SEED_WORLDS, getCurriculumForAudience } from '../courseData.js'
 
 // ---------------------------------------------------------------------------
-// (a) NON-DISRUPTION — with the REAL current seeds, neither audience changes the
-// world set. No internal world exists yet, so 'universal' and 'internal' both
-// equal today's getWorlds() set. This proves production is byte-identical.
+// (a) REAL SEEDS — Home Base (audience:'internal', order 3) now exists in the
+// seeds, so 'internal' keeps it while 'universal' drops it and re-links the
+// chain across the gap. (Before Home Base was seeded this block asserted both
+// audiences were byte-identical; that non-disruption phase is over by design.)
 // ---------------------------------------------------------------------------
-describe('getCurriculumForAudience — non-disruption with real seeds', () => {
+describe('getCurriculumForAudience — real seeds with the internal Home Base world', () => {
   const realIds = SEED_WORLDS.map((w) => w.id)
+  const internalIds = SEED_WORLDS.filter((w) => w.audience === 'internal').map((w) => w.id)
 
-  it("'universal' keeps every real world id (no internal world exists yet)", () => {
-    const universal = getCurriculumForAudience('universal', { worlds: SEED_WORLDS })
-    expect(universal.map((w) => w.id)).toEqual(realIds)
+  it('the seeds contain at least one internal-only world', () => {
+    expect(internalIds.length).toBeGreaterThan(0)
   })
 
-  it("'internal' keeps every real world id", () => {
+  it("'internal' keeps every real world id, internal ones included", () => {
     const internal = getCurriculumForAudience('internal', { worlds: SEED_WORLDS })
     expect(internal.map((w) => w.id)).toEqual(realIds)
   })
 
-  it("'universal' leaves every real world's unlockAfterWorld unchanged (chain is already linear)", () => {
+  it("'universal' drops exactly the internal-audience worlds", () => {
     const universal = getCurriculumForAudience('universal', { worlds: SEED_WORLDS })
-    const before = SEED_WORLDS.map((w) => [w.id, w.unlockAfterWorld])
-    const after = universal.map((w) => [w.id, w.unlockAfterWorld])
-    expect(after).toEqual(before)
+    expect(universal.map((w) => w.id)).toEqual(realIds.filter((id) => !internalIds.includes(id)))
+    expect(universal.every((w) => w.audience !== 'internal')).toBe(true)
   })
 
-  it("'internal' returns the live world set unchanged (same reference contents)", () => {
+  it("'universal' re-links so no surviving unlockAfterWorld points at a dropped world", () => {
+    const universal = getCurriculumForAudience('universal', { worlds: SEED_WORLDS })
+    const survivingIds = new Set(universal.map((w) => w.id))
+    for (const w of universal) {
+      if (w.unlockAfterWorld !== null) {
+        expect(survivingIds.has(w.unlockAfterWorld)).toBe(true)
+      }
+    }
+    expect(universal[0].unlockAfterWorld).toBeNull()
+  })
+
+  it("'internal' returns the live world set unchanged (same reference)", () => {
     const internal = getCurriculumForAudience('internal', { worlds: SEED_WORLDS })
     expect(internal).toBe(SEED_WORLDS)
   })

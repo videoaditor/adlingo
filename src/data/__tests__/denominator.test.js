@@ -19,13 +19,6 @@ beforeEach(() => {
   }
 })
 
-// The exact ordered world-lesson id set as authored in SEED_WORLDS (w1..w4).
-// Derived from the seed so the test tracks the real data, not a hand-copied list.
-// Copy before sorting — never mutate the shared SEED_WORLDS export.
-const REAL_WORLD_LESSON_IDS = [...SEED_WORLDS]
-  .sort((a, b) => a.order - b.order)
-  .flatMap((w) => [...w.lessons].sort((a, b) => a.order - b.order).map((l) => l.id))
-
 describe('lessonHasContent — placeholder predicate', () => {
   it('drops a "coming soon" placeholder (no videoUrl AND no questions)', () => {
     expect(lessonHasContent({ id: 'l18', videoUrl: null, questions: [] })).toBe(false)
@@ -40,25 +33,36 @@ describe('lessonHasContent — placeholder predicate', () => {
     expect(lessonHasContent({ id: 'lq', videoUrl: null, questions: [{ id: 'q1' }] })).toBe(true)
   })
 
-  it('every real seed world lesson has content (current data is unaffected)', () => {
+  it('any content-less seed lesson is a deliberate placeholder (no video AND no questions)', () => {
     for (const w of SEED_WORLDS) {
       for (const l of w.lessons) {
-        expect(lessonHasContent(l)).toBe(true)
+        if (!lessonHasContent(l)) {
+          expect(l.videoUrl == null).toBe(true)
+          expect((l.questions || []).length).toBe(0)
+        }
       }
     }
   })
 })
 
 describe('getAllLessonIds — denominator excludes placeholders', () => {
-  it('returns the existing w1–w4 lesson-id set unchanged (15 real lessons)', () => {
+  it('returns the content-bearing world lessons in authored order, excluding placeholders', () => {
     const ids = getAllLessonIds()
-    // Every real world lesson id is present and in authored order.
-    for (const id of REAL_WORLD_LESSON_IDS) {
-      expect(ids).toContain(id)
-    }
-    // The world-lesson prefix equals the real set (disciplines append after).
-    expect(ids.slice(0, REAL_WORLD_LESSON_IDS.length)).toEqual(REAL_WORLD_LESSON_IDS)
-    expect(REAL_WORLD_LESSON_IDS).toHaveLength(15)
+    // Content lessons (placeholders filtered out) in world→lesson order.
+    const contentIds = [...SEED_WORLDS]
+      .sort((a, b) => a.order - b.order)
+      .flatMap((w) =>
+        [...w.lessons].sort((a, b) => a.order - b.order).filter(lessonHasContent).map((l) => l.id)
+      )
+    // The world-lesson prefix equals the content set, in order (disciplines append after).
+    expect(ids.slice(0, contentIds.length)).toEqual(contentIds)
+    // Authored placeholders never surface in the denominator.
+    const placeholderIds = SEED_WORLDS.flatMap((w) => w.lessons)
+      .filter((l) => !lessonHasContent(l))
+      .map((l) => l.id)
+    for (const pid of placeholderIds) expect(ids).not.toContain(pid)
+    // The Home Base autobilling lesson is the known placeholder.
+    expect(placeholderIds).toContain('l18')
   })
 
   it('a null-video/no-questions placeholder lesson would be absent (mechanism mirrors getAllLessonIds filter)', () => {

@@ -3,7 +3,7 @@
 
 const STORAGE_KEY = 'adlingo_course_data';
 const SEED_VERSION_KEY = 'adlingo_seed_version';
-const CURRENT_SEED_VERSION = 5; // Bump this to force seed data refresh
+const CURRENT_SEED_VERSION = 6; // Bump this to force seed data refresh
 
 const DISCIPLINES_STORAGE_KEY = 'adlingo_disciplines_data';
 const DISCIPLINES_SEED_VERSION_KEY = 'adlingo_disciplines_seed_version';
@@ -420,12 +420,12 @@ const SEED_WORLDS = [
     bgColor: 'bg-gradient-to-br from-purple-900/40 to-violet-900/20',
     borderColor: 'border-purple-500/30',
     accentColor: 'text-purple-400',
-    order: 3,
+    order: 4,
     imageUrl: null,
     description: 'The editing mindset — work smarter, ship faster.',
     audience: 'universal',
     countsTowardStage: true,
-    unlockAfterWorld: 'w2',
+    unlockAfterWorld: 'w5',
     lessons: [
       {
         id: 'l9',
@@ -611,7 +611,7 @@ const SEED_WORLDS = [
     bgColor: 'bg-gradient-to-br from-pink-900/40 to-rose-900/20',
     borderColor: 'border-pink-500/30',
     accentColor: 'text-pink-400',
-    order: 4,
+    order: 5,
     imageUrl: null,
     description: 'Hooks, trust-building, pain points, and analyzing winning ads.',
     audience: 'universal',
@@ -849,6 +849,136 @@ const SEED_WORLDS = [
             directorNote: "Analyze structure and psychology first (hook → agitation → solution → proof → CTA), then pacing, then audio, and lastly aesthetics. Most editors do this backwards — copying the look without understanding the strategy."
           }
         ]
+      }
+    ]
+  },
+  {
+    id: 'w5',
+    name: 'Home Base',
+    subtitle: 'HOW WE WORK TOGETHER',
+    themeColor: 'from-emerald-600 to-green-500',
+    bgColor: 'bg-gradient-to-br from-emerald-900/40 to-green-900/20',
+    borderColor: 'border-emerald-500/30',
+    accentColor: 'text-emerald-400',
+    order: 3,
+    imageUrl: null,
+    description: 'Your home base at Aditor — get set up, get projects, get paid.',
+    audience: 'internal',
+    countsTowardStage: false,
+    unlockAfterWorld: 'w2',
+    lessons: [
+      {
+        id: 'l16',
+        title: 'How to Log Into the Shared Mail',
+        subtitle: 'Get past 2FA on the shared account — by yourself',
+        order: 1,
+        videoUrl: 'https://www.tella.tv/video/how-to-log-into-playeraditorai-3whj',
+        videoType: 'tella',
+        questions: [
+          {
+            id: 'q-hb1-1',
+            type: 'text',
+            question: "When the shared Google login asks for a 2FA code, what's the move?",
+            options: [
+              { text: "Message an admin and wait for them to send you the code", correct: false },
+              { text: "Click \"try another way\" and choose \"Get a verification code from the Google Authenticator app\"", correct: true },
+              { text: "Use the \"text a code to the recovery phone\" option", correct: false },
+              { text: "Close the tab and reopen it to skip the 2FA step", correct: false }
+            ],
+            directorNote: "Don't wait on anyone — click \"try another way\" and pick \"Get a verification code from the Google Authenticator app.\" A relay (set up by Shawn) pipes that code into your own Bitwarden vault so you can read it yourself."
+          },
+          {
+            id: 'q-hb1-2',
+            type: 'text',
+            question: "Where do you read the current verification code?",
+            options: [
+              { text: "The Notion onboarding page", correct: false },
+              { text: "A shared Google Sheet of login codes", correct: false },
+              { text: "Your self-hosted Bitwarden vault at vault.aditor.ai, under the player Google login", correct: true },
+              { text: "The team Slack channel", correct: false }
+            ],
+            directorNote: "Log into your Bitwarden account (self-hosted on vault.aditor.ai), open the player Google login entry, and copy the code. Browser or the phone app both work — the phone's more convenient. The code is time-based, so grab it just before it refreshes."
+          },
+          {
+            id: 'q-hb1-3',
+            type: 'text',
+            question: "You're not in Bitwarden yet. Who do you ask?",
+            options: [
+              { text: "Alan", correct: false },
+              { text: "Shawn", correct: true },
+              { text: "Tim", correct: false },
+              { text: "Patryk", correct: false }
+            ],
+            directorNote: "Shawn handles all the technical setup — he can add you to Bitwarden. Ping him and you'll be self-serving your codes in no time."
+          }
+        ]
+      },
+      {
+        id: 'l17',
+        title: 'How to Get Projects (the Dispatcher)',
+        subtitle: 'How the dispatch agent sends you cards — and the trust battery',
+        order: 2,
+        videoUrl: 'https://www.tella.tv/video/dispatcher-1-cxn3',
+        videoType: 'tella',
+        questions: [
+          {
+            id: 'q-hb2-1',
+            type: 'text',
+            question: "A card is dispatched to you. How long do you have to accept or decline before it's reassigned?",
+            options: [
+              { text: "10 minutes", correct: false },
+              { text: "24 hours", correct: false },
+              { text: "30 minutes", correct: true },
+              { text: "Until the end of the day", correct: false }
+            ],
+            directorNote: "You get 30 minutes to respond. Ignore it and the dispatcher cancels it for you and sends it to the next best editor — so respond fast, even if it's a decline."
+          },
+          {
+            id: 'q-hb2-2',
+            type: 'text',
+            question: "What happens the moment you accept a dispatched card?",
+            options: [
+              { text: "It's labeled with your name, moved to Active, and given its due date — you can start working", correct: true },
+              { text: "It stays in Next Up until an admin assigns it manually", correct: false },
+              { text: "You have to add your own label and deadline in Trello yourself", correct: false },
+              { text: "It's sent to a second editor to confirm first", correct: false }
+            ],
+            directorNote: "On accept, the system sets your label, sets the due date, and moves the card to Active. If any of that doesn't happen, report it so we can fix it."
+          },
+          {
+            id: 'q-hb2-3',
+            type: 'text',
+            question: "Who does the dispatcher offer a new card to first?",
+            options: [
+              { text: "The editors who've been on the team the longest", correct: false },
+              { text: "The newest editors, to help them get started", correct: false },
+              { text: "Whoever happens to be online and grabs it first", correct: false },
+              { text: "The most trustworthy editors with the best track record (highest trust battery)", correct: true }
+            ],
+            directorNote: "Cards go first to the editors with the highest trust battery — earned by a track record of reliable delivery, not by seniority or being new. (75–100 = first in line; 50–74 = watch list, fewer cards; suspended = no cards.)"
+          },
+          {
+            id: 'q-hb2-4',
+            type: 'text',
+            question: "Which action gains you the MOST trust-battery points?",
+            options: [
+              { text: "Accepting a card within 10 minutes (+2)", correct: false },
+              { text: "Delivering on time and getting approved without revisions (+3)", correct: true },
+              { text: "Accepting a dispatched card (+1)", correct: false },
+              { text: "Declining a card you can't take", correct: false }
+            ],
+            directorNote: "The biggest gain is a clean delivery — on time and approved without a revision round (+3). Fast accept (≤10 min) is +2, accepting is +1; ignoring a dispatch is −1 and late delivery is −3. Declining is not penalized — better to decline than ghost the dispatcher."
+          }
+        ]
+      },
+      {
+        id: 'l18',
+        title: 'How to Bill Your Work (Autobilling)',
+        subtitle: 'Coming soon',
+        order: 3,
+        videoUrl: null,
+        videoType: null,
+        questions: []
       }
     ]
   }

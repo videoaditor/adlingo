@@ -91,7 +91,7 @@ If the fetch fails or the record is missing, the training card and AdLingo notif
 
 Every synthetic notification has:
 - `id` prefixed `adlingo-synth-*` — used by the dismiss handler to route to localStorage snooze instead of the DB.
-- `action_url`: `https://adlingo.onrender.com/?email=<url-encoded-email>` (auto-login via the `?email=` query param — see [App.jsx:40](../src/App.jsx:40)).
+- `action_url`: `https://train.aditor.ai/?email=<url-encoded-email>` (auto-login via the `?email=` query param — see [App.jsx:40](../src/App.jsx:40)). Legacy `adlingo.onrender.com` redirects here (client-side, in `index.html`).
 - `action_label`: CTA text ("Start training" / "Resume training" / "Continue").
 
 ### Why no DB row for synthetic notifications?

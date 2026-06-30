@@ -3,7 +3,7 @@ import { Flame, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import AditorLogo from '../components/AditorLogo';
 
-export default function Login({ onLogin, loading, error }) {
+export default function Login({ onLogin, loading, error, suiteMode = false }) {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
 
@@ -106,7 +106,9 @@ export default function Login({ onLogin, loading, error }) {
           </motion.button>
 
           <p className="text-center text-gray-600 text-[11px] mt-8 font-medium">
-            Use the email registered in your Aditor profile
+            {suiteMode
+              ? 'External editors: open the magic link your brand owner sent you'
+              : 'Use the email registered in your Aditor profile'}
           </p>
         </motion.form>
       </div>

@@ -10,6 +10,13 @@ Pivot context: [Editor-Suite Pivot — Master Design Spec](docs/superpowers/spec
 
 ## Ready
 
+> **External editors now come through the Suite spine, not a local hack** (Alan 2026-06-29: owner
+> buys on Whop → manages seats → editors log into AdLingo + Ad Mixer; admin gets read-only QA). The
+> throwaway localStorage "Dom path" was retired. AdLingo's external work = **P1–P3 below as suite
+> consumers**, driven by the [Suite Shell master spec](../aditor-ops/docs/superpowers/specs/2026-06-29-aditor-suite-shell-master-design.md)
+> (in the `aditor-ops` repo). Build order is owned there; the entitlement/identity/progress contract
+> AdLingo consumes is the spine's `CONTRACT.md`.
+
 ### P1 — Foundation (multi-tenant + Whop, code-only, flag-gated)
 Add the audience-aware curriculum, Viewer identity model, external-store contract (faked), Whop
 auth/entitlement logic (pure, mocked), and the separation invariant — **without changing any

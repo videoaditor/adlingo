@@ -144,4 +144,9 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .card-halo::before { animation: none; }
+  /* framer-motion handled via <MotionConfig reducedMotion="user">; here we kill the
+     infinite/decorative CSS loops. animate-spin stays — it conveys "loading". */
+  .animate-pulse-glow,
+  .animate-bounce,
+  .animate-halo-drift { animation: none !important; }
 }

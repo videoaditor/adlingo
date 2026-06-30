@@ -29,10 +29,13 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
       <header className="sticky top-0 z-50 bg-[#111114]/95 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
           {/* Logo / Back to Hub link */}
-          <a href="https://hub.aditor.ai" className="flex items-center gap-2 hover:opacity-80 transition">
+          <a
+            href="https://hub.aditor.ai"
+            className="flex items-center gap-2 transition-[transform,opacity] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:opacity-80 active:scale-[0.97]"
+          >
             <AditorLogo size={32} />
-            <span className="font-black text-[17px] tracking-tight text-white">
-              AdLingo
+            <span className="font-black text-[17px] tracking-[-0.03em] text-white">
+              Ad<span className="text-orange-400">Lingo</span>
             </span>
           </a>
 
@@ -61,7 +64,7 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
             {isAdminUser(user?.email) && location.pathname !== '/admin' && (
               <button
                 onClick={() => navigate('/admin')}
-                className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition border border-white/5"
+                className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors border border-white/5"
               >
                 <Settings size={14} />
               </button>
@@ -79,7 +82,7 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
                 <h3 className="text-[17px] font-black text-white">Profile</h3>
                 <button
                   onClick={() => setShowProfile(false)}
-                  className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-white/10 transition"
+                  className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
                 >
                   <X size={16} className="text-gray-400" />
                 </button>
@@ -124,7 +127,7 @@ export default function Header({ user, onLogout, syncStatus = 'saved' }) {
                   setShowProfile(false);
                   onLogout();
                 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-xl font-semibold transition border border-red-500/20"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-xl font-semibold transition-colors border border-red-500/20"
               >
                 <LogOut size={16} />
                 Logout
@@ -167,13 +170,13 @@ function TabItem({ icon: Icon, label, active, onClick }) {
   return (
     <button
       onClick={() => { if (!active) haptic('light'); onClick(); }}
-      className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-xl transition-all ${
+      className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-xl transition-colors ${
         active
           ? 'text-orange-400'
           : 'text-gray-500 hover:text-gray-300'
       }`}
     >
-      <div className={`p-1.5 rounded-xl transition-all ${active ? 'bg-orange-500/15' : ''}`}>
+      <div className={`p-1.5 rounded-xl transition-colors ${active ? 'bg-orange-500/15' : ''}`}>
         <Icon size={20} strokeWidth={active ? 2.5 : 2} />
       </div>
       <span className="text-[10px] font-semibold">{label}</span>

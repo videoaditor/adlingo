@@ -112,7 +112,6 @@ export default function Course({ user }) {
         const isExpanded = expandedSections.has(world.id);
         const done = sortedLessons.filter((l) => completedLessons.includes(l.id)).length;
         const total = sortedLessons.length;
-        const percent = total > 0 ? Math.round((done / total) * 100) : 0;
 
         return (
           <section

@@ -742,7 +742,6 @@ export default function Admin() {
                 .map((player) => {
                   const prog = player.progress || {};
                   const completed = prog.completedLessons || [];
-                  const scores = prog.scores || {};
                   const courseWorlds = getWorlds().sort((a, b) => a.order - b.order);
                   const totalLessons = courseWorlds.reduce((sum, w) => sum + w.lessons.length, 0);
                   const progressPercent = totalLessons > 0 ? Math.round((completed.length / totalLessons) * 100) : 0;

@@ -14,7 +14,6 @@ export default function QuizEngine({ questions, onComplete }) {
   }
 
   const q = questions[qIndex];
-  const progress = questions.length > 0 ? ((qIndex) / questions.length) * 100 : 0;
   const isLastQuestion = qIndex + 1 >= questions.length;
 
   const handleCheck = () => {

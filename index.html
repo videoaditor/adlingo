@@ -2,6 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      /* Legacy-domain redirect: adlingo.onrender.com → train.aditor.ai.
+         Fires only on the old host; no-op on train.aditor.ai and localhost.
+         Preserves path + query (?email= auto-login) + hash. */
+      if (location.hostname === 'adlingo.onrender.com') {
+        location.replace('https://train.aditor.ai' + location.pathname + location.search + location.hash);
+      }
+    </script>
     <link rel="icon" type="image/png" href="/aditor-logo.png" />
     <link rel="apple-touch-icon" href="/aditor-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -14,7 +22,7 @@
     <meta property="og:title" content="AdLingo — How Sharp Is Your Ad Creative Eye?" />
     <meta property="og:description" content="12-question quiz that reveals if you're a Budget Burner or a Unicorn editor. Free personalized audit report." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://adlingo.onrender.com" />
+    <meta property="og:url" content="https://train.aditor.ai" />
     <title>AdLingo — Ad Creative Skill Assessment</title>
   </head>
   <body>

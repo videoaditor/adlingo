@@ -13,7 +13,7 @@ import { dirname, join } from 'node:path';
 // completion.test.js (an external viewer triggers ZERO airtable calls).
 const servicesDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-const EXTERNAL_PATH_MODULES = ['suite.js', 'viewer.js', 'gate.js', 'completion.js'];
+const EXTERNAL_PATH_MODULES = ['suite.js', 'viewer.js', 'gate.js', 'completion.js', 'ownerClient.js', 'seatCap.js'];
 const PLAYERS_TABLE_ID = 'tblJ2RgdTVX5zdgTc';
 const importsAirtable = (src) => /\bfrom\s+['"][^'"]*airtable/.test(src);
 
@@ -29,4 +29,14 @@ describe('separation invariant — the suite/external path never reaches Players
       expect(src.includes(PLAYERS_TABLE_ID), `${mod} must not reference the Players table`).toBe(false);
     });
   }
+});
+
+describe('separation invariant — the owner dashboard never reaches Players', () => {
+  const dashboard = readFileSync(join(servicesDir, '..', 'pages', 'OwnerDashboard.jsx'), 'utf8');
+  it('OwnerDashboard.jsx imports nothing from the Players service (airtable.js)', () => {
+    expect(importsAirtable(dashboard), 'OwnerDashboard must not import airtable.js').toBe(false);
+  });
+  it('OwnerDashboard.jsx does not hardcode the Players table id', () => {
+    expect(dashboard.includes(PLAYERS_TABLE_ID), 'OwnerDashboard must not reference the Players table').toBe(false);
+  });
 });

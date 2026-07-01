@@ -13,6 +13,8 @@ import WorldMap from './pages/WorldMap';
 import Course from './pages/Course';
 import Lesson from './pages/Lesson';
 import Admin from './pages/Admin';
+import OwnerDashboard from './pages/OwnerDashboard';
+import { createFakeOwnerClient } from './services/ownerClient.fake';
 
 const SUITE_MODE = suiteEnabled();
 
@@ -213,6 +215,21 @@ const App = () => {
       onStatus: setSyncStatus,
     }).catch((err) => console.error('[adlingo] persist completion failed:', err));
   }, [user]);
+
+  // ponytail: DEV-only preview of the owner dashboard against a fake spine, so we
+  // can screenshot it before P0 (live Whop owner identity = Task E). Bypasses the
+  // auth gate below. import.meta.env.DEV is false in prod → whole branch (and the
+  // fake) is tree-shaken out.
+  if (import.meta.env.DEV && typeof window !== 'undefined' && window.location.pathname === '/owner') {
+    return (
+      <OwnerDashboard
+        client={createFakeOwnerClient('course')}
+        jwt="dev"
+        planTier="course"
+        brand={{ name: 'Demo Brand' }}
+      />
+    );
+  }
 
   if (loading) {
     return (

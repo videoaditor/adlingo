@@ -33,15 +33,21 @@ Two things, one repo boundary:
 1. **Suite CONTRACT v2 — owner/management additions** (formalized as `platform/suite/CONTRACT.md`;
    currently only comments in `suite.js`). New owner-facing surface:
    - **Owner identity:** Whop iframe `x-whop-user-token` → spine `verifyUserToken` → owner + their
-     `Brand` + **plan tier → `seatCap`**. (Standalone OAuth is a later add — iframe-first.)
+     `Brand` + **plan tier → `seatCap`**. (Standalone OAuth is a later add — iframe-first.) The spine
+     **resolves the account by normalized email**, linking the Whop identity to any existing
+     magic-link/OAuth account — never a second account for the same email.
    - `GET  /v1/brand/seats` → `{ cap, used, seats:[{ seatId, email, name, status, invitedAt,
-     lastActive, completionPct, overdueDays }] }` — the roster the dashboard renders.
-   - `POST /v1/brand/seats` `{ email }` → create seat (`pending`) **iff `used < cap`**, issue a
-     single-use magic link, optionally email it; **`409 seat_cap_reached`** at cap.
-   - `POST /v1/brand/invite-link` → issue a shareable magic link (single-use, or brand-scoped and
-     cap-checked at redeem); **refused at cap** so a shared link can't overflow the plan.
-   - `DELETE /v1/brand/seats/:seatId` → `status → removed`; next `/v1/entitlement/check` for that
-     seat returns `seat_unknown_or_revoked` (a deny reason `gate.js` **already** renders). Frees a seat.
+     lastActive, completionPct, overdueDays }] }` — the roster. `completionPct` is vs the **current**
+     lesson set, so it drops when we ship new content.
+   - `POST /v1/brand/seats` `{ email }` → **resolve-or-create the account by normalized email**,
+     create a `(brand, email)` membership (`pending`) **iff `used < cap`**, issue a magic link and
+     **auto-email it**; **`409 seat_cap_reached`** at cap. Never duplicates an existing email.
+   - `POST /v1/brand/invite-link` → return the brand's **one general link**; redeem creates a
+     membership **iff `used < cap`** (resolve-or-create by email), else the link is **inactive** and
+     **auto-reactivates when a seat frees**. A shared link can never overflow the plan.
+   - `DELETE /v1/brand/seats/:seatId` → **kick**: membership `→ removed`, frees a seat; next
+     `/v1/entitlement/check` for that `(email, brand)` returns `seat_unknown_or_revoked` (a deny
+     reason `gate.js` **already** renders). **Account + training record are retained** (re-add resumes).
    - **Webhook** `membership_went_valid|invalid` → `Brand.status` active|inactive → cascades to the
      `brand_subscription_inactive` gate reason (already in `gate.js`).
    - **Cap = f(plan tier)**, **pending reserves a seat** (so N pending can't all accept past cap).
@@ -73,6 +79,30 @@ units, metered by those apps** — out of scope for this dashboard. Encode the m
 `PLAN_SEAT_CAPS = { course: 2, upgrade: 12 }` (easy to change); **source of truth is the Whop
 entitlement**, this is a mirror the spine resolves per owner.
 
+### Identity & seat model  (decided 2026-07-01)
+- **One account per normalized email, globally.** The spine issues and verifies all identity and is
+  the single DB across every tool (AdLingo, Ad Mixer, AutoReview). A person may authenticate via the
+  **Whop iframe token** *and* via **magic-link / OAuth** — the spine **dedupes on lowercased email**,
+  not on Whop user-id, and links the auth methods to the **same** account. Never create a second
+  account for an email that already exists. *(This is the double-account trap Alan flagged.)*
+- **Seats are memberships, not accounts.** A seat = a `(brand, email)` membership. One account can
+  hold **many seats across many brands** — a freelancer working for 3 owners = 1 account, 3
+  memberships. The cap counts memberships **per brand**.
+- **Seats are role-agnostic.** The owner allocates a seat to whoever they like — an employee, a
+  freelancer, or **themselves** (to take the training). Owner **dashboard** access comes from the
+  Whop owner entitlement and **does not consume a seat**; the owner only counts against the cap if
+  they seat their own email as a trainee.
+- **Progress is per-account and shared across brands.** The editor does the universal curriculum
+  **once**; every brand that seats that email sees the same completion (hire-a-pre-certified-editor).
+  **Kick keeps the record** — re-adding the same email resumes, never resets.
+- **New content re-opens a module.** Completion is computed against the **current** lesson set (the
+  T1b denominator rule already does this), so when *we* ship a new lesson into a world, that world
+  drops below 100% for everyone until they do it — the new lesson is uncompleted, prior lessons are
+  not wiped. This is the hook that feeds the "what's new" nudge: new lesson → you're at 80% again.
+- **Cap counting:** `used = pending + active` memberships for the brand (**pending reserves**). The
+  **general brand link** is active while `used < cap` and **auto-reactivates** when a seat frees —
+  via a **kick** (owner removes a membership) or a membership going inactive.
+
 ### Data flow (add / see / remove)
 ```
 Whop iframe (owner)                 AdLingo dashboard (consumer)          Aditor Suite spine (SoT)
@@ -94,6 +124,9 @@ editor logs into AdLingo ──────────────────�
   - Reuse the shipped consumer contract: the owner client speaks the **same spine dialect** as
     `suite.js`; deny reasons reuse the `gate.js` enum (`seat_unknown_or_revoked`,
     `brand_subscription_inactive`, …); "view as" reuses `viewer.js` `readOnly`.
+  - **One account per normalized email** — the spine dedupes across the Whop-iframe token,
+    magic-link, and OAuth, and across all tools (one DB). Seats are `(brand, email)` memberships;
+    progress is per-account (shared across brands, recomputed against the current curriculum).
   - **Flag-gated by `VITE_SUITE_URL`**: spine unset → the owner dashboard route is hidden/disabled
     and **internal (Players) behavior is byte-unchanged.**
   - **Seats + training progress live in the spine, never Airtable/Players.** The dashboard is a thin
@@ -143,19 +176,22 @@ editor logs into AdLingo ──────────────────�
 - **A — CONTRACT.md v2 (doc).** Write `docs/suite/CONTRACT.md` in this repo (mirror to
   `aditor-ops/platform/suite/CONTRACT.md` when the spine is built): formalize v1 (from `suite.js`)
   **plus** every owner endpoint in *Was §1*, request/response shapes, the reason enums, the
-  `PLAN_SEAT_CAPS` map, and the webhook. · **Verifiziert:** every endpoint `suite.js` **and** the new
-  owner client call is listed with I/O; reason enums match `gate.js`.
+  `PLAN_SEAT_CAPS` map, the **email-dedupe rule** (one account per normalized email across auth
+  methods + tools), and the webhook. · **Verifiziert:** every endpoint `suite.js` **and** the new
+  owner client call is listed with I/O; reason enums match `gate.js`; the dedupe rule is explicit.
 - **B — Owner spine client (fake-tested).** New `src/services/ownerClient.js` (or extend
   `suite.js`): `getSeats(jwt)`, `createSeat(jwt,email)`, `issueInviteLink(jwt)`, `removeSeat(jwt,id)`
   — pure, `fetch`-injected. Management writes **fail closed** (unlike the editor gate's fail-open):
   a spine error on "add/remove" must **not** silently succeed. · Files: `ownerClient.js`,
   `__tests__/ownerClient.test.js` · **Verifiziert:** fake round-trips add(pending)→list→remove; a
   `409` surfaces as "at cap"; a network error surfaces as a failed write, not a phantom success.
-- **C — Cap logic (pure).** `src/services/seatCap.js`: `usage(seats)` (counts `pending`+`active`),
+- **C — Cap logic (pure).** `src/services/seatCap.js`: `usage(seats)` (counts `pending`+`active`
+  memberships for the brand, **role-agnostic** — an owner who seats himself counts too),
   `capFor(planTier)`, `canInvite({cap,used})`, `linkEnabled({cap,used})`. · Files: `seatCap.js`,
   `__tests__/seatCap.test.js` · **Verifiziert:** at `used==cap` both `canInvite` and `linkEnabled`
-  are false; `pending` counts; `capFor('upgrade')===12`, `capFor('course')===2`. **(This is the
-  "accurate work" core — the one place the cap math lives.)**
+  are false; `pending` counts; **kicking a member flips `linkEnabled` back to true**;
+  `capFor('upgrade')===12`, `capFor('course')===2`. **(The "accurate work" core — the one place the
+  cap math lives.)**
 - **D — Owner dashboard UI (Whop-iframe route).** New route (e.g. `/owner`), gated by
   `VITE_SUITE_URL` + an `owner` viewer: roster table (completion %, days-overdue, status chips),
   cap meter (`used / cap`), **invite-by-link** (button greys + tooltips "at cap" when `linkEnabled`

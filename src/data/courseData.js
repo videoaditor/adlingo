@@ -1269,6 +1269,17 @@ export function lessonHasContent(l) {
   return Boolean(l.videoUrl) || (Array.isArray(l.questions) && l.questions.length > 0);
 }
 
+// A lesson can only ever enter `completedLessons` by finishing its quiz
+// (QuizEngine calls onComplete; an empty questions array shows "No questions
+// available" and never fires). So a lesson with no quiz is UNcompletable and must
+// NOT gate world unlocks — otherwise a placeholder like l18 "How to Bill Your
+// Work" permanently soft-locks every following world. Stricter than
+// lessonHasContent on purpose: a video-only lesson has content but still can't be
+// checked off, so it can't be a gate either.
+export function lessonIsCompletable(l) {
+  return Array.isArray(l.questions) && l.questions.length > 0;
+}
+
 export function getAllLessonIds() {
   const worldIds = getWorlds()
     .sort((a, b) => a.order - b.order)

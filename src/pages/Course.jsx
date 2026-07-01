@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Lock, CheckCircle, Play, BookOpen, ChevronRight, ChevronDown, ArrowRight, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getWorlds, getDisciplines } from '../data/courseData';
+import { getWorlds, getDisciplines, lessonHasContent, lessonIsCompletable } from '../data/courseData';
 import VideoPlayer from '../components/VideoPlayer';
 import { haptic } from '../services/haptics';
 
@@ -63,7 +63,11 @@ export default function Course({ user }) {
     if (!world.unlockAfterWorld) return true;
     const prevWorld = worlds.find((w) => w.id === world.unlockAfterWorld);
     if (!prevWorld) return true;
-    return prevWorld.lessons.every((l) => completedLessons.includes(l.id));
+    // Only completable lessons (real quiz) gate — empty placeholders can't be
+    // finished, so requiring them would permanently lock the next world.
+    return prevWorld.lessons
+      .filter(lessonIsCompletable)
+      .every((l) => completedLessons.includes(l.id));
   }
 
   function isLessonUnlocked(lesson, world) {
@@ -110,8 +114,9 @@ export default function Course({ user }) {
         const unlocked = isWorldUnlocked(world);
         const sortedLessons = world.lessons.sort((a, b) => a.order - b.order);
         const isExpanded = expandedSections.has(world.id);
-        const done = sortedLessons.filter((l) => completedLessons.includes(l.id)).length;
-        const total = sortedLessons.length;
+        const countedLessons = sortedLessons.filter(lessonHasContent);
+        const done = countedLessons.filter((l) => completedLessons.includes(l.id)).length;
+        const total = countedLessons.length;
 
         return (
           <section

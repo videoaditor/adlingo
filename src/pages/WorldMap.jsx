@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, CheckCircle, ChevronRight, Flame, Star, Zap, Sparkles, Play, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getWorlds, getDisciplines, getAllLessonIds } from '../data/courseData';
+import { getWorlds, getDisciplines, getAllLessonIds, lessonHasContent, lessonIsCompletable } from '../data/courseData';
 import { haptic } from '../services/haptics';
 import WorldClearCelebration from '../components/WorldClearCelebration';
 import CaughtUpBanner from '../components/CaughtUpBanner';
@@ -24,12 +24,17 @@ export default function WorldMap({ user }) {
     if (!world.unlockAfterWorld) return true;
     const prevWorld = worlds.find((w) => w.id === world.unlockAfterWorld);
     if (!prevWorld) return true;
-    return prevWorld.lessons.every((l) => completedLessons.includes(l.id));
+    // Only completable lessons (real quiz) gate — empty placeholders can't be
+    // finished, so requiring them would permanently lock the next world.
+    return prevWorld.lessons
+      .filter(lessonIsCompletable)
+      .every((l) => completedLessons.includes(l.id));
   }
 
   function getWorldProgress(world) {
-    const total = world.lessons.length;
-    const done = world.lessons.filter((l) => completedLessons.includes(l.id)).length;
+    const counted = world.lessons.filter(lessonHasContent); // exclude placeholders so a done world reads 100%
+    const total = counted.length;
+    const done = counted.filter((l) => completedLessons.includes(l.id)).length;
     return { done, total, percent: total > 0 ? Math.round((done / total) * 100) : 0 };
   }
 
@@ -43,7 +48,11 @@ export default function WorldMap({ user }) {
     for (const world of worlds) {
       if (!isWorldUnlocked(world)) continue;
       for (const lesson of world.lessons.sort((a, b) => a.order - b.order)) {
-        if (!completedLessons.includes(lesson.id) && isLessonUnlocked(lesson, world)) {
+        if (
+          lessonIsCompletable(lesson) &&
+          !completedLessons.includes(lesson.id) &&
+          isLessonUnlocked(lesson, world)
+        ) {
           return lesson.id;
         }
       }

@@ -13,8 +13,16 @@ import WorldMap from './pages/WorldMap';
 import Course from './pages/Course';
 import Lesson from './pages/Lesson';
 import Admin from './pages/Admin';
+import OwnerDashboard from './pages/OwnerDashboard';
+import { createFakeOwnerClient } from './services/ownerClient.fake';
 
 const SUITE_MODE = suiteEnabled();
+
+// ponytail: DEV-only fake owner client, created ONCE at module scope so its
+// identity is stable — an inline-in-render client re-fires the dashboard's load
+// effect on every parent render. DEV-guarded → null and tree-shaken in prod.
+// Task E replaces this with the live createOwnerClient(ownerJwt); memoize it there.
+const DEV_OWNER_CLIENT = import.meta.env.DEV ? createFakeOwnerClient('course') : null;
 
 const App = () => {
   const [user, setUser] = useState(() => getStoredAuth());
@@ -213,6 +221,21 @@ const App = () => {
       onStatus: setSyncStatus,
     }).catch((err) => console.error('[adlingo] persist completion failed:', err));
   }, [user]);
+
+  // ponytail: DEV-only preview of the owner dashboard against a fake spine, so we
+  // can screenshot it before P0 (live Whop owner identity = Task E). Bypasses the
+  // auth gate below. import.meta.env.DEV is false in prod → whole branch (and the
+  // fake) is tree-shaken out.
+  if (import.meta.env.DEV && typeof window !== 'undefined' && window.location.pathname === '/owner') {
+    return (
+      <OwnerDashboard
+        client={DEV_OWNER_CLIENT}
+        jwt="dev"
+        planTier="course"
+        brand={{ name: 'Demo Brand' }}
+      />
+    );
+  }
 
   if (loading) {
     return (

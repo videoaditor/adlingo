@@ -9,7 +9,7 @@ import CaughtUpBanner from '../components/CaughtUpBanner';
 
 // World-specific icons/emojis for visual variety
 const WORLD_ICONS = {
-  w1: '✂️', w2: '🤖', w3: '⚡', w4: '🔧',
+  w1: '✂️', w2: '🤖', w3: '⚡', w4: '🔧', w5: '⚙️',
 };
 
 export default function WorldMap({ user }) {

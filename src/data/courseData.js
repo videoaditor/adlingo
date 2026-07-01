@@ -3,7 +3,7 @@
 
 const STORAGE_KEY = 'adlingo_course_data';
 const SEED_VERSION_KEY = 'adlingo_seed_version';
-const CURRENT_SEED_VERSION = 6; // Bump this to force seed data refresh
+const CURRENT_SEED_VERSION = 7; // Bump this to force seed data refresh
 
 const DISCIPLINES_STORAGE_KEY = 'adlingo_disciplines_data';
 const DISCIPLINES_SEED_VERSION_KEY = 'adlingo_disciplines_seed_version';
@@ -854,8 +854,8 @@ const SEED_WORLDS = [
   },
   {
     id: 'w5',
-    name: 'Home Base',
-    subtitle: 'HOW WE WORK TOGETHER',
+    name: 'Internal Operations',
+    subtitle: 'HOW YOU GET ACCESS, PROJECTS & PAID',
     themeColor: 'from-emerald-600 to-green-500',
     bgColor: 'bg-gradient-to-br from-emerald-900/40 to-green-900/20',
     borderColor: 'border-emerald-500/30',

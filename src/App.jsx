@@ -18,6 +18,12 @@ import { createFakeOwnerClient } from './services/ownerClient.fake';
 
 const SUITE_MODE = suiteEnabled();
 
+// ponytail: DEV-only fake owner client, created ONCE at module scope so its
+// identity is stable — an inline-in-render client re-fires the dashboard's load
+// effect on every parent render. DEV-guarded → null and tree-shaken in prod.
+// Task E replaces this with the live createOwnerClient(ownerJwt); memoize it there.
+const DEV_OWNER_CLIENT = import.meta.env.DEV ? createFakeOwnerClient('course') : null;
+
 const App = () => {
   const [user, setUser] = useState(() => getStoredAuth());
   const [loading, setLoading] = useState(true);
@@ -223,7 +229,7 @@ const App = () => {
   if (import.meta.env.DEV && typeof window !== 'undefined' && window.location.pathname === '/owner') {
     return (
       <OwnerDashboard
-        client={createFakeOwnerClient('course')}
+        client={DEV_OWNER_CLIENT}
         jwt="dev"
         planTier="course"
         brand={{ name: 'Demo Brand' }}

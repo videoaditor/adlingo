@@ -201,6 +201,9 @@ editor logs into AdLingo ──────────────────�
   the design skill checklist (real data, 4/8px grid, OKLCH — see `emil-design-eng` / `ui-ux-pro-max`).
 - **E — Whop iframe owner identity** *(needs spine + Whop app; P0-gated).* Pass `x-whop-user-token`
   from the iframe to the spine; spine verifies → owner + brand + cap. Consumer side only here.
+  **Build the live `createOwnerClient(ownerJwt)` ONCE (module scope or `useMemo`), never inline in
+  render** — an unstable client identity re-fires the dashboard's load effect (owner-dashboard code
+  review, Task 4).
 - **F — Reminder emails + owner digest** *(spine-side; needs spine live).* Scheduled job over
   training state → hype-voice editor nudges + owner digest. AdLingo owns copy + deep links. Config
   read from per-Brand settings (Task G).
